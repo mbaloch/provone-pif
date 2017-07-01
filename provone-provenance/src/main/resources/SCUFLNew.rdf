@@ -1,0 +1,264 @@
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:j.0="http://purl.org/dc/terms/"
+    xmlns:example="http://kit.edu/pp/"
+    xmlns:prov="http://www.w3.org/ns/prov#"
+    xmlns:provone="http://purl.org/provone#"
+    xmlns:wfms="http://www.wfms.org/registry.xsd#">
+  <provone:Workflow rdf:about="http://kit.edu/pp/f5fddb99-9677-43cb-aac5-4d14e1ad1b46">
+    <wfms:Role>TOP</wfms:Role>
+    <j.0:title>Hello_abcd</j.0:title>
+    <provone:hasSubProcess>
+      <provone:Process rdf:about="http://kit.edu/pp/process_7740f169-cb9d-49bd-a4b4-8885e0013077">
+        <provone:sourcePToCL>
+          <provone:SeqCtrlLink rdf:about="http://kit.edu/pp/SCL_bee745e4-36cc-4566-b995-7257edd3db5c">
+            <provone:CLToDestP>
+              <provone:Workflow rdf:about="http://kit.edu/pp/3f6a85ee-c4ee-40b8-97d6-7b21cc904033">
+                <provone:hasSubProcess>
+                  <provone:Process rdf:about="http://kit.edu/pp/process_6e8ef3af-9b8a-4c42-acd5-04417c682bd2">
+                    <provone:hasOutPort>
+                      <provone:OutputPort rdf:about="http://kit.edu/pp/outputport_7ee04df0-d2b8-4422-85c8-864f04577bda">
+                        <provone:outPortToDL>
+                          <provone:DataLink rdf:about="http://kit.edu/pp/DL_176481f2-3d0a-4665-94b7-02a66839c8a1">
+                            <provone:DLToOutPort>
+                              <provone:OutputPort rdf:about="http://kit.edu/pp/outputport_8d5b16c2-0d97-4b26-9dfd-7fb82cc90ba8">
+                                <provone:outPortToDL>
+                                  <provone:DataLink rdf:about="http://kit.edu/pp/DL_bc376814-d72c-402f-8814-3045c3ed9b08">
+                                    <provone:DLToOutPort>
+                                      <provone:OutputPort rdf:about="http://kit.edu/pp/outputport_9d615587-5ff5-49fc-9dac-ee2f94cd1454">
+                                        <j.0:title>ab</j.0:title>
+                                        <j.0:identifier>9d615587-5ff5-49fc-9dac-ee2f94cd1454</j.0:identifier>
+                                      </provone:OutputPort>
+                                    </provone:DLToOutPort>
+                                    <j.0:identifier>bc376814-d72c-402f-8814-3045c3ed9b08</j.0:identifier>
+                                  </provone:DataLink>
+                                </provone:outPortToDL>
+                                <j.0:title>joint</j.0:title>
+                                <j.0:identifier>8d5b16c2-0d97-4b26-9dfd-7fb82cc90ba8</j.0:identifier>
+                              </provone:OutputPort>
+                            </provone:DLToOutPort>
+                            <j.0:identifier>176481f2-3d0a-4665-94b7-02a66839c8a1</j.0:identifier>
+                          </provone:DataLink>
+                        </provone:outPortToDL>
+                        <j.0:title>output</j.0:title>
+                        <j.0:identifier>7ee04df0-d2b8-4422-85c8-864f04577bda</j.0:identifier>
+                      </provone:OutputPort>
+                    </provone:hasOutPort>
+                    <provone:hasInPort>
+                      <provone:InputPort rdf:about="http://kit.edu/pp/inputport_2c8ed502-1cce-4146-affb-f7846e31d6eb">
+                        <j.0:title>string2</j.0:title>
+                        <j.0:identifier>2c8ed502-1cce-4146-affb-f7846e31d6eb</j.0:identifier>
+                      </provone:InputPort>
+                    </provone:hasInPort>
+                    <provone:hasInPort>
+                      <provone:InputPort rdf:about="http://kit.edu/pp/inputport_ca933cb2-e5f1-4c8b-9aa3-1dc5223c785d">
+                        <j.0:title>string1</j.0:title>
+                        <j.0:identifier>ca933cb2-e5f1-4c8b-9aa3-1dc5223c785d</j.0:identifier>
+                      </provone:InputPort>
+                    </provone:hasInPort>
+                    <wfms:script>output = string1 + string2;</wfms:script>
+                    <wfms:class>net.sf.taverna.t2.activities.localworker.LocalworkerActivity</wfms:class>
+                    <j.0:title>concatenate</j.0:title>
+                    <j.0:identifier>6e8ef3af-9b8a-4c42-acd5-04417c682bd2</j.0:identifier>
+                  </provone:Process>
+                </provone:hasSubProcess>
+                <provone:hasOutPort rdf:resource="http://kit.edu/pp/outputport_8d5b16c2-0d97-4b26-9dfd-7fb82cc90ba8"/>
+                <provone:hasInPort>
+                  <provone:InputPort rdf:about="http://kit.edu/pp/inputport_e24d4f1e-e3aa-436a-a0c0-de5ec0b61fbb">
+                    <provone:inPortToDL>
+                      <provone:DataLink rdf:about="http://kit.edu/pp/DL_0b5d7001-8cde-48d0-a272-a2cd890c3201">
+                        <provone:DLToInPort rdf:resource="http://kit.edu/pp/inputport_2c8ed502-1cce-4146-affb-f7846e31d6eb"/>
+                        <j.0:identifier>0b5d7001-8cde-48d0-a272-a2cd890c3201</j.0:identifier>
+                      </provone:DataLink>
+                    </provone:inPortToDL>
+                    <j.0:title>second</j.0:title>
+                    <j.0:identifier>e24d4f1e-e3aa-436a-a0c0-de5ec0b61fbb</j.0:identifier>
+                  </provone:InputPort>
+                </provone:hasInPort>
+                <provone:hasInPort>
+                  <provone:InputPort rdf:about="http://kit.edu/pp/inputport_1dc2b693-5147-4702-a582-a55038b54a15">
+                    <provone:inPortToDL>
+                      <provone:DataLink rdf:about="http://kit.edu/pp/DL_8f85e80c-5215-4d97-9548-e5371181e753">
+                        <provone:DLToInPort rdf:resource="http://kit.edu/pp/inputport_ca933cb2-e5f1-4c8b-9aa3-1dc5223c785d"/>
+                        <j.0:identifier>8f85e80c-5215-4d97-9548-e5371181e753</j.0:identifier>
+                      </provone:DataLink>
+                    </provone:inPortToDL>
+                    <j.0:title>first</j.0:title>
+                    <j.0:identifier>1dc2b693-5147-4702-a582-a55038b54a15</j.0:identifier>
+                  </provone:InputPort>
+                </provone:hasInPort>
+                <wfms:Role>NESTED</wfms:Role>
+                <j.0:title>join_ab</j.0:title>
+                <j.0:identifier>3f6a85ee-c4ee-40b8-97d6-7b21cc904033</j.0:identifier>
+              </provone:Workflow>
+            </provone:CLToDestP>
+            <j.0:identifier>bee745e4-36cc-4566-b995-7257edd3db5c</j.0:identifier>
+          </provone:SeqCtrlLink>
+        </provone:sourcePToCL>
+        <provone:hasOutPort>
+          <provone:OutputPort rdf:about="http://kit.edu/pp/outputport_3e8288e2-c3e0-49d3-be8f-8eafda7e1e26">
+            <provone:outPortToDL>
+              <provone:DataLink rdf:about="http://kit.edu/pp/DL_8df66e79-01d7-4670-83a5-5ba7d6fd104f">
+                <provone:DLToInPort rdf:resource="http://kit.edu/pp/inputport_e24d4f1e-e3aa-436a-a0c0-de5ec0b61fbb"/>
+                <j.0:identifier>8df66e79-01d7-4670-83a5-5ba7d6fd104f</j.0:identifier>
+              </provone:DataLink>
+            </provone:outPortToDL>
+            <j.0:title>list</j.0:title>
+            <j.0:identifier>3e8288e2-c3e0-49d3-be8f-8eafda7e1e26</j.0:identifier>
+          </provone:OutputPort>
+        </provone:hasOutPort>
+        <wfms:script>List list = Arrays.asList(new String[]{"a", "b"});</wfms:script>
+        <wfms:class>net.sf.taverna.t2.activities.beanshell.BeanshellActivity</wfms:class>
+        <j.0:title>a_b</j.0:title>
+        <j.0:identifier>7740f169-cb9d-49bd-a4b4-8885e0013077</j.0:identifier>
+      </provone:Process>
+    </provone:hasSubProcess>
+    <provone:hasSubProcess>
+      <provone:Process rdf:about="http://kit.edu/pp/process_a6aaa6a8-8ff6-45e0-adfa-bdab2be93e95">
+        <provone:sourcePToCL>
+          <provone:SeqCtrlLink rdf:about="http://kit.edu/pp/SCL_af6de54f-0ee4-4810-9167-c0de12273e21">
+            <provone:CLToDestP>
+              <provone:Workflow rdf:about="http://kit.edu/pp/8be158ee-d2e5-4c68-96f3-f5a8be32e070">
+                <provone:hasSubProcess>
+                  <provone:Process rdf:about="http://kit.edu/pp/process_2966dca5-b40f-4e9a-a73f-0f965c54894b">
+                    <provone:hasOutPort>
+                      <provone:OutputPort rdf:about="http://kit.edu/pp/outputport_f25ddad9-db49-49b1-8d7d-ea6e44fa014c">
+                        <provone:outPortToDL>
+                          <provone:DataLink rdf:about="http://kit.edu/pp/DL_17f0b3e6-8051-4eab-b863-4136d5bfade6">
+                            <provone:DLToOutPort>
+                              <provone:OutputPort rdf:about="http://kit.edu/pp/outputport_2c8b845e-b0de-4698-9db5-ef387c69455a">
+                                <provone:outPortToDL>
+                                  <provone:DataLink rdf:about="http://kit.edu/pp/DL_7f66d389-941c-4ff6-8f17-09e2a367fc9c">
+                                    <provone:DLToOutPort>
+                                      <provone:OutputPort rdf:about="http://kit.edu/pp/outputport_5f652f0b-2fcb-4075-9e94-88ce896a3628">
+                                        <j.0:title>cd</j.0:title>
+                                        <j.0:identifier>5f652f0b-2fcb-4075-9e94-88ce896a3628</j.0:identifier>
+                                      </provone:OutputPort>
+                                    </provone:DLToOutPort>
+                                    <j.0:identifier>7f66d389-941c-4ff6-8f17-09e2a367fc9c</j.0:identifier>
+                                  </provone:DataLink>
+                                </provone:outPortToDL>
+                                <j.0:title>joint</j.0:title>
+                                <j.0:identifier>2c8b845e-b0de-4698-9db5-ef387c69455a</j.0:identifier>
+                              </provone:OutputPort>
+                            </provone:DLToOutPort>
+                            <j.0:identifier>17f0b3e6-8051-4eab-b863-4136d5bfade6</j.0:identifier>
+                          </provone:DataLink>
+                        </provone:outPortToDL>
+                        <j.0:title>output</j.0:title>
+                        <j.0:identifier>f25ddad9-db49-49b1-8d7d-ea6e44fa014c</j.0:identifier>
+                      </provone:OutputPort>
+                    </provone:hasOutPort>
+                    <provone:hasInPort>
+                      <provone:InputPort rdf:about="http://kit.edu/pp/inputport_9cb2c68e-2c65-4bd2-8d6a-d2722b788b6e">
+                        <j.0:title>string2</j.0:title>
+                        <j.0:identifier>9cb2c68e-2c65-4bd2-8d6a-d2722b788b6e</j.0:identifier>
+                      </provone:InputPort>
+                    </provone:hasInPort>
+                    <provone:hasInPort>
+                      <provone:InputPort rdf:about="http://kit.edu/pp/inputport_0d9335ff-f10b-41c5-ae44-35aec04295b8">
+                        <j.0:title>string1</j.0:title>
+                        <j.0:identifier>0d9335ff-f10b-41c5-ae44-35aec04295b8</j.0:identifier>
+                      </provone:InputPort>
+                    </provone:hasInPort>
+                    <wfms:script>output = string1 + string2;</wfms:script>
+                    <wfms:class>net.sf.taverna.t2.activities.localworker.LocalworkerActivity</wfms:class>
+                    <j.0:title>concatenate</j.0:title>
+                    <j.0:identifier>2966dca5-b40f-4e9a-a73f-0f965c54894b</j.0:identifier>
+                  </provone:Process>
+                </provone:hasSubProcess>
+                <provone:hasOutPort rdf:resource="http://kit.edu/pp/outputport_2c8b845e-b0de-4698-9db5-ef387c69455a"/>
+                <provone:hasInPort>
+                  <provone:InputPort rdf:about="http://kit.edu/pp/inputport_c0e45ba2-8c24-493a-afc5-ff08adb2e477">
+                    <provone:inPortToDL>
+                      <provone:DataLink rdf:about="http://kit.edu/pp/DL_3d0366b1-2700-4189-8def-cfda199aec8b">
+                        <provone:DLToInPort rdf:resource="http://kit.edu/pp/inputport_9cb2c68e-2c65-4bd2-8d6a-d2722b788b6e"/>
+                        <j.0:identifier>3d0366b1-2700-4189-8def-cfda199aec8b</j.0:identifier>
+                      </provone:DataLink>
+                    </provone:inPortToDL>
+                    <j.0:title>second</j.0:title>
+                    <j.0:identifier>c0e45ba2-8c24-493a-afc5-ff08adb2e477</j.0:identifier>
+                  </provone:InputPort>
+                </provone:hasInPort>
+                <provone:hasInPort>
+                  <provone:InputPort rdf:about="http://kit.edu/pp/inputport_3aa24a37-91af-444d-a1d4-e4271f6f97c1">
+                    <provone:inPortToDL>
+                      <provone:DataLink rdf:about="http://kit.edu/pp/DL_98529c81-03cf-47d1-916c-bd1a3854f403">
+                        <provone:DLToInPort rdf:resource="http://kit.edu/pp/inputport_0d9335ff-f10b-41c5-ae44-35aec04295b8"/>
+                        <j.0:identifier>98529c81-03cf-47d1-916c-bd1a3854f403</j.0:identifier>
+                      </provone:DataLink>
+                    </provone:inPortToDL>
+                    <j.0:title>first</j.0:title>
+                    <j.0:identifier>3aa24a37-91af-444d-a1d4-e4271f6f97c1</j.0:identifier>
+                  </provone:InputPort>
+                </provone:hasInPort>
+                <wfms:Role>NESTED</wfms:Role>
+                <j.0:title>join_cd</j.0:title>
+                <j.0:identifier>8be158ee-d2e5-4c68-96f3-f5a8be32e070</j.0:identifier>
+              </provone:Workflow>
+            </provone:CLToDestP>
+            <j.0:identifier>af6de54f-0ee4-4810-9167-c0de12273e21</j.0:identifier>
+          </provone:SeqCtrlLink>
+        </provone:sourcePToCL>
+        <provone:hasOutPort>
+          <provone:OutputPort rdf:about="http://kit.edu/pp/outputport_f3531492-cd5c-4ba4-9562-5c5696381e23">
+            <provone:outPortToDL>
+              <provone:DataLink rdf:about="http://kit.edu/pp/DL_fb95f07a-e385-4cac-8501-2697ce4ba30e">
+                <provone:DLToInPort rdf:resource="http://kit.edu/pp/inputport_c0e45ba2-8c24-493a-afc5-ff08adb2e477"/>
+                <j.0:identifier>fb95f07a-e385-4cac-8501-2697ce4ba30e</j.0:identifier>
+              </provone:DataLink>
+            </provone:outPortToDL>
+            <j.0:title>list</j.0:title>
+            <j.0:identifier>f3531492-cd5c-4ba4-9562-5c5696381e23</j.0:identifier>
+          </provone:OutputPort>
+        </provone:hasOutPort>
+        <wfms:script>List list = Arrays.asList(new String[]{"c", "d"});</wfms:script>
+        <wfms:class>net.sf.taverna.t2.activities.beanshell.BeanshellActivity</wfms:class>
+        <j.0:title>c_d</j.0:title>
+        <j.0:identifier>a6aaa6a8-8ff6-45e0-adfa-bdab2be93e95</j.0:identifier>
+      </provone:Process>
+    </provone:hasSubProcess>
+    <provone:hasOutPort rdf:resource="http://kit.edu/pp/outputport_9d615587-5ff5-49fc-9dac-ee2f94cd1454"/>
+    <j.0:identifier>f5fddb99-9677-43cb-aac5-4d14e1ad1b46</j.0:identifier>
+    <provone:hasSubProcess rdf:resource="http://kit.edu/pp/3f6a85ee-c4ee-40b8-97d6-7b21cc904033"/>
+    <provone:hasOutPort rdf:resource="http://kit.edu/pp/outputport_5f652f0b-2fcb-4075-9e94-88ce896a3628"/>
+    <provone:hasSubProcess>
+      <provone:Process rdf:about="http://kit.edu/pp/process_3c1846c7-d29d-4ff0-87a8-30518a93f7fb">
+        <provone:sourcePToCL>
+          <provone:SeqCtrlLink rdf:about="http://kit.edu/pp/SCL_8970cd36-8f13-4143-963e-618b431ecd89">
+            <provone:CLToDestP rdf:resource="http://kit.edu/pp/8be158ee-d2e5-4c68-96f3-f5a8be32e070"/>
+            <j.0:identifier>8970cd36-8f13-4143-963e-618b431ecd89</j.0:identifier>
+          </provone:SeqCtrlLink>
+        </provone:sourcePToCL>
+        <provone:sourcePToCL>
+          <provone:SeqCtrlLink rdf:about="http://kit.edu/pp/SCL_63e0e71b-884d-4a63-9d8d-1fbe5a5a25ee">
+            <provone:CLToDestP rdf:resource="http://kit.edu/pp/3f6a85ee-c4ee-40b8-97d6-7b21cc904033"/>
+            <j.0:identifier>63e0e71b-884d-4a63-9d8d-1fbe5a5a25ee</j.0:identifier>
+          </provone:SeqCtrlLink>
+        </provone:sourcePToCL>
+        <provone:hasOutPort>
+          <provone:OutputPort rdf:about="http://kit.edu/pp/outputport_421291f1-10a0-4fc1-a7d3-a438a725739f">
+            <provone:outPortToDL>
+              <provone:DataLink rdf:about="http://kit.edu/pp/DL_2afcdb32-326b-4fac-b607-dc646dcf28f5">
+                <provone:DLToInPort rdf:resource="http://kit.edu/pp/inputport_3aa24a37-91af-444d-a1d4-e4271f6f97c1"/>
+                <j.0:identifier>2afcdb32-326b-4fac-b607-dc646dcf28f5</j.0:identifier>
+              </provone:DataLink>
+            </provone:outPortToDL>
+            <provone:outPortToDL>
+              <provone:DataLink rdf:about="http://kit.edu/pp/DL_74c766f7-e146-46b5-96c2-0f3f0d0de8e5">
+                <provone:DLToInPort rdf:resource="http://kit.edu/pp/inputport_1dc2b693-5147-4702-a582-a55038b54a15"/>
+                <j.0:identifier>74c766f7-e146-46b5-96c2-0f3f0d0de8e5</j.0:identifier>
+              </provone:DataLink>
+            </provone:outPortToDL>
+            <j.0:title>value</j.0:title>
+            <j.0:identifier>421291f1-10a0-4fc1-a7d3-a438a725739f</j.0:identifier>
+          </provone:OutputPort>
+        </provone:hasOutPort>
+        <wfms:class>net.sf.taverna.t2.activities.stringconstant.StringConstantActivity</wfms:class>
+        <j.0:title>Hello</j.0:title>
+        <j.0:identifier>3c1846c7-d29d-4ff0-87a8-30518a93f7fb</j.0:identifier>
+      </provone:Process>
+    </provone:hasSubProcess>
+    <provone:hasSubProcess rdf:resource="http://kit.edu/pp/8be158ee-d2e5-4c68-96f3-f5a8be32e070"/>
+  </provone:Workflow>
+</rdf:RDF>

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="provone-provenance:war">
+    <output-path>$PROJECT_DIR$/provone-provenance/target</output-path>
+    <root id="archive" name="provone-provenance.war">
+      <element id="artifact" artifact-name="provone-provenance:war exploded" />
+    </root>
+  </artifact>
+</component>

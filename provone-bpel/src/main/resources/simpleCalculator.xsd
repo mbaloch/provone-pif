@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is Metro/2.3.2-b608 (trunk-7979; 2015-01-21T12:50:19+0000) JAXWS-RI/2.2.11-b150120.1832 JAXWS-API/2.2.12 JAXB-RI/2.2.12-b141219.1637 JAXB-API/2.2.13-b141020.1521 svn-revision#unknown. --><xs:schema xmlns:tns="http://kit.demo/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://kit.demo/">
+
+<xs:element name="Add" type="tns:Add"/>
+
+<xs:element name="AddResponse" type="tns:AddResponse"/>
+
+<xs:element name="Div" type="tns:Div"/>
+
+<xs:element name="DivResponse" type="tns:DivResponse"/>
+
+<xs:element name="Multiply" type="tns:Multiply"/>
+
+<xs:element name="MultiplyResponse" type="tns:MultiplyResponse"/>
+
+<xs:element name="Subtract" type="tns:Subtract"/>
+
+<xs:element name="SubtractResponse" type="tns:SubtractResponse"/>
+
+<xs:element name="square" type="tns:square"/>
+
+<xs:element name="squareResponse" type="tns:squareResponse"/>
+
+<xs:complexType name="Add">
+<xs:sequence>
+<xs:element name="firstNum" type="xs:float"/>
+<xs:element name="secondNum" type="xs:float"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="AddResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:float"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="Div">
+<xs:sequence>
+<xs:element name="firstNum" type="xs:float"/>
+<xs:element name="secondNum" type="xs:float"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="DivResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:float"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="square">
+<xs:sequence>
+<xs:element name="number" type="xs:float"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="squareResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:float" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="Multiply">
+<xs:sequence>
+<xs:element name="firstNum" type="xs:float"/>
+<xs:element name="secondNum" type="xs:float"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="MultiplyResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:float"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="Subtract">
+<xs:sequence>
+<xs:element name="firstNum" type="xs:float"/>
+<xs:element name="secondNum" type="xs:float"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="SubtractResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:float"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

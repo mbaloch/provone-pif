@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://edu.kit.ecodicology" xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop" xmlns:wsdl="http://ecodocologywebservices.ecodicology.kit.edu/" name="EcodicologyWF" targetNamespace="http://edu.kit.ecodicology">
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     TYPE DEFINITION - List of types participating in this BPEL process 
+     The BPEL Designer will generate default request and response types
+     but you can define or import any XML Schema type and use them as part 
+     of the message types.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+    <plnk:partnerLinkType name="EcodPLType">
+    <plnk:role name="EcodProvider" portType="wsdl:Ecodicology"/>
+  </plnk:partnerLinkType>
+    <import location="Ecodicology.wsdl" namespace="http://ecodocologywebservices.ecodicology.kit.edu/"/>
+    <types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://edu.kit.ecodicology">
+
+            <element name="EcodicologyWFRequest">
+                <complexType>
+                    <sequence>
+                    	<element name="inputFilesDirP" type="string"/>
+                    	<element name="bibliographicMetadataFileP" type="string">
+                    	</element>
+                    	<element name="pageModelFileP" type="string"/>
+                    	<element name="colorModelFileP" type="string"/>
+                    	<element name="outputDirP" type="string"/>
+                    	<element name="textModelFileP" type="string"/>
+                    	<element name="pictureModelFileP" type="string"/>
+                    </sequence>
+                </complexType>
+            </element>
+
+            <element name="EcodicologyWFResponse">
+                <complexType>
+                    <sequence>
+                        <element name="pageSegmentationResult" type="string"/>
+                    </sequence>
+                </complexType>
+            </element>
+        </schema>
+    </types>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     MESSAGE TYPE DEFINITION - Definition of the message types used as 
+     part of the port type defintions
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+    <message name="EcodicologyWFRequestMessage">
+        <part element="tns:EcodicologyWFRequest" name="payload"/>
+    </message>
+    <message name="EcodicologyWFResponseMessage">
+        <part element="tns:EcodicologyWFResponse" name="payload"/>
+    </message>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     PORT TYPE DEFINITION - A port type groups a set of operations into
+     a logical service unit.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+
+    <!-- portType implemented by the EcodicologyWF BPEL process -->
+    <portType name="EcodicologyWF">
+        <operation name="process">
+            <input message="tns:EcodicologyWFRequestMessage"/>
+            <output message="tns:EcodicologyWFResponseMessage"/>
+        </operation>
+    </portType>   
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     PARTNER LINK TYPE DEFINITION
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+    <plnk:partnerLinkType name="EcodicologyWF">
+        <plnk:role name="EcodicologyWFProvider" portType="tns:EcodicologyWF"/>
+    </plnk:partnerLinkType>
+    
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     BINDING DEFINITION - Defines the message format and protocol details
+     for a web service.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <binding name="EcodicologyWFBinding" type="tns:EcodicologyWF">
+    	<soap:binding style="document"
+    		transport="http://schemas.xmlsoap.org/soap/http" />
+    	<operation name="process">
+    		<soap:operation
+    			soapAction="http://edu.kit.ecodicology/process" />
+    		<input>
+    			<soap:body use="literal" />
+    		</input>
+    		<output>
+    			<soap:body use="literal" />
+    		</output>
+    	</operation>
+    </binding>
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     SERVICE DEFINITION - A service groups a set of ports into
+     a service unit.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <service name="EcodicologyWFService">
+    	<port binding="tns:EcodicologyWFBinding" name="EcodicologyWFPort">
+    		<soap:address location="http://localhost:8383/ode/processes/EcodicologyWF"/>
+    	</port>
+    </service>
+</definitions>

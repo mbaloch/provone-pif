@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="apacheode-adapter" />
+        <module name="provenance-query-interface" />
+        <module name="provone-bpel" />
+        <module name="provone-provenance" />
+        <module name="provone-scufl" />
+        <module name="tvaerna-adapter" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="apacheode-adapter" target="1.8" />
+      <module name="provenance-query-interface" target="1.8" />
+      <module name="provone-bpel" target="1.8" />
+      <module name="provone-provenance" target="1.8" />
+      <module name="provone-scufl" target="1.8" />
+      <module name="provonepif" target="1.8" />
+      <module name="tvaerna-adapter" target="1.5" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

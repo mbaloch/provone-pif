@@ -1,0 +1,387 @@
+<?xml version="1.0"?>
+<definitions name="NanoscopyWorkflowProcess"
+             targetNamespace="http://kit.nanoscopy.edu"
+             xmlns:tns="http://kit.nanoscopy.edu"
+             xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+             xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+
+	 <types>  
+       <schema attributeFormDefault="unqualified" 
+                elementFormDefault="qualified" 
+                targetNamespace="http://kit.nanoscopy.edu" 
+                xmlns="http://www.w3.org/2001/XMLSchema"
+                >
+            <element name="RawDataInput">
+            	<complexType>
+            		<sequence>
+            			<element name="bitDepth" type="int" />
+                        <element name="digitalObjectID" type="string" />
+                    </sequence>
+            	</complexType>
+            </element>    
+            
+             <element name="CuratedDataOutput">
+            	<complexType>
+            		<sequence>
+                        <element name="digitalObjectID" type="string" />
+                    </sequence>
+            	</complexType>
+            </element>
+            
+            
+            <element name="NormalFitInput">
+            	<complexType>
+            		<sequence>
+            			<element name="minNeighbours" type="int" />
+                        <element name="minDensity" type="int" />
+                        <element name="digitalObjectID" type="string" />
+                    </sequence>
+            	</complexType>
+            </element>
+            
+            
+            <element name="NormalFitOutput">
+            	<complexType>
+            		<sequence>
+                        <element name="digitalObjectID" type="string" />
+                    </sequence>
+            	</complexType>
+            </element>
+            
+             <element name="PositionMatrixNormalFitInput">
+            	<complexType>
+            		<sequence>
+            			<element name="min.Clusterscell" type="string" />
+                        <element name="digitalObjectID" type="string" />
+                    </sequence>
+            	</complexType>
+            </element>
+            
+            <element name="PositionMatrixNormalFitOutput">
+            	<complexType>
+            		<sequence>
+                        <element name="digitalObjectID" type="string" />
+                    </sequence>
+            	</complexType>
+            </element>
+                        
+           
+            
+            <element name="HighResolutionNNImageOutput">
+            	<complexType>
+            		<sequence>
+                        <element name="digitalObjectID" type="string" />
+                    </sequence>
+            	</complexType>
+            </element>
+            
+            <element name="PositionMatrixStandardOutput">
+            	<complexType>
+            		<sequence>
+                        <element name="digitalObjectID" type="string" />
+                    </sequence>
+            	</complexType>
+            </element>
+            
+            <element name="PositionMatrixClusterInput">
+            	<complexType>
+            		<sequence>
+            			<element name="clusterSize" type="string" />
+            			<element name="maxNNDistance" type="string" />
+                        <element name="digitalObjectID" type="string" />
+                    </sequence>
+            	</complexType>
+            </element>
+            
+             <element name="PositionMatrixStandardInput">
+            	<complexType>
+            		<sequence>
+            			<element name="minDistance" type="string"/>
+                        <element name="digitalObjectID" type="string"/>
+                    </sequence>
+            	</complexType>
+            </element>
+            
+            
+              <element name="PositionMatrixStandardOutput">
+            	<complexType>
+            		<sequence>
+                        <element name="digitalObjectID" type="string"/>
+                    </sequence>
+            	</complexType>
+            </element>
+            
+            
+            <element name="PositionMatrixClusterOutput">
+            	<complexType>
+            		<sequence>
+                        <element name="digitalObjectID" type="string" />
+                    </sequence>
+            	</complexType>
+            </element>
+            
+            
+            <element name="PositionMatrixStandardInputMessage">
+            	<complexType>
+            		<sequence>
+            			<element name="clusterSize" type="string" />
+                        <element name="digitalObjectID" type="string" />
+                    </sequence>
+            	</complexType>
+            </element>
+            
+            <element name="PositionMatrixStandardOutput">
+            	<complexType>
+            		<sequence>
+                        <element name="digitalObjectID" type="string" />
+                    </sequence>
+            	</complexType>
+            </element>
+            
+            
+             <element name="HighResolutionImageSetInput">
+            	<complexType>
+            		<sequence>
+            			<element name="max.Clusterscell " type="string" />
+            			<element name="maxNNDistance" type="string" />
+                        <element name="digitalObjectID1" type="string" />
+                        <element name="digitalObjectID2" type="string" />
+                    </sequence>
+            	</complexType>
+            </element>
+            
+            <element name="AnnotatedHighResolutionImagesOutput">
+            	<complexType>
+            		<sequence>
+                        <element name="digitalObjectID1" type="string" />
+                    </sequence>
+            	</complexType>
+            </element>
+            
+       </schema>
+    </types>
+        
+     
+
+	 <message name="RawDataInputMessage">
+        <part name="RawDataInputMessage" element="tns:RawDataInput" /> 
+    </message>
+    
+    <message name="CuratedDataOutputMessage">
+        <part name="CuratedDataOutputMessage" element="tns:CuratedDataOutput" /> 
+    </message>
+    
+  <message name="NormalFitInputMessage">
+        <part name="NormalFitInputMessage" element="tns:NormalFitInput" /> 
+    </message>
+    
+    <message name="NormalFitOutputMessage"> 
+        <part name="NormalFitOutputMessage" element="tns:NormalFitOutput" /> 
+    </message>
+
+	<message name="PositionMatrixNormalFitOutputMessage">
+        <part name="PositionMatrixNormalFitOutputMessage" element="tns:PositionMatrixNormalFitOutput" /> 
+    </message>
+    
+    <message name="PositionMatrixNormalFitInputMessage">
+        <part name="PositionMatrixNormalFitInputMessage" element="tns:PositionMatrixNormalFitInput" /> 
+    </message>
+    
+      <message name="PositionMatrixStandardOutputMessage">
+        <part name="PositionMatrixStandardOutputMessage" element="tns:PositionMatrixStandardOutput" /> 
+    </message>
+    
+    
+     <message name="HighResolutionImageSetInputMessage">
+        <part name="HighResolutionImageSetInputMessage" element="tns:HighResolutionImageSetInput" />
+    </message>
+    
+      <message name="AnnotatedHighResolutionNormalImageOutputMessage">
+        <part name="AnnotatedHighResolutionNormalImageOutputMessage" element="tns:AnnotatedHighResolutionNormalImageOutput" />
+    </message>
+    
+        
+	
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     PORT TYPE DEFINITION - A port type groups a set of operations into
+     a logical service unit.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- portType implemented by the NanoscopyWorkflow1 BPEL process -->
+ 
+
+    <!-- portType implemented by the requester of NanoscopyWorkflow1 BPEL process 
+         for asynchronous callback purposes
+         -->
+    <!-- POST Port For RawDataProcessing -->
+
+
+    <portType name="NanoscopyRawDataProcessing">
+        <operation name="RawDataProcessing">
+            <input message="tns:RawDataInputMessage" />
+            <output message="tns:CuratedDataOutputMessage" />
+        </operation>
+    </portType>
+    
+    <portType name="NormalFitProcessing">
+        <operation name="NormalFitAlgorithm">
+            <input message="tns:NormalFitInputMessage" />
+            <output message="tns:NormalFitOutputMessage" />
+        </operation>
+    </portType>
+    
+     <portType name= "PositionMatrixNearestNeighbourProcessing">
+        <operation name="PositionMatrixNearestNeighbourAlgorithm">
+            <input message="tns:PositionMatrixNormalFitInputMessage" />
+            <output message="tns:PositionMatrixNormalFitOutputMessage" />
+        </operation>
+    </portType>
+    
+     <portType name= "PositionMatrixStandardProcessing">
+        <operation name="PositionMatrixStandardProcessingAlgorithm">
+            <input message="tns:PositionMatrixNormalFitInputMessage" />
+            <output message="tns:PositionMatrixStandardOutputMessage" name="PositionMatrixStandardOutput"/>
+        </operation>
+    </portType>
+    
+     <portType name="AnnotateHighResolutionProcessing">
+    	<operation name="NewOperation">
+    		<input message="tns:HighResolutionImageSetInputMessage"></input>
+    		<output message="tns:AnnotatedHighResolutionNormalImageOutputMessage"></output>
+    	</operation>
+    </portType>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     PARTNER LINK TYPE DEFINITION
+         the NanoscopyWorkflow1 partnerLinkType binds the provider and
+         requester portType into an asynchronous conversation.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+    <plnk:partnerLinkType name="NanoscopyWorkflow1">
+        <plnk:role name="NanoscopyWorkflow1Provider" portType="tns:NanoscopyWorkflow1"/>
+        <plnk:role name="NanoscopyWorkflow1Requester" portType="tns:NanoscopyWorkflow1Callback"/>
+        <plnk:role name="NanoscopyRawDataProcessing" portType="tns:NanoscopyRawDataProcessing"/>
+    </plnk:partnerLinkType>   
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     BINDING DEFINITION - Defines the message format and protocol details
+     for a web service.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   
+   
+    
+    
+    
+    <binding name="NanoscopyRawDataProcessingPOST" type="tns:NanoscopyRawDataProcessing" 
+    			  xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/">
+    	<http:binding verb="POST" />
+    	<operation name="RawDataProcessing">
+    		<http:operation location="/NanoscopyRawDataProcessing" />
+    		<input>
+    			<mime:content type="text/xml" part="NormalFitInputMessage"/>
+    		</input>
+    		<output>
+    		    <mime:content type="text/xml" part="CuratedDataOutputMessage"/>
+    		</output>
+    	</operation>
+    </binding>
+    
+    
+    <binding name="NanoscopyNormalFitAlgorithmPOST" type="tns:NormalFitProcessing" 
+    			  xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/">
+    	<http:binding verb="POST" />
+    	<operation name="NormalFitAlgorithm">
+    		<http:operation location="/NanoscopyNormalFitAlgorithmProcessing" />
+    		<input>
+    			<mime:content type="text/xml" part="CuratedDataOutputMessage"/>
+    		</input>
+    		<output>
+    		    <mime:content type="text/xml" part="PositionMatrixNormalFitOutputMessage"/>
+    		</output>
+    	</operation>
+    </binding>
+    
+    
+    <binding name="PositionMatrixNearestNeighbourAlgorithmPOST" type="tns:PositionMatrixNearestNeighbourProcessing" 
+    			  xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/">
+    	<http:binding verb="POST" />
+    	<operation name="PositionMatrixNearestNeighbourAlgorithm">
+    		<http:operation location="/PositionMatrixNearestNeighbourAlgorithmProcessing" />
+    		<input>
+    			<mime:content type="text/xml" part="PositionMatrixNormalFitInputMessage"/>
+    		</input>
+    		<output>
+    		    <mime:content type="text/xml" part="PositionMatrixNormalFitOutputMessage"/>
+    		</output>
+    	</operation>
+    </binding>
+    
+    
+     <binding name="PositionMatrixStandardAlgorithmPOST" type="tns:PositionMatrixStandardProcessing" 
+    			  xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/">
+    	<http:binding verb="POST" />
+    	<operation name="PositionMatrixStandardAlgorithm">
+    		<http:operation location="/PositionMatrixStandardAlgorithmProcessing" />
+    		<input>
+    			<mime:content type="text/xml" part="PositionMatrixNormalFitInputMessage"/>
+    		</input>
+    		<output>
+    		    <mime:content type="text/xml" part="HighResolutionNormalImageOutputMessage"/>
+    		</output>
+    	</operation>
+    </binding>
+    
+    <binding name="AnnotateHighResolutionImagePOST" type="tns:AnnotateHighResolutionProcessing" 
+    			  xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/">
+    	<http:binding verb="POST" />
+    	<operation name="AnnotateHighResolutionImage">
+    		<http:operation location="/AnnotateHighResolutionImageProcessing" />
+    		<input>
+    			<mime:content type="text/xml" part="HighResolutionImageSetInputInputMessage"/>
+    		</input>
+    		<output>
+    		    <mime:content type="text/xml" part="AnnotatedHighResolutionNormalImageOutputMessage"/>
+    		</output>
+    	</operation>
+    </binding>
+    
+ 
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     SERVICE DEFINITION - A service groups a set of ports into
+     a service unit.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   
+      
+    
+    <service name="NanoscopyRawDataProcessingPOST">
+        <port name="NanoscopyRawDataProcessingPOST" binding="tns:NanoscopyRawDataProcessingPOST">
+    		<http:address location="http://localhost:8080/NanoscopyWorkflow1"/>
+        </port>
+    </service>
+    
+    <service name="NanoscopyNormalFitPOST">
+        <port name="NanoscopyNormalFitPOST" binding="tns:NanoscopyNormalFitAlgorithmPOST">
+    		<http:address location="http://localhost:8080/NanoscopyWorkflow1"/>
+        </port>
+    </service>
+    
+     <service name="PositionMatrixNearestNeighbourFirstPOST">
+        <port name="PositionMatrixNearestNeighbourFirstPOST" binding="tns:PositionMatrixNearestNeighbourAlgorithmPOST">
+    		<http:address location="http://localhost:8080/NanoscopyWorkflow1"/>
+        </port>
+    </service>
+    
+    <service name="PositionMatrixStandardAlgorithmPOST">
+        <port name="PositionMatrixStandardAlgorithmPOST" binding="tns:PositionMatrixStandardAlgorithmPOST">
+    		<http:address location="http://localhost:8080/NanoscopyWorkflow1"/>
+        </port>
+    </service>
+    
+    <service name="AnnotateHighResolutionImagePOST">
+    	<port name="AnnotateHighResolutionImagePOST" binding="tns:AnnotateHighResolutionImagePOST">
+    		<soap:address location="http://localhost:8080/NanoscopyWorkflow1" />
+    	</port>
+    </service>
+</definitions>

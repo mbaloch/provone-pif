@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="provonepif:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="provone-pif-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="provonepif:war exploded" />
+    </root>
+  </artifact>
+</component>

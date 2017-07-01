@@ -1,0 +1,229 @@
+<?xml version="1.0"?>
+<definitions name="NanoscopyWorkflow1"
+        targetNamespace="http://kit.edu.nano"
+        xmlns:tns="http://kit.edu.nano"
+        xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+        xmlns="http://schemas.xmlsoap.org/wsdl/"
+        xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+        >
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     TYPE DEFINITION - List of services participating in this BPEL process 
+     The default output of the BPEL designer uses strings as input and 
+     output to the BPEL Process. But you can define or import any XML 
+     Schema type and us them as part of the message types.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+    <types>  
+        <schema attributeFormDefault="unqualified" 
+                elementFormDefault="qualified" 
+                targetNamespace="http://kit.edu.nano" 
+                xmlns="http://www.w3.org/2001/XMLSchema"
+                >
+                
+            <element name="NanoscopyWorkflow1Request">
+                <complexType>
+                    <sequence>
+                        <element name="input" type="string" />
+                    </sequence>
+                </complexType>
+            </element>
+                  
+            <element name="NanoscopyWorkflow1Response">
+                <complexType>
+                    <sequence>
+                        <element name="result" type="string"/>
+                    </sequence>
+                </complexType>
+            </element>
+            
+        
+            
+            <element name="CuratedDataInput">
+            	<complexType>
+            		<sequence>
+            			<element name="param1" type="string"/>
+                        <element name="param2" type="int"/>
+                        <element name="digitalObjectID" type="string"/>
+                    </sequence>
+            	</complexType>
+            </element>
+            
+            <element name="CuratedDataOutput">
+            	<complexType>
+            		<sequence>
+                        <element name="digitalObjectID" type="string"/>
+                    </sequence>
+            	</complexType>
+            </element>
+            
+            
+            <element name="PositionMatrixStandardInput">
+            	<complexType>
+            		<sequence>
+            			<element name="minDistance" type="string"/>
+                        <element name="digitalObjectID" type="string"/>
+                    </sequence>
+            	</complexType>
+            </element>
+            
+            
+              <element name="PositionMatrixStandardOutput">
+            	<complexType>
+            		<sequence>
+                        <element name="digitalObjectID" type="string"/>
+                    </sequence>
+            	</complexType>
+            </element>
+            
+            
+            <element name="PositionMatrixNormalFitOutput">
+            	<complexType>
+            		<sequence>
+                        <element name="digitalObjectID" type="string"/>
+                    </sequence>
+            	</complexType>
+            </element>
+                        
+            <element name="PositionMatrixNormalFitInput">
+            	<complexType>
+            		<sequence>
+            			<element name="param1" type="string"/>
+                        <element name="digitalObjectID" type="string"/>
+                    </sequence>
+            	</complexType>
+            </element>
+            
+            <element name="HighResolutionNormalImageOutput">
+            	<complexType>
+            		<sequence>
+                        <element name="digitalObjectID" type="string"/>
+                    </sequence>
+            	</complexType>
+            </element>
+            
+               <element name="HighResolutionNormalImageInput">
+            	<complexType>
+            		<sequence>
+            			<element name="param1" type="string"/>
+            			<element name="param2" type="string"/>
+                        <element name="digitalObjectID1" type="string"/>
+                        <element name="digitalObjectID2" type="string"/>
+                    </sequence>
+            	</complexType>
+            </element>
+            
+            <element name="AnnotatedHighResolutionNormalImageOutput">
+            	<complexType>
+            		<sequence>
+                        <element name="digitalObjectID1" type="string"/>
+                    </sequence>
+            	</complexType>
+            </element>
+            
+            
+        </schema>
+        
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        	targetNamespace="http://kit.edu.nano1">
+        </xsd:schema>
+    </types>
+  
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     MESSAGE TYPE DEFINITION - Definition of the message types used as 
+     part of the port type defintions
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+    
+    
+    <message name="CuratedDataInputMessage">
+        <part name="CuratedDataInputMessage" element="tns:CuratedDataInput"/>
+    </message>
+    
+    <message name="CuratedDataOutputMessage">
+        <part name="payload" element="tns:CuratedDataOutput"/>
+    </message>
+
+	<message name="PositionMatrixNormalFitOutputMessage">
+        <part name="payload" element="tns:PositionMatrixNormalFitOutput"/>
+    </message>
+    
+    <message name="PositionMatrixNormalFitInputMessage">
+        <part name="payload" element="tns:PositionMatrixNormalFitInput"/>
+    </message>
+    
+      <message name="HighResolutionNormalImageOutputMessage">
+        <part name="payload" element="tns:HighResolutionNormalImageOutput"/>
+    </message>
+    
+    <message name="HighResolutionNormalImageInputMessage">
+        <part name="payload" element="tns:HighResolutionNormalImageOutput"/>
+    </message>
+    
+      <message name="AnnotatedHighResolutionNormalImageOutputMessage">
+        <part name="payload" element="tns:AnnotatedHighResolutionNormalImageOutput"/>
+    </message>
+    
+	
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     PORT TYPE DEFINITION - A port type groups a set of operations into
+     a logical service unit.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- portType implemented by the NanoscopyWorkflow1 BPEL process -->
+ 
+
+    <!-- portType implemented by the requester of NanoscopyWorkflow1 BPEL process 
+         for asynchronous callback purposes
+         -->
+    <!-- POST Port For RawDataProcessing -->
+    <portType name="NanoscopyRawDataProcessing">
+        <operation name="RawDataProcessing">
+            <input message="tns:CuratedDataInputMessage"/>
+            <output message="tns:CuratedDataOutputMessage"/>
+        </operation>
+    </portType>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     PARTNER LINK TYPE DEFINITION
+         the NanoscopyWorkflow1 partnerLinkType binds the provider and
+         requester portType into an asynchronous conversation.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+    <plnk:partnerLinkType name="NanoscopyWorkflow1">
+        <plnk:role name="NanoscopyWorkflow1Provider" portType="tns:NanoscopyWorkflow1"/>
+        <plnk:role name="NanoscopyWorkflow1Requester" portType="tns:NanoscopyWorkflow1Callback"/>
+        <plnk:role name="NanoscopyRawDataProcessing" portType="tns:NanoscopyRawDataProcessing"/>
+    </plnk:partnerLinkType>   
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     BINDING DEFINITION - Defines the message format and protocol details
+     for a web service.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   
+    <binding name="NanoscopyRawDataProcessingPOST" type="tns:NanoscopyRawDataProcessing" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/">
+    	<http:binding verb="POST" />
+    	<operation name="NanoscopyRawDataProcessing">
+    		<http:operation location="/NanoscopyRawDataProcessing" />
+    		<input>
+    			<mime:content type="text/xml" part="CuratedDataInputMessage"/>
+    		</input>
+    		<output>
+    		    <mime:content type="text/xml" part="CuratedDataOutputMessage"/>
+    		</output>
+    	</operation>
+    </binding>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     SERVICE DEFINITION - A service groups a set of ports into
+     a service unit.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   
+      
+     <service name="NanoscopyRawDataProcessingPOST">
+        <port name="NanoscopyRawDataProcessingPOST" binding="tns:NanoscopyRawDataProcessingPOST">
+    		<http:address location="http://localhost:8080/NanoscopyWorkflow1"/>
+        </port>
+    </service>
+    
+    
+    
+    
+</definitions>
