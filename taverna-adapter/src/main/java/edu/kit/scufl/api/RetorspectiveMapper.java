@@ -30,6 +30,7 @@ import edu.kit.scufl.core.UsedInput;
 import edu.kit.scufl.core.WasGeneratedBy;
 import edu.kit.scufl.core.WasOutputFrom;
 import edu.kit.scufl.core.WorkflowRun;
+import org.kit.rdf.RDFUtility;
 
 public class RetorspectiveMapper {
 
@@ -110,24 +111,22 @@ public class RetorspectiveMapper {
 				workflowRun.getStartedAtTime(), workflowRun.getEndedAtTime());
 
 		resouceMap.put(workflowID, wrkflowResource);
+		System.out.println("Workflow:>"+workflowRun.getLabel().replaceAll(toReplace, ""));
 
 		for (HasPart hasPart : workflowRun.getHasPart()) {
 			if (null != hasPart.getProcessRun()) {
-
+				System.out.println("normal>>>>>>>>>>>>>>>");
 				String proceesorID = util.getID(hasPart.getProcessRun().getAbout());
-
+				System.out.println("Has Part:"+proceesorID+">>"+hasPart.getProcessRun().getLabel());
 				Resource processResource = rdfUtil.createProcessExec(proceesorID,
 						hasPart.getProcessRun().getLabel().replaceAll("Processor execution ", ""), proceesorID,
 						hasPart.getProcessRun().getStartedAtTime(), hasPart.getProcessRun().getEndedAtTime(),
 						"completed");
 				resouceMap.put(proceesorID, processResource);
-				createArangoProcessExec(proceesorID,
-						hasPart.getProcessRun().getLabel().replaceAll("Processor execution ", ""),
-						hasPart.getProcessRun().getStartedAtTime(), hasPart.getProcessRun().getEndedAtTime());
-
 				rdfUtil.isPartOf(processResource, wrkflowResource);
 
 			} else if (null != hasPart.getWorkflowRun()) {
+				System.out.println("Nested WorkFlow>>>>>>>>>>>>>>>>>>>>>");
 				processorStack.push(wrkflowResource);
 				SCUFLRetroSpective(hasPart.getWorkflowRun(), true);
 			}
@@ -209,13 +208,18 @@ public class RetorspectiveMapper {
 	}
 
 	private void wasGeneratedByLink(String dataId, String wgbyId) {
-		rdfUtil.wasGeneratedBy(resouceMap.get(dataId), resouceMap.get(wgbyId));
-		wasInformedByWGB(dataId, wgbyId);
+		System.out.println("\n>>>>"+resouceMap.keySet()+"\n");
+		System.out.println(dataId+"<>"+wgbyId);
+		if(null != resouceMap.get(dataId) && null != resouceMap.get(wgbyId)){
+			rdfUtil.wasGeneratedBy(resouceMap.get(dataId), resouceMap.get(wgbyId));
+			wasInformedByWGB(dataId, wgbyId);}
 	}
 
 	private void connectDataEntity(String dataEntityID, String workflowID) {
-		rdfUtil.used(resouceMap.get(workflowID), resouceMap.get(dataEntityID));
-		wasInformedByUBY(dataEntityID, workflowID);
+		if(null != resouceMap.get(dataEntityID) && null != resouceMap.get(workflowID)){
+			rdfUtil.used(resouceMap.get(workflowID), resouceMap.get(dataEntityID));
+			wasInformedByUBY(dataEntityID, workflowID);
+		}
 	}
 
 	private void wasInformedByUBY(String dataEntityID, String workflowID) {
@@ -237,7 +241,7 @@ public class RetorspectiveMapper {
 	}
 
 	private void createDataNodesMainWrkFlw(List<HadMember> hadMemberList,
-			List<HadDictionaryMember> HadDictionaryMemberList) {
+										   List<HadDictionaryMember> HadDictionaryMemberList) {
 
 		for (HadMember hadMember : hadMemberList) {
 			if (null != hadMember.getEntity()) {
@@ -293,7 +297,6 @@ public class RetorspectiveMapper {
 				if (!wasGeneratedByOPSet.contains(util.getID(wgby.getResource()))) {
 					rdfUtil.wasGeneratedBy(dataResource, resouceMap.get(util.getID(wgby.getResource())));
 					wasGeneratedByOPSet.add(util.getID(wgby.getResource()));
-
 					wasInformedByWGB(entityID, util.getID(wgby.getResource()));
 
 				}
@@ -330,7 +333,7 @@ public class RetorspectiveMapper {
 
 
 	private void createArangoProcessExec(String processId, String processName, String startedAtTime,
-			String endedAtTime) {
+										 String endedAtTime) {
 		ProcessExecPOJO pojo = new ProcessExecPOJO(processId, processName, startedAtTime, endedAtTime);
 	}
 
