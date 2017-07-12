@@ -15,6 +15,7 @@
         <module>taverna-adapter</module>
         <module>provenance-query-interface</module>
         <module>provone-provenance</module>
+        <module>provone-rdf-mapper</module>
     </modules>
 
     <dependencyManagement>

@@ -5,9 +5,12 @@
       <module fileurl="file://$PROJECT_DIR$/apacheode-adapter/apacheode-adapter.iml" filepath="$PROJECT_DIR$/apacheode-adapter/apacheode-adapter.iml" />
       <module fileurl="file://$PROJECT_DIR$/provenance-query-interface/provenance-query-interface.iml" filepath="$PROJECT_DIR$/provenance-query-interface/provenance-query-interface.iml" />
       <module fileurl="file://$PROJECT_DIR$/provone-bpel/provone-bpel.iml" filepath="$PROJECT_DIR$/provone-bpel/provone-bpel.iml" />
+      <module fileurl="file://$PROJECT_DIR$/provone-pif.iml" filepath="$PROJECT_DIR$/provone-pif.iml" />
       <module fileurl="file://$PROJECT_DIR$/provone-provenance/provone-provenance.iml" filepath="$PROJECT_DIR$/provone-provenance/provone-provenance.iml" />
+      <module fileurl="file://$PROJECT_DIR$/provone-rdf-mapper/provone-rdf-mapper.iml" filepath="$PROJECT_DIR$/provone-rdf-mapper/provone-rdf-mapper.iml" />
       <module fileurl="file://$PROJECT_DIR$/provone-scufl/provone-scufl.iml" filepath="$PROJECT_DIR$/provone-scufl/provone-scufl.iml" />
       <module fileurl="file://$PROJECT_DIR$/provonepif.iml" filepath="$PROJECT_DIR$/provonepif.iml" />
+      <module fileurl="file://$PROJECT_DIR$/taverna-adapter/tvaerna-adapter.iml" filepath="$PROJECT_DIR$/taverna-adapter/tvaerna-adapter.iml" />
       <module fileurl="file://$PROJECT_DIR$/tvaerna-adapter/tvaerna-adapter.iml" filepath="$PROJECT_DIR$/tvaerna-adapter/tvaerna-adapter.iml" />
     </modules>
   </component>
