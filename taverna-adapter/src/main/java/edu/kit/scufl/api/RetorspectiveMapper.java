@@ -105,30 +105,32 @@ public class RetorspectiveMapper {
 
 		String workflowID = util.getID(workflowRun.getAbout());
 		String toReplace = (nestedflag ? "Processor execution " : "Workflow run of ");
+		String describedByWorkflowID = null;
+		if(null != workflowRun.getDescribedByWorkflow()){
+			describedByWorkflowID = util.getWorkFlowID(workflowRun.getDescribedByWorkflow().getResource());
+		}
 
 		Resource wrkflowResource = rdfUtil.createProcessExec(workflowID,
 				workflowRun.getLabel().replaceAll(toReplace, ""), workflowID, workflowRun.getStartedAtTime(),
-				workflowRun.getEndedAtTime(), "completed");
-		createArangoProcessExec(workflowID, workflowRun.getLabel().replaceAll(toReplace, ""),
-				workflowRun.getStartedAtTime(), workflowRun.getEndedAtTime());
+				workflowRun.getEndedAtTime(), "completed",describedByWorkflowID);
+
 
 		resouceMap.put(workflowID, wrkflowResource);
-		System.out.println("Workflow:>"+workflowRun.getLabel().replaceAll(toReplace, ""));
 
 		for (HasPart hasPart : workflowRun.getHasPart()) {
 			if (null != hasPart.getProcessRun()) {
-				System.out.println("normal>>>>>>>>>>>>>>>");
+
 				String proceesorID = util.getID(hasPart.getProcessRun().getAbout());
-				System.out.println("Has Part:"+proceesorID+">>"+hasPart.getProcessRun().getLabel());
+
 				Resource processResource = rdfUtil.createProcessExec(proceesorID,
 						hasPart.getProcessRun().getLabel().replaceAll("Processor execution ", ""), proceesorID,
 						hasPart.getProcessRun().getStartedAtTime(), hasPart.getProcessRun().getEndedAtTime(),
-						"completed");
+						"completed",null);
 				resouceMap.put(proceesorID, processResource);
 				rdfUtil.isPartOf(processResource, wrkflowResource);
 
 			} else if (null != hasPart.getWorkflowRun()) {
-				System.out.println("Nested WorkFlow>>>>>>>>>>>>>>>>>>>>>");
+
 				processorStack.push(wrkflowResource);
 				SCUFLRetroSpective(hasPart.getWorkflowRun(), true);
 			}

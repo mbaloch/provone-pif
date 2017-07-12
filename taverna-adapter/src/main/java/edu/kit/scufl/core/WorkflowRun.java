@@ -35,6 +35,9 @@ public class WorkflowRun {
 	@XmlElement(name = "used", namespace = "http://www.w3.org/ns/prov#", required = false)
 	private List<Used> used;
 
+	@XmlElement(name="describedByWorkflow",namespace="http://purl.org/wf4ever/wfprov#",required=false)
+	private DescribedByWorkflow describedByWorkflow;
+
 	@XmlAnyElement(lax = true)
 	public List<Object> anyDict;
 
@@ -109,5 +112,11 @@ public class WorkflowRun {
 	public void setUsed(List<Used> used) {
 		this.used = used;
 	}
+	public DescribedByWorkflow getDescribedByWorkflow() {
+		return describedByWorkflow;
+	}
 
+	public void setDescribedByWorkflow(DescribedByWorkflow describedByWorkflow) {
+		this.describedByWorkflow = describedByWorkflow;
+	}
 }

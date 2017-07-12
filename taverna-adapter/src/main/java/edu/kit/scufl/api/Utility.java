@@ -19,7 +19,15 @@ public class Utility {
 		String id = about[about.length-1];
 		return id;
 	}
-	
-	
 
+
+	public String getWorkFlowID(String describedByWorkflowID) {
+		String[] about = describedByWorkflowID.split("/");
+		for (String part : about) {
+			if(part.contains("-")){
+				return part;
+			}
+		}
+		return null;
+	}
 }

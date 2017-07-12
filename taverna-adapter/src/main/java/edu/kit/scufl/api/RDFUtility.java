@@ -18,6 +18,7 @@ public class RDFUtility {
     final String nsr = "http://kit.edu/rp/";
     final String nsp = "http://kit.edu/pp/";
     final String wfms = "http://www.wfms.org/registry.xsd#";
+    final String wfprov = "http://purl.org/wf4ever/wfprov#";
     final Model model = ModelFactory.createDefaultModel();
 
     public RDFUtility() {
@@ -29,7 +30,7 @@ public class RDFUtility {
     }
 //Methods for retrospective provenance
 
-    public Resource createProcessExec(String processId, String processTitle,String activityId, String startTime, String endTime, String completed) {
+    public Resource createProcessExec(String processId, String processTitle,String activityId, String startTime, String endTime, String completed, String wrkflwID) {
         Resource processExecResource = model.createResource(nsr + "processExec_" + processId);
         //short uri   Resource process=model.createResource("http://"+processId);
         processExecResource.addProperty(RDF.type, model.createResource(provone + "ProcessExec"));
@@ -48,7 +49,10 @@ public class RDFUtility {
         //   process.addProperty(prov, processTitle);
         Property completedProperty = model.createProperty(wfms + "completed");
         processExecResource.addProperty(completedProperty, completed);
-
+        if(null != wrkflwID){
+            Property describedByWorkflowProperty = model.createProperty(wfprov + "describedByWorkflow");
+            processExecResource.addProperty(describedByWorkflowProperty, wrkflwID);
+        }
         //    model.write(System.out);
         // model.write(System.out,"Turtle");
         //       Property subProcessProperty=model.createProperty(provone+"hasSubProcess");
