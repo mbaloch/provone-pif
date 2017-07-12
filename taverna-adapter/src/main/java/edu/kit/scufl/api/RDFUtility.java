@@ -35,7 +35,7 @@ public class RDFUtility {
         //short uri   Resource process=model.createResource("http://"+processId);
         processExecResource.addProperty(RDF.type, model.createResource(provone + "ProcessExec"));
         processExecResource.addProperty(DCTerms.identifier, processId);
-    //    processExecResource.addProperty(DCTerms.title, processTitle);
+        processExecResource.addProperty(DCTerms.title, processTitle);
 
         Property startTimeProperty = model.createProperty(prov + "startTime");
         if(endTime !=null){

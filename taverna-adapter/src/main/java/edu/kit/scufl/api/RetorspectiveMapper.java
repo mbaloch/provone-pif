@@ -194,6 +194,7 @@ public class RetorspectiveMapper {
 			for (Entity entity : rdfObj.getEntity()) {
 				String wgbyId = util.getID(entity.getWasGeneratedBy().get(0).getResource());
 				for (HadMember hadMember : entity.getHadMember()) {
+					if (null != hadMember.getResource())
 					wasGeneratedByLink(util.getID(hadMember.getResource()), wgbyId);
 				}
 			}
@@ -212,8 +213,7 @@ public class RetorspectiveMapper {
 	}
 
 	private void wasGeneratedByLink(String dataId, String wgbyId) {
-		System.out.println("\n>>>>"+resouceMap.keySet()+"\n");
-		System.out.println(dataId+"<>"+wgbyId);
+
 		if(null != resouceMap.get(dataId) && null != resouceMap.get(wgbyId)){
 			rdfUtil.wasGeneratedBy(resouceMap.get(dataId), resouceMap.get(wgbyId));
 			wasInformedByWGB(dataId, wgbyId);}
@@ -334,7 +334,6 @@ public class RetorspectiveMapper {
 			wasDerivedFromMap.put(workflowID, deFromPOJO);
 		}
 	}
-
 
 	private void createArangoProcessExec(String processId, String processName, String startedAtTime,
 										 String endedAtTime) {
