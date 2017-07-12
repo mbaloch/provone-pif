@@ -1,4 +1,4 @@
-package edu.kit.provone.bpel.utils;
+package edu.kit.provone.prospective.bpel.utils;
 
 import com.predic8.schema.*;
 import com.predic8.wsdl.Definitions;

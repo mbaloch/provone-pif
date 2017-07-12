@@ -1,9 +1,12 @@
-package edu.kit.provone.bpel;
+package edu.kit.provone.prospective.bpel;
 
 import com.mxgraph.layout.hierarchical.mxHierarchicalLayout;
 import com.mxgraph.swing.mxGraphComponent;
-import edu.kit.provone.bpel.model.*;
-import edu.kit.provone.bpel.utils.RDFUtility;
+import edu.kit.provone.prospective.bpel.model.DataLink;
+import edu.kit.provone.prospective.bpel.model.InputPort;
+import edu.kit.provone.prospective.bpel.model.OutputPort;
+import edu.kit.provone.prospective.bpel.model.ProvOneProcess;
+import edu.kit.provone.prospective.bpel.utils.RDFUtility;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.ode.bpel.compiler.BpelCompiler20;
 import org.apache.ode.bpel.compiler.DefaultResourceFinder;

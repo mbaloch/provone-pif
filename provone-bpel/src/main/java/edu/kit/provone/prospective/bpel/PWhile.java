@@ -1,4 +1,4 @@
-package edu.kit.provone.bpel;
+package edu.kit.provone.prospective.bpel;
 
 import org.apache.ode.bpel.o.OActivity;
 import org.apache.ode.bpel.o.OProcess;

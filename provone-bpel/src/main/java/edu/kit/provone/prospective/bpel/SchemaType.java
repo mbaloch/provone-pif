@@ -1,4 +1,4 @@
-package edu.kit.provone.bpel;
+package edu.kit.provone.prospective.bpel;
 
 /**
  * Created by mukhtar on 09.02.17.

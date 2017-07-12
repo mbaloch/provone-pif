@@ -1,4 +1,4 @@
-package edu.kit.provone.bpel.utils;
+package edu.kit.provone.prospective.bpel.utils;
 
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;

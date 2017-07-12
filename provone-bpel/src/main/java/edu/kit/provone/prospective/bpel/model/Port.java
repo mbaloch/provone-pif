@@ -1,7 +1,7 @@
-package edu.kit.provone.bpel.model;
+package edu.kit.provone.prospective.bpel.model;
 
 import groovy.xml.QName;
-import edu.kit.provone.bpel.utils.SchemaType;
+import edu.kit.provone.prospective.bpel.utils.SchemaType;
 
 import java.util.List;
 

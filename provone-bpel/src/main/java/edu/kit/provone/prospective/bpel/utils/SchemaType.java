@@ -1,4 +1,4 @@
-package edu.kit.provone.bpel.utils;
+package edu.kit.provone.prospective.bpel.utils;
 
 import groovy.xml.QName;
 

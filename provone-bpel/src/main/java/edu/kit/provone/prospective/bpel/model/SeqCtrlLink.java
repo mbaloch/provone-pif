@@ -1,4 +1,4 @@
-package edu.kit.provone.bpel.model;
+package edu.kit.provone.prospective.bpel.model;
 
 
 /**

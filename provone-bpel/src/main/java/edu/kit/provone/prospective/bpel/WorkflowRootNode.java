@@ -1,4 +1,4 @@
-package edu.kit.provone.bpel;
+package edu.kit.provone.prospective.bpel;
 
 public class WorkflowRootNode {
 
