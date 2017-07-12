@@ -53,51 +53,66 @@ public class ScuflToProv {
 		}
 
 //create graph in jena
-		saveRDFtoJenaStore(rdfUtility);
+		try {
+			saveRDFtoJenaStore(rdfUtility);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
 	final String ServiceURI = "http://localhost:3030/kit/";
-	final String workflowContainerID="http://bpelAdd.kit.edu/bpelAdd"; //change workflowContainerID with this.
+	//final String workflowContainerID="http://bpelAdd.kit.edu/bpelAdd"; //change workflowContainerID with this.
 	final static String provone = "http://purl.org/provone#";
 	final static String prov = "http://www.w3.org/ns/prov#";
 	final static String ns = "http://kit.edu/pp/";
 
-	private void saveRDFtoJenaStore(RDFUtility rdfUtility){
-		String workflowContainerIDScufl="http://kit.edu/"+scuflWorkflowID;
+	private void saveRDFtoJenaStore(RDFUtility rdfUtility) throws Exception {
+		String workflowID="http://kit.edu/scufl/"+scuflWorkflowID;
 		Model model = rdfUtility.getModel();
 		DatasetAccessor accessor = DatasetAccessorFactory.createHTTP(ServiceURI);
-		if(!accessor.containsModel(workflowContainerIDScufl)){
-
+		if(!accessor.containsModel(workflowID)){
 			Model workflowContainerModel = ModelFactory.createDefaultModel();
-			//create wf container and add new record for the new wf
-			String workflowVersion="1.0";
-			String workflowID=workflowContainerIDScufl +"/"+workflowVersion;
-			Resource workflow = workflowContainerModel.createResource(ns + "wf_" + scuflWorkflowID);
-			workflow.addProperty(RDF.type, workflowContainerModel.createResource(provone + "Workflow"));
-			workflow.addProperty(DCTerms.identifier, scuflWorkflowID);
-			workflow.addProperty(DCTerms.title, workflowID);
-			accessor.add(workflowContainerIDScufl,workflowContainerModel);
-			//create a named graph for wf and add data to it
 			accessor.putModel(workflowID,model);
-			//Property wasAssociatedWithProperty = model.createProperty(prov + "wasAssociatedWith");
-			//workflow.addProperty(wasAssociatedWithProperty, process);
-
-
-		}else{
-			Model workflowContainerModel=accessor.getModel(workflowContainerIDScufl);
-
-			String workflowVersion="3.0";
-			String workflowID=workflowContainerIDScufl +"/"+workflowVersion;
-			Resource workflow = workflowContainerModel.createResource(ns + "wf_" + scuflWorkflowID);
-			workflow.addProperty(RDF.type, workflowContainerModel.createResource(provone + "Workflow"));
-			workflow.addProperty(DCTerms.identifier, scuflWorkflowID);
-			workflow.addProperty(DCTerms.title, workflowID);
-			accessor.add(workflowContainerIDScufl,workflowContainerModel);
-			//create a named graph for wf and add data to it
-			accessor.putModel(workflowID,model);
-
+		}else
+		{
+			throw new Exception("Prospective graph for the givern workflow id already exists in store");
 		}
+//		String workflowContainerIDScufl="http://kit.edu/scufl/"+scuflWorkflowID;
+//		Model model = rdfUtility.getModel();
+//		DatasetAccessor accessor = DatasetAccessorFactory.createHTTP(ServiceURI);
+//		if(!accessor.containsModel(workflowContainerIDScufl)){
+//
+//			Model workflowContainerModel = ModelFactory.createDefaultModel();
+//			//create wf container and add new record for the new wf
+//			String workflowVersion="1.0";
+//			String workflowID=workflowContainerIDScufl +"/"+workflowVersion;
+//			Resource workflow = workflowContainerModel.createResource(ns + "wf_" + scuflWorkflowID);
+//			workflow.addProperty(RDF.type, workflowContainerModel.createResource(provone + "Workflow"));
+//			workflow.addProperty(DCTerms.identifier, scuflWorkflowID);
+//			workflow.addProperty(DCTerms.title, workflowID);
+//			accessor.add(workflowContainerIDScufl,workflowContainerModel);
+//			//create a named graph for wf and add data to it
+//			accessor.putModel(workflowID,model);
+//			//Property wasAssociatedWithProperty = model.createProperty(prov + "wasAssociatedWith");
+//			//workflow.addProperty(wasAssociatedWithProperty, process);
+//
+//
+//		}
+//		else{
+//			Model workflowContainerModel=accessor.getModel(workflowContainerIDScufl);
+//
+//			String workflowVersion="3.0";
+//			String workflowID=workflowContainerIDScufl +"/"+workflowVersion;
+//			Resource workflow = workflowContainerModel.createResource(ns + "wf_" + scuflWorkflowID);
+//			workflow.addProperty(RDF.type, workflowContainerModel.createResource(provone + "Workflow"));
+//			workflow.addProperty(DCTerms.identifier, scuflWorkflowID);
+//			workflow.addProperty(DCTerms.title, workflowID);
+//			accessor.add(workflowContainerIDScufl,workflowContainerModel);
+//			//create a named graph for wf and add data to it
+//			accessor.putModel(workflowID,model);
+//
+//		}
 	}
 
 	/**

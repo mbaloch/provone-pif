@@ -17,7 +17,6 @@ public class ScuflToProvTest {
     @org.junit.Test
     public void parseCreateGraph() throws Exception {
         ScuflToProv toProv = new ScuflToProv();
-//		toProv.parseCreateGraph("files/Example_workflow_for_REST_and_XPath_activities-v1.t2flow");
         toProv.parseCreateGraph("/home/mukhtar/IdeaProjects/provone-pif/provone-provenance/src/main/resources/Hello_abcd-v1.t2flow");
     }
 
