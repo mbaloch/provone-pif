@@ -10,7 +10,7 @@
       <module fileurl="file://$PROJECT_DIR$/provone-rdf-mapper/provone-rdf-mapper.iml" filepath="$PROJECT_DIR$/provone-rdf-mapper/provone-rdf-mapper.iml" />
       <module fileurl="file://$PROJECT_DIR$/provone-scufl/provone-scufl.iml" filepath="$PROJECT_DIR$/provone-scufl/provone-scufl.iml" />
       <module fileurl="file://$PROJECT_DIR$/provonepif.iml" filepath="$PROJECT_DIR$/provonepif.iml" />
-      <module fileurl="file://$PROJECT_DIR$/taverna-adapter/tvaerna-adapter.iml" filepath="$PROJECT_DIR$/taverna-adapter/tvaerna-adapter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/taverna-adapter/taverna-adapter.iml" filepath="$PROJECT_DIR$/taverna-adapter/taverna-adapter.iml" />
       <module fileurl="file://$PROJECT_DIR$/tvaerna-adapter/tvaerna-adapter.iml" filepath="$PROJECT_DIR$/tvaerna-adapter/tvaerna-adapter.iml" />
     </modules>
   </component>

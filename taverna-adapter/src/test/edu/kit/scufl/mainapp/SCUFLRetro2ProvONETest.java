@@ -9,7 +9,18 @@ public class SCUFLRetro2ProvONETest {
     @org.junit.Test
     public void generateRetro() throws Exception {
         SCUFLRetro2ProvONE scuflRetro2ProvONE = new SCUFLRetro2ProvONE();
-        scuflRetro2ProvONE.generateRetro("F:\\KIT\\provenance.ttl");
+        int count=0;
+        for (int i=1;i<10;i++) {
+            try {
+                scuflRetro2ProvONE.getRetrospectiveRDFModel("/home/mukhtar/IdeaProjects/provone-pif/provone-provenance/src/main/resources/provenance.ttl");
+                System.out.println("Passed");
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+                ++count;
+            }
+        }
+        System.out.println("failed:"+count);
+
     }
 
     @org.junit.Test

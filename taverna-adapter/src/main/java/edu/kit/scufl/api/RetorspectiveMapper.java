@@ -54,9 +54,14 @@ public class RetorspectiveMapper {
 	}
 
 	// start of the programs
-	public Model startRetrospective() {
-
-		SCUFLRetroSpective(rdfObj.getDictionary().getWasOutputFrom().getWorkflowRun(), false);
+	public Model startRetrospective() throws Exception {
+		if(rdfObj.getDictionary().getWasOutputFrom().getWorkflowRun()==null){
+			System.out.println("workflow run is null");
+			throw new Exception("workflow run is null");
+		}else
+		{
+			SCUFLRetroSpective(rdfObj.getDictionary().getWasOutputFrom().getWorkflowRun(), false);
+		}
 
 		// code for creating all the links of wasInformedBy from ProcessExe to
 		// ProcessExe Output to Input link assocations

@@ -1,9 +1,6 @@
 package edu.kit.scufl.mainapp;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.StringReader;
-import java.io.StringWriter;
+import java.io.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -29,11 +26,11 @@ public class SCUFLRetro2ProvONE {
 	//	retrospectiveRDFModel
 	}
 	public void generateRetro(String ttlFilePath){
-		Model retrospectiveRDFModel = getRetrospectiveRDFModel(ttlFilePath);
-		attachPros2Retro(retrospectiveRDFModel);
+	//	Model retrospectiveRDFModel = getRetrospectiveRDFModel(ttlFilePath);
+	//	attachPros2Retro(retrospectiveRDFModel);
 	}
 
-	public Model getRetrospectiveRDFModel(String retroTTLFilePath){
+	public Model getRetrospectiveRDFModel(String retroTTLFilePath) throws Exception {
 		Model model = ModelFactory.createDefaultModel();
 		Model retrospectiveModel=null;
 		try {
@@ -42,10 +39,11 @@ public class SCUFLRetro2ProvONE {
 			e1.printStackTrace();
 		}
 		StringWriter rdfXmlWriter = new StringWriter();
-//		 model.write(System.out, "RDF/XML");
+		 //model.write(System.out, "RDF/XML");
 		model.write(rdfXmlWriter, "RDF/XML-ABBREV");
 		try {
 			Source source = new StreamSource(new StringReader(rdfXmlWriter.toString()));
+			//Source source = new StreamSource(new File("/home/mukhtar/IdeaProjects/provone-pif/provone-provenance/src/main/resources/scufttlRDF.rdf"));
 			JAXBContext jaxbContext = JAXBContext.newInstance(RDF.class);
 			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 			JAXBElement<RDF> root = jaxbUnmarshaller.unmarshal(source, RDF.class);
