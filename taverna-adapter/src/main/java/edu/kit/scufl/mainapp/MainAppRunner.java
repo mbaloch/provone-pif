@@ -24,8 +24,33 @@ import edu.kit.scufl.core.RDF;
 
 public class MainAppRunner {
 
-	public static void main(String[] args) {
+	public Model getRetrospectiveRDFModel(String retroTTLFilePath){
+		Model model = ModelFactory.createDefaultModel();
+		Model retrospectiveModel=null;
+		try {
+			model.read(new FileInputStream(retroTTLFilePath), null, "TTL");
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+		StringWriter rdfXmlWriter = new StringWriter();
+//		 model.write(System.out, "RDF/XML");
+		model.write(rdfXmlWriter, "RDF/XML-ABBREV");
+		try {
+			Source source = new StreamSource(new StringReader(rdfXmlWriter.toString()));
+			JAXBContext jaxbContext = JAXBContext.newInstance(RDF.class);
+			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+			JAXBElement<RDF> root = jaxbUnmarshaller.unmarshal(source, RDF.class);
+			RDF rdfObj = root.getValue();
+			RetorspectiveMapper retorspectiveMapper = new RetorspectiveMapper(rdfObj);
+			retrospectiveModel = retorspectiveMapper.startRetrospective();
 
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		}
+		return retrospectiveModel;
+	}
+	public static void main(String[] args) {
+/*
 		Model model = ModelFactory.createDefaultModel();
 		try {
 			model.read(new FileInputStream("F:\\KIT\\provenance.ttl"), null, "TTL");
@@ -42,11 +67,12 @@ public class MainAppRunner {
 			JAXBElement<RDF> root = jaxbUnmarshaller.unmarshal(source, RDF.class);
 			RDF rdfObj = root.getValue();
 			RetorspectiveMapper retorspectiveMapper = new RetorspectiveMapper(rdfObj);
-			retorspectiveMapper.startRetrospective();
+			Model retrospectiveModel = retorspectiveMapper.startRetrospective();
 
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
+	*/
 	}
 	protected static Source prettyLogXml(String xml){
 		try {

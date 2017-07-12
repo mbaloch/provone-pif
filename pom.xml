@@ -12,7 +12,7 @@
         <module>provone-bpel</module>
         <module>provone-scufl</module>
         <module>apacheode-adapter</module>
-        <module>tvaerna-adapter</module>
+        <module>taverna-adapter</module>
         <module>provenance-query-interface</module>
         <module>provone-provenance</module>
     </modules>

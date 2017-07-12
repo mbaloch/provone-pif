@@ -2,6 +2,7 @@ package edu.kit.provoneprovenance;
 
 import edu.kit.provoneprovenance.helper.BPELdeployment;
 import edu.kit.scufl.mainapp.MainAppRunner;
+import org.apache.jena.rdf.model.Model;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.kit.mainapp.ScuflToProv;
@@ -27,19 +28,19 @@ public class MyResource {
     @Path("scufl")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public String getIt() {
+    public String scuflProspective() {
         ScuflToProv toProv = new ScuflToProv();
 //		toProv.parseCreateGraph("files/Example_workflow_for_REST_and_XPath_activities-v1.t2flow");
-        toProv.parseCreateGraph("/home/mukhtar/Desktop/final3/provonepif/provone-provenance/src/main/resources/Hello_abcd-v1.t2flow");
+        toProv.parseCreateGraph("/home/mukhtar/IdeaProjects/provone-pif/provone-provenance/src/main/resources/Hello_abcd-v1.t2flow");
         return "Got it!";
     }
     @Path("scuflRetro")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String scuflRetro() {
-        String ttlFilePath="/home/mukhtar/Desktop/final3/provonepif/provone-provenance/src/main/resources/workflowrun.pov.ttl";
+        String ttlFilePath="/home/mukhtar/IdeaProjects/provone-pif/provone-provenance/src/main/resources/workflowrun.prov.ttl";
         MainAppRunner appRunner=new MainAppRunner();
-        appRunner.appRunner(ttlFilePath);
+        Model retrospectiveRDFModel = appRunner.getRetrospectiveRDFModel(ttlFilePath);
         return "Got the retrospective !";
     }
 

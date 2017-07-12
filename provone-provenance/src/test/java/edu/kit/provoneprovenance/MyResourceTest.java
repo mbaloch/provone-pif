@@ -22,6 +22,17 @@ import static org.junit.Assert.*;
  * Created by mukhtar on 26.06.17.
  */
 public class MyResourceTest {
+    @Test
+    public void scuflProspective() throws Exception {
+        final Client client = ClientBuilder.newBuilder().register(MultiPartFeature.class).build();
+        final WebTarget target = client.target("http://localhost:8585/provone-provenance/workflow/scufl");
+        final Response response = target.request().get();
+    }
+
+    @Test
+    public void scuflRetro() throws Exception {
+    }
+
     private HttpServer server;
     private WebTarget target;
     @Before

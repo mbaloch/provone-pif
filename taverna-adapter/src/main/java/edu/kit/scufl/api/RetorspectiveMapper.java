@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Resource;
 
 import edu.kit.scufl.arangoPojo.DataPOJO;
@@ -53,7 +54,7 @@ public class RetorspectiveMapper {
 	}
 
 	// start of the programs
-	public void startRetrospective() {
+	public Model startRetrospective() {
 
 		SCUFLRetroSpective(rdfObj.getDictionary().getWasOutputFrom().getWorkflowRun(), false);
 
@@ -76,13 +77,14 @@ public class RetorspectiveMapper {
 				}
 			}
 		}
-
-		File file = new File("C:/Users/Vaibhav/Desktop/SCUFL_retor.rdf");
-		try {
-			rdfUtil.getModel().write(new FileWriter(file));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//
+//		File file = new File("C:/Users/Vaibhav/Desktop/SCUFL_retor.rdf");
+//		try {
+//			rdfUtil.getModel().write(new FileWriter(file));
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+		return rdfUtil.getModel();
 
 	}
 
