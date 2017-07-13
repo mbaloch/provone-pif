@@ -1,6 +1,5 @@
 package edu.kit.provone.provone2rdfmapper.utility;
 
-
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
@@ -12,38 +11,27 @@ import org.apache.jena.vocabulary.RDFS;
 /**
  * Created by mukhtar on 01.03.17.
  */
-public class RDFUtility {
+public class RDFUtilityOld {
     final String provone = "http://purl.org/provone#";
     final String prov = "http://www.w3.org/ns/prov#";
-    final String nsr = "http://kit.edu/rp/";
-    final String nsp = "http://kit.edu/pp/";
+    final String ns = "http://kit.edu/rp/";
     final String wfms = "http://www.wfms.org/registry.xsd#";
-    final String wfprov = "http://purl.org/wf4ever/wfprov#";
-     Model model = ModelFactory.createDefaultModel();
+    final Model model = ModelFactory.createDefaultModel();
 
-    public RDFUtility() {
+    public RDFUtilityOld() {
         model.setNsPrefix("provone", provone);
         model.setNsPrefix("prov", prov);
-        model.setNsPrefix("kitnsr", nsr);
-        model.setNsPrefix("kitnsp", nsp);
-        model.setNsPrefix("wfms", wfms);
-    }
-    public RDFUtility(Model model) {
-        this.model=model;
-        model.setNsPrefix("provone", provone);
-        model.setNsPrefix("prov", prov);
-        model.setNsPrefix("kitnsr", nsr);
-        model.setNsPrefix("kitnsp", nsp);
+        model.setNsPrefix("example", ns);
         model.setNsPrefix("wfms", wfms);
     }
 //Methods for retrospective provenance
 
-    public Resource createProcessExec(String processId, String processTitle,String activityId, String startTime, String endTime, String completed, String wrkflwID) {
-        Resource processExecResource = model.createResource(nsr + "processExec_" + processId);
+    public Resource createProcessExec(String processId, String processTitle,String activityId, String startTime, String endTime, String completed) {
+        Resource processExecResource = model.createResource(ns + "processExec_" + processId);
         //short uri   Resource process=model.createResource("http://"+processId);
         processExecResource.addProperty(RDF.type, model.createResource(provone + "ProcessExec"));
         processExecResource.addProperty(DCTerms.identifier, processId);
-        processExecResource.addProperty(DCTerms.title, processTitle);
+    //    processExecResource.addProperty(DCTerms.title, processTitle);
 
         Property startTimeProperty = model.createProperty(prov + "startTime");
         if(endTime !=null){
@@ -57,10 +45,7 @@ public class RDFUtility {
         //   process.addProperty(prov, processTitle);
         Property completedProperty = model.createProperty(wfms + "completed");
         processExecResource.addProperty(completedProperty, completed);
-        if(null != wrkflwID){
-            Property describedByWorkflowProperty = model.createProperty(wfprov + "describedByWorkflow");
-            processExecResource.addProperty(describedByWorkflowProperty, wrkflwID);
-        }
+
         //    model.write(System.out);
         // model.write(System.out,"Turtle");
         //       Property subProcessProperty=model.createProperty(provone+"hasSubProcess");
@@ -89,7 +74,7 @@ public class RDFUtility {
 //    }
 
     public Resource createData(String dataId, String label, String type, String value) {
-        Resource dataResource = model.createResource(nsr + "Data_" + dataId);
+        Resource dataResource = model.createResource(ns + "Data_" + dataId);
         dataResource.addProperty(RDF.type, model.createResource(provone + "Data"));
         dataResource.addProperty(RDFS.label, label);
         Property typeProperty = model.createProperty(wfms + "type");
@@ -99,7 +84,7 @@ public class RDFUtility {
     }
 
     public Resource createCollection(String collectionId) {
-        Resource collectionResource = model.createResource(nsr + "collection_" + collectionId);
+        Resource collectionResource = model.createResource(ns + "collection_" + collectionId);
         collectionResource.addProperty(DCTerms.identifier, collectionId);
         return collectionResource;
     }
@@ -158,21 +143,14 @@ public class RDFUtility {
     }
 //Methods for prospective provenance
 
-    public Resource createProcess(String processId, String processTitle, String classType, String scriptText) {
+    public Resource createProcess(String processId, String processTitle) {
 
-        Resource process = model.createResource(nsp + "process_" + processId);
+        Resource process = model.createResource(ns + "process_" + processId);
         //short uri   Resource process=model.createResource("http://"+processId);
         process.addProperty(RDF.type, model.createResource(provone + "Process"));
         process.addProperty(DCTerms.identifier, processId);
         process.addProperty(DCTerms.title, processTitle);
         Property property = model.createProperty(wfms + "package");
-        Property classTypeProperty = model.createProperty(wfms + "class");
-		process.addProperty(classTypeProperty, classType);
-
-		if (null != scriptText) {
-			Property scriptTextProperty = model.createProperty(wfms + "script");
-			process.addProperty(scriptTextProperty, scriptText);
-		}
         // process.addProperty(property,"gov.llnl.uvcdat.cdms");
 
         //    model.write(System.out);
@@ -182,33 +160,46 @@ public class RDFUtility {
         return process;
     }
 
-    public Resource createInputPort(String inputPortId, String variableName) {
+    public Resource createInputPort(String inputPortId, String variableName, String variableType) {
 
-        Resource inputport = model.createResource(nsp + "inputport_" + inputPortId);
+        Resource inputport = model.createResource(ns + "inputport_" + inputPortId);
         inputport.addProperty(RDF.type, model.createResource(provone + "InputPort"));
         inputport.addProperty(DCTerms.identifier, inputPortId);
         inputport.addProperty(DCTerms.title, variableName);
-//        Property property = model.createProperty(wfms + "signature");
-//        inputport.addProperty(property, variableType);
+        Property property = model.createProperty(wfms + "signature");
+        inputport.addProperty(property, variableType);
+//        scopeVariables.forEach((variable,type)->{
+//            Property property=model.createProperty(wfms+"signature");
+//            inputport.addProperty(property,variable+":"+type);
+//        });
+
+        //   model.write(System.out);
+        // model.write(System.out,"Turtle");
         return inputport;
 
     }
 
-    public Resource createOutputPort(String outputPortId, String variableName) {
+    public Resource createOutputPort(String outputPortId, String variableName, String variableType) {
 
-        Resource outputPort = model.createResource(nsp + "outputport_" + outputPortId);
+        Resource outputPort = model.createResource(ns + "outputport_" + outputPortId);
         outputPort.addProperty(RDF.type, model.createResource(provone + "OutputPort"));
         outputPort.addProperty(DCTerms.identifier, outputPortId);
         outputPort.addProperty(DCTerms.title, variableName);
-//        Property property = model.createProperty(wfms + "signature");
-//        outputPort.addProperty(property, variableType);
+        Property property = model.createProperty(wfms + "signature");
+        outputPort.addProperty(property, variableType);
 
+//        scopeVariables.forEach((variable,type)->{
+//            Property property=model.createProperty(wfms+"signature");
+//            outputPort.addProperty(property,variable+":"+type);
+//        });
+        //   model.write(System.out);
+        //model.write(System.out,"Turtle");
         return outputPort;
     }
 
     public Resource createDataLink(String dataLinkId) {
 
-        Resource dataLink = model.createResource(nsp + "DL_" + dataLinkId);
+        Resource dataLink = model.createResource(ns + "DL_" + dataLinkId);
         dataLink.addProperty(RDF.type, model.createResource(provone + "DataLink"));
         dataLink.addProperty(DCTerms.identifier, dataLinkId);
 
@@ -216,21 +207,24 @@ public class RDFUtility {
         return dataLink;
     }
 
-    public Resource createSeqCtrlLink(String sequenceCLID) {
-        Resource seqCtrlLink = model.createResource(nsp + "SCL_" + sequenceCLID);
+    public Resource createSeqCtrlLink(Resource process1, Resource process2, String sequenceCLID) {
+        String p1Id = process1.getProperty(DCTerms.identifier).getString();
+        String p2Id = process2.getProperty(DCTerms.identifier).getString();
+        //  UUID uuid=UUID.randomUUID();
+        // Resource seqCtrlLink=model.createResource(ns+p1Id+"_"+p2Id+"CL");
+        Resource seqCtrlLink = model.createResource(ns + "SCL_" + sequenceCLID);
+        //short uri   Resource seqCtrlLink=model.createResource("http://"+p1Id+"_"+p2Id+"CL");
         seqCtrlLink.addProperty(RDF.type, model.createResource(provone + "SeqCtrlLink"));
         seqCtrlLink.addProperty(DCTerms.identifier, sequenceCLID);
         return seqCtrlLink;
     }
 
-    public Resource createWorkflow(String workflowId, String workflowTitle, String role) {
+    public Resource createWorkflow(String workflowId, String workflowTitle) {
 
-        Resource workflow = model.createResource(nsp + workflowId);
+        Resource workflow = model.createResource(ns + workflowId);
         workflow.addProperty(RDF.type, model.createResource(provone + "Workflow"));
         workflow.addProperty(DCTerms.identifier, workflowId);
         workflow.addProperty(DCTerms.title, workflowTitle);
-        Property property = model.createProperty(wfms + "Role");
-		workflow.addProperty(property, role);
         //   model.write(System.out);
         //model.write(System.out,"Turtle");
         return workflow;
@@ -238,7 +232,7 @@ public class RDFUtility {
 
     public Resource createUser() {
 
-        Resource user = model.createResource(nsp + "u1");
+        Resource user = model.createResource(ns + "u1");
         user.addProperty(RDF.type, model.createResource(provone + "User"));
         user.addProperty(DCTerms.identifier, "John");
         //   model.write(System.out);
@@ -330,7 +324,7 @@ public class RDFUtility {
 
     public Property DLToOutPort(Resource datalink, Resource outputport) {
 
-        Property property = model.createProperty(provone + "DLToOutPort");
+        Property property = model.createProperty(provone + "outPortToDL");
         datalink.addProperty(property, outputport);
         return property;
 

@@ -3,7 +3,7 @@
 //
 //import edu.kit.provone.provone2rdfmapper.model.Data;
 //import edu.kit.provone.provone2rdfmapper.model.ProcessExec;
-//import edu.kit.provone.provone2rdfmapper.utility.RDFUtility;
+//import edu.kit.provone.provone2rdfmapper.utility.RDFUtilityOld;
 //import org.apache.jena.query.*;
 //import org.apache.jena.rdf.model.Property;
 //import org.apache.jena.rdf.model.RDFNode;
@@ -73,7 +73,7 @@
 //        Resource result = getResource(queryString, queryServiceURI);
 //        if (result != null) {
 //            processExec.setCompleted(false);
-//            RDFUtility rdfUtility = new RDFUtility();
+//            RDFUtilityOld rdfUtility = new RDFUtilityOld();
 //            Resource processExecResource = rdfUtility.createProcessExec(processExec.getProcessInstanceId(), processExec.getTitle()
 //                    , processExec.getStartTime(), processExec.getEndTime(),
 //                    processExec.getCompleted().toString());
@@ -210,7 +210,7 @@
 //        //if (subject != null) {
 //        if (processExec.getCompleted() == null)
 //            processExec.setCompleted(false);
-//        RDFUtility rdfUtility = new RDFUtility();
+//        RDFUtilityOld rdfUtility = new RDFUtilityOld();
 //        Resource processExecResource = rdfUtility.createProcessExec(
 //                shortUUID(), processExec.getTitle(), processExec.getId()
 //                , processExec.getStartTime(), processExec.getEndTime(),
@@ -227,7 +227,7 @@
 //        //if (subject != null) {
 //        if (processExec.getCompleted() == null)
 //            processExec.setCompleted(false);
-//        RDFUtility rdfUtility = new RDFUtility();
+//        RDFUtilityOld rdfUtility = new RDFUtilityOld();
 //        Resource processExecResource = rdfUtility.createProcessExec(
 //                processExec.getProcessInstanceId(), processExec.getTitle(), processExec.getId()
 //                , processExec.getStartTime(), processExec.getEndTime(),

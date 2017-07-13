@@ -3,7 +3,9 @@ package edu.kit.provone.provone2rdfmapper;
 import edu.kit.provone.provone2rdfmapper.model.Data;
 import edu.kit.provone.provone2rdfmapper.model.ProcessExec;
 import edu.kit.provone.provone2rdfmapper.utility.RDFUtility;
+import edu.kit.provone.provone2rdfmapper.utility.RDFUtilityOld;
 import org.apache.jena.query.*;
+import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
@@ -21,70 +23,45 @@ import java.util.UUID;
 /**
  * Created by mukhtar on 06.03.17.
  */
-public class SCUFLRetroToProspAttachment implements IProvenanceAPI {
+public class SCUFLRetroToProspAttachment  {
     static final String NL = System.getProperty("line.separator");
-    static final String updateModelURI = "http://localhost:3030/tdb/";
-    static final String queryServiceURI = "http://localhost:3030/tdb/sparql";
-    static final String graphUri = "http://kit.demo/calculationProcess/1.0";
+    static final String updateModelURI = "http://localhost:3030/kit/";
+    static final String queryServiceURI = "http://localhost:3030/kit/sparql";
+    static final String graphUri = "http://kit.edu/scufl/f5fddb99-9677-43cb-aac5-4d14e1ad1b46";
     static final String wfms = "http://www.wfms.org/registry.xsd#";
     static final String provone = "http://purl.org/provone#";
     static final String prov = "http://www.w3.org/ns/prov#";
     static final String rpns = "http://kit.edu/rp/";
     static final String ppns = "http://kit.edu/pp/";
+    RDFUtility rdfUtility;
 
-    SCUFLRetroToProspAttachment() {
-     //   System.out.println("++++++++++++++++++++++I am called +---------------------");
+    SCUFLRetroToProspAttachment(Model rdfModel) {
+        rdfUtility=new RDFUtility(rdfModel);
+    }
+    public void updateJena(Resource retrospectiveResource){
+        insertResource(retrospectiveResource);
     }
 
-    public void createProcessExecInstance(ProcessExec processExec) {
-        String queryByTitle = queryByTitle(processExec.getTitle(), graphUri);
-        String queryById = queryById(processExec.getProcessInstanceId(), graphUri);
+    public void createProcessExecInstance(Resource processExec,String title) {
+        String queryByTitle = queryByTitle(title, graphUri);
+//        String queryById = queryById(processExec.getProcessInstanceId(), graphUri);
         System.out.println("query by title:" + queryByTitle);
-        System.out.println("query by id:" + queryById);
-
+//        System.out.println("query by id:" + queryById);
         Resource associatedWithProcessResource = getResource(queryByTitle, queryServiceURI);
-        Resource workflowExecResource = getResource(queryById, queryServiceURI);
-        Resource processExecResource = createProcessExecResource(associatedWithProcessResource, workflowExecResource, processExec);
-        insertResource(processExecResource);
+//        Resource workflowExecResource = getResource(queryById, queryServiceURI);
+        Resource processExecResource = createProcessExecResource(processExec, associatedWithProcessResource);
+
+  //      insertResource(processExecResource);
     }
 
-    public void createWorkflowExecInstance(ProcessExec processExec) {
-        String queryString = queryByTitle(processExec.getTitle(), graphUri);
+    public void createWorkflowExecInstance(Resource processExec,String workflowId) {
+        String queryString=queryById(workflowId, graphUri);
         System.out.println("query:" + queryString);
-        Resource result = getResource(queryString, queryServiceURI);
-        Resource processExecResource = createWorkflowExecResource(result, processExec);
-        insertResource(processExecResource);
-        /*
-        String workflowTitle = processExec.getTitle();
-        String prolog = "PREFIX dc: <http://purl.org/dc/terms/>";
-        String queryString = prolog + NL +
-                "SELECT ?subject ?predicate ?object" +
-                " WHERE {" +
-                "graph <http://kit.demo/calculationProcess> " +
-                "{"
-                //+"?subject  dc:title  \"CalculationProcess\""+ //+workflowTitle+
-                + "?subject  dc:title  \"" + workflowTitle + "\"" + //\"CalculationProcess\""+ //
-                //+"?subject ?predicate ?object"+
-                "}" +
-                "}";
-        System.out.println("query:" + queryString);
+        Resource workflowResource = getResource(queryString, queryServiceURI);
+        Resource processExecResource=rdfUtility.wasAssociatedWith(processExec,workflowResource);
 
-        Resource result = getResource(queryString, queryServiceURI);
-        if (result != null) {
-            processExec.setCompleted(false);
-            RDFUtility rdfUtility = new RDFUtility();
-            Resource processExecResource = rdfUtility.createProcessExec(processExec.getProcessInstanceId(), processExec.getTitle()
-                    , processExec.getStartTime(), processExec.getEndTime(),
-                    processExec.getCompleted().toString());
-            //processExecResource.listProperties();
+        //  insertResource(processExecResource);
 
-            Property wasAssociatedWith = rdfUtility.wasAssociatedWith(processExecResource, result);
-
-            DatasetAccessor accessor = DatasetAccessorFactory
-                    .createHTTP(updateModelURI);
-            accessor.add(rdfUtility.getModel());
-        }
-*/
     }
 
 
@@ -205,17 +182,17 @@ public class SCUFLRetroToProspAttachment implements IProvenanceAPI {
         return result;
     }
 
-    private Resource createProcessExecResource(Resource wasAssociatedWithResource, Resource workflowResource, ProcessExec processExec) {
+    private Resource createProcessExecResource(Resource processExecResource, Resource workflowResource) {
         //if (subject != null) {
-        if (processExec.getCompleted() == null)
-            processExec.setCompleted(false);
-        RDFUtility rdfUtility = new RDFUtility();
-        Resource processExecResource = rdfUtility.createProcessExec(
-                shortUUID(), processExec.getTitle(), processExec.getId()
-                , processExec.getStartTime(), processExec.getEndTime(),
-                processExec.getCompleted().toString());
-        Property wasAssociatedWith = rdfUtility.wasAssociatedWith(processExecResource, wasAssociatedWithResource);
-        Property isPartOf = rdfUtility.isPartOf(processExecResource, workflowResource);
+//        if (processExec.getCompleted() == null)
+//            processExec.setCompleted(false);
+//        RDFUtilityOld rdfUtility = new RDFUtilityOld();
+//        Resource processExecResource = rdfUtility.createProcessExec(
+//                shortUUID(), processExec.getTitle(), processExec.getId()
+//                , processExec.getStartTime(), processExec.getEndTime(),
+//                processExec.getCompleted().toString());
+        Property wasAssociatedWith = rdfUtility.wasAssociatedWith(processExecResource, workflowResource);
+//        Property isPartOf = rdfUtility.isPartOf(processExecResource, workflowResource);
         return processExecResource;
 
         //}
@@ -226,7 +203,7 @@ public class SCUFLRetroToProspAttachment implements IProvenanceAPI {
         //if (subject != null) {
         if (processExec.getCompleted() == null)
             processExec.setCompleted(false);
-        RDFUtility rdfUtility = new RDFUtility();
+        RDFUtilityOld rdfUtility = new RDFUtilityOld();
         Resource processExecResource = rdfUtility.createProcessExec(
                 processExec.getProcessInstanceId(), processExec.getTitle(), processExec.getId()
                 , processExec.getStartTime(), processExec.getEndTime(),
