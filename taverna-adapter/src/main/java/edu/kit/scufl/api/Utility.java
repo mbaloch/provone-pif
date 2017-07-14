@@ -14,7 +14,10 @@ public class Utility {
 		return id;
 	}*/
 
+	private String about;
+
 	public String getID(String rdfabout) {
+		about = rdfabout;
 		String[] about = rdfabout.split("/");
 		String id = about[about.length-1];
 		return id;
@@ -29,5 +32,11 @@ public class Utility {
 			}
 		}
 		return null;
+	}
+	public String getPath(String resource) {
+		String workflowid = getWorkFlowID(resource);
+		String[] splitString = resource.split(workflowid);
+		System.out.println(splitString[1]);
+		return splitString[1].replaceAll("/workflow/", "");
 	}
 }

@@ -14,6 +14,7 @@ import org.kit.pojo.arangodb.ProcessorDoc;
 import org.kit.rdf.RDFUtility;
 import org.kit.scufl.api.*;
 
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Stack;
@@ -26,6 +27,7 @@ public class ScuflToProv {
 	private HashMap<String, Dataflow> dataFlwRefMap = new HashMap<String, Dataflow>();
 	private HashMap<String, ProcessorInOutMap> processInOutMap = new HashMap<String, ProcessorInOutMap>();
 	private HashSet<String> seqLinkSet = new HashSet<String>();
+	private Stack<String> processNamePathStack = new Stack<String>();
 
 	private RDFUtility rdfUtility = new RDFUtility();
 
@@ -131,9 +133,9 @@ public class ScuflToProv {
 			processDoc = processInOutMap.get(currentProceess.peek()).getProcessDoc();
 
 		} else {
-
+			processNamePathStack.push(dtflw.getName());
 			// RDF code
-			processDoc = rdfUtility.createWorkflow(dtflw.getId(), dtflw.getName(), dtflw.getRole().toString());
+			processDoc = rdfUtility.createWorkflow(dtflw.getId(), getPathNaMe(), dtflw.getRole().toString());
 
 			ATTACHPORTS(dtflw, processDoc, nestedFlag);
 		}
@@ -152,7 +154,7 @@ public class ScuflToProv {
 					ElementNSImpl config = (ElementNSImpl) activity.getConfigBean().getAny();
 
 					// RDF code
-					Resource processorDoc = rdfUtility.createWorkflow(nestedWrkFlw, processor.getName(), dataFlwRefMap.get(config.getAttribute("ref")).getRole().toString());
+					Resource processorDoc = rdfUtility.createWorkflow(nestedWrkFlw, getPathNaMe(processor.getName()), dataFlwRefMap.get(config.getAttribute("ref")).getRole().toString());
 					rdfUtility.hasSubProcess(processDoc, processorDoc);
 					// ArangoDB code
 					// creating workflow node
@@ -162,10 +164,21 @@ public class ScuflToProv {
 					processorPojo.setName(processor.getName());
 
 					ATTACHPORTS(processor, processorDoc, nestedWrkFlw);
+					Stack<String> tempStack = new Stack<String>();
+					for (String processNames : processNamePathStack) {
+						tempStack.push(processNames);
+					}
+					processNamePathStack.removeAllElements();
+
+					processNamePathStack.push(processor.getName());
 
 					currentProceess.push(processor.getName());
 					Prov2ONE_SCUFL(dataFlwRefMap.get(config.getAttribute("ref")), true);
 					currentProceess.pop();
+					processNamePathStack.pop();
+					for (String processName : tempStack) {
+						processNamePathStack.push(processName);
+					}
 					// currentProceess.push(dtflw.getName());
 
 					normalFlag = false;
@@ -186,7 +199,7 @@ public class ScuflToProv {
 						break;
 					}
 				}
-				Resource processorDoc = rdfUtility.createProcess(processUUID, processor.getName(), processor.getActivities().getActivity().get(0).getClazz(), scriptText);
+				Resource processorDoc = rdfUtility.createProcess(processUUID, getPathNaMe(processor.getName()), processor.getActivities().getActivity().get(0).getClazz(), scriptText);
 				rdfUtility.hasSubProcess(processDoc, processorDoc);
 
 				// common for RDF and ArangoDb
@@ -336,7 +349,23 @@ public class ScuflToProv {
 		}
 
 	}
+	private String getPathNaMe(String processorName) {
+		StringWriter pathName = new StringWriter();
+		for (String processorNames : processNamePathStack) {
+			pathName.append(processorNames+"/processor/");
+		}
 
+		pathName.append(processorName+"/");
+		return pathName.toString();
+	}
+
+	private String getPathNaMe() {
+		StringWriter pathName = new StringWriter();
+		for (String processorNames : processNamePathStack) {
+			pathName.append(processorNames+"/");
+		}
+		return pathName.toString();
+	}
 	private void ATTACHPORTS(Dataflow dtflw, Resource processDoc, boolean nestedFlag, String processUUID) {
 
 		HashMap<String, Resource> inportMap = new HashMap<String, Resource>();

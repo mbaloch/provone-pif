@@ -6,11 +6,11 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.transform.OutputKeys;
+//import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
+//import javax.xml.transform.Transformer;
+//import javax.xml.transform.TransformerFactory;
+//import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.jena.rdf.model.Model;
@@ -58,7 +58,7 @@ public class SCUFLRetro2ProvONE {
 		return retrospectiveModel;
 	}
 
-	protected static Source prettyLogXml(String xml){
+	/*protected static Source prettyLogXml(String xml){
 		try {
 			Transformer transformer=TransformerFactory.newInstance().newTransformer();
 			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount","2");
@@ -72,5 +72,5 @@ public class SCUFLRetro2ProvONE {
 			e.printStackTrace();
 		}
 		return null;
-	}
+	}*/
 }

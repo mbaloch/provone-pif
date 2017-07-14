@@ -38,6 +38,9 @@ public class WorkflowRun {
 	@XmlElement(name="describedByWorkflow",namespace="http://purl.org/wf4ever/wfprov#",required=false)
 	private DescribedByWorkflow describedByWorkflow;
 
+	@XmlElement(name = "describedByProcess", namespace = "http://purl.org/wf4ever/wfprov#", required = false)
+	private DescribedByProcess describedByProcess;
+
 	@XmlAnyElement(lax = true)
 	public List<Object> anyDict;
 
@@ -118,5 +121,12 @@ public class WorkflowRun {
 
 	public void setDescribedByWorkflow(DescribedByWorkflow describedByWorkflow) {
 		this.describedByWorkflow = describedByWorkflow;
+	}
+	public DescribedByProcess getDescribedByProcess() {
+		return describedByProcess;
+	}
+
+	public void setDescribedByProcess(DescribedByProcess describedByProcess) {
+		this.describedByProcess = describedByProcess;
 	}
 }

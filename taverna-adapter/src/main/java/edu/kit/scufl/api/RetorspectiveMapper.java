@@ -111,12 +111,15 @@ public class RetorspectiveMapper {
 		String workflowID = util.getID(workflowRun.getAbout());
 		String toReplace = (nestedflag ? "Processor execution " : "Workflow run of ");
 		String describedByWorkflowID = null;
+		String workFlowName = null;
 		if(null != workflowRun.getDescribedByWorkflow()){
+			workFlowName = util.getPath(workflowRun.getDescribedByWorkflow().getResource());
 			describedByWorkflowID = util.getWorkFlowID(workflowRun.getDescribedByWorkflow().getResource());
+		}else if(null != workflowRun.getDescribedByProcess()){
+			workFlowName = util.getPath(workflowRun.getDescribedByProcess().getResource());
 		}
 
-		Resource wrkflowResource = rdfUtil.createProcessExec(workflowID,
-				workflowRun.getLabel().replaceAll(toReplace, ""), workflowID, workflowRun.getStartedAtTime(),
+		Resource wrkflowResource = rdfUtil.createProcessExec(workflowID,workFlowName, workflowID, workflowRun.getStartedAtTime(),
 				workflowRun.getEndedAtTime(), "completed",describedByWorkflowID);
 
 
@@ -126,9 +129,14 @@ public class RetorspectiveMapper {
 			if (null != hasPart.getProcessRun()) {
 
 				String proceesorID = util.getID(hasPart.getProcessRun().getAbout());
+				String processName;
+				if(null == hasPart.getProcessRun().getDescribedByProcess().getResource()){
+					processName = util.getPath(hasPart.getProcessRun().getDescribedByProcess().getPlan().getAbout());
+				}else{
+					processName =util.getPath(hasPart.getProcessRun().getDescribedByProcess().getResource());
+				}
 
-				Resource processResource = rdfUtil.createProcessExec(proceesorID,
-						hasPart.getProcessRun().getLabel().replaceAll("Processor execution ", ""), proceesorID,
+				Resource processResource = rdfUtil.createProcessExec(proceesorID,processName, proceesorID,
 						hasPart.getProcessRun().getStartedAtTime(), hasPart.getProcessRun().getEndedAtTime(),
 						"completed",null);
 				resouceMap.put(proceesorID, processResource);
