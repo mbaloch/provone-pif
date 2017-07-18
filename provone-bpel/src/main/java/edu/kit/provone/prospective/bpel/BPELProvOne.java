@@ -3,7 +3,6 @@ package edu.kit.provone.prospective.bpel;
 import edu.kit.provone.prospective.bpel.model.*;
 import edu.kit.provone.prospective.bpel.utils.SchemaParserHelper;
 import groovy.xml.QName;
-import edu.kit.provone.bpel.model.*;
 import edu.kit.provone.prospective.bpel.utils.SchemaType;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.ode.bpel.compiler.BpelCompiler20;

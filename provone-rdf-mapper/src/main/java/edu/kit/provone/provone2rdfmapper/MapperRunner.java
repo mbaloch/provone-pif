@@ -32,7 +32,7 @@ public class MapperRunner {
         try {
             retrospectiveRDFModel =
                     scuflRetro2ProvONE.getRetrospectiveRDFModel
-                            ("/home/mukhtar/IdeaProjects/provone-pif/provone-provenance/src/main/resources/workflowrun.prov.ttl");
+                            ("/home/mukhtar/IdeaProjects/provone-pif/provone-provenance/src/main/resources/workflowrun.new.ttl");
             prospAttachment=new SCUFLRetroToProspAttachment(retrospectiveRDFModel);
             iter= retrospectiveRDFModel.listStatements();
                 while ( iter.hasNext() ) {
@@ -96,7 +96,7 @@ public class MapperRunner {
 //            String processTitle = titleStatement.getObject().toString();
 //            System.out.println("Titles:"+processTitle);
 //        }
-//        retrospectiveRDFModel.write(System.out);
+      //  retrospectiveRDFModel.write(System.out);
 
         prospAttachment.updateJena(workflowResource);
 
