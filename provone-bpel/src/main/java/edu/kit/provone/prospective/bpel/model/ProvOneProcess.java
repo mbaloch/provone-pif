@@ -13,6 +13,16 @@ public class ProvOneProcess {
     private String activityName;
     private String operationName;
 
+    public String getActivityType() {
+        return activityType;
+    }
+
+    public void setActivityType(String activityType) {
+        this.activityType = activityType;
+    }
+
+    private String activityType;
+
     public String getActivityName() {
         return activityName;
     }

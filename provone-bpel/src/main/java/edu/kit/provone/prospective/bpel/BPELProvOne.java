@@ -414,6 +414,7 @@ public class BPELProvOne {
                 final OPickReceive oPickReceive = (OPickReceive) oActivity;
                 primitiveProcess.setOperationName(oPickReceive.onMessages.get(0).operation.getName());
                 primitiveProcess.setActivityName(oPickReceive.name);
+                primitiveProcess.setActivityType("receive");
             }
 
             dag.addVertex(primitiveProcess);
@@ -593,7 +594,6 @@ public class BPELProvOne {
 //        QName qname = new QName(namespaceURI, localPart);
 //        final List<Map.Entry<QName, List<lsdma.kit.utils.ElementParticle>>> entries = schemaParserHelper.resolveType(qname);
 //        System.out.println("var type:" + variable);
-        System.out.println("hi");
         return null;
     }
 

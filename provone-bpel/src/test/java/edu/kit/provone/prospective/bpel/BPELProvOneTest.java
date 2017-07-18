@@ -40,21 +40,15 @@ public class BPELProvOneTest {
     @Before
     public void setUp() throws Exception {
 
-        //String bpelFilePath="/home/mukhtar/Desktop/workflows/test/BPEL_ADD/bpelAdd.bpel";
         ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-
         URL resource = classLoader.getResource("bpelAdd.bpel");
         String bpelFilePath = resource.getFile();
-
-        // String wsdlFilePath="/home/mukhtar/Desktop/workflows/test/BPEL_ADD/bpelAddArtifacts.wsdl";
-        // String baseDir="/home/mukhtar/Desktop/workflows/test/BPEL_ADD/";
         Process process;
         File _bpelFile = new File(bpelFilePath);
         try {
             InputSource isrc = new InputSource(new ByteArrayInputStream(StreamUtils.read(_bpelFile.toURL())));
             isrc.setSystemId(_bpelFile.getAbsolutePath());
             process = BpelObjectFactory.getInstance().parse(isrc, _bpelFile.toURI());
-
             BpelCompiler20 BPEL2Compiler = new BpelCompiler20();
             String bpelPath = _bpelFile.getAbsolutePath();
             String cbpPath = bpelPath.substring(0, bpelPath.lastIndexOf(".")) + ".cbp";
@@ -65,53 +59,17 @@ public class BPELProvOneTest {
             BpelProcessObject = BPEL2Compiler.compile(process, wf, version);
             provOne = new BPELProvOne(BpelProcessObject);
 
-//            Field field = BpelCompiler.class.getDeclaredField("_wsdlRegistry");
-//            field.setAccessible(true);
-//            Class<?> targetType = field.getType();
-//            Object value = field.get(BPEL2Compiler);
-//            demo demo=new demo();
-//            demo.set(value);
-//            final SchemaModel schemaModel = demo.get();
-//            XSComplexTypeDecl decl=new XSComplexTypeDecl();
-
-
-            //  Class c=Class.forName("WSDLRegistry");
-            // ((c) value)._model;
-
             final Definition[] wsdlDefinitions = BPEL2Compiler.getWsdlDefinitions();
             List<String> wsdlFilesList = new ArrayList<>();
             for (Definition def : wsdlDefinitions) {
-                System.out.println(def);
                 String wsdlFilePath = def.getDocumentBaseURI().replaceFirst("file:/", "/");
                 wsdlFilesList.add(wsdlFilePath);
             }
             provOne.setWsdlFilesList(wsdlFilesList);
 
-//            SchemaParserHelper instance = new SchemaParserHelper();
-//            Map<String, Map<QName, List<ElementParticle>>> result = instance.parseSchemaTypes(wsdlFilesList);
-//            final HashMap<String, OScope.Variable> variables = BpelProcessObject.procesScope.variables;
-//            String namespaceURI="http://kit.demo/";
-//            String localPart="Add";
-//            QName qname=new QName(namespaceURI,localPart);
-//            final List<Map.Entry<QName, List<ElementParticle>>> entries = instance.resolveType(qname);
-
-            //      final SchemaModel schemaModel = ((BpelCompiler20) BPEL2Compiler)._wsdlRegistry.getSchemaModel();
-            System.out.println("hi");
-
-
-//             List<OBase> children = oprocess.getChildren();
-//             Definition[] wsdlDefinitions = compiler2.getWsdlDefinitions();
-//             String namespaceURI="http://kit.demo/";
-//             String localPart="Add";
-//             QName qname=new QName(namespaceURI,localPart);
-//             List<OScope.Variable> accessibleVariables = compiler2.getAccessibleVariables();
-//            System.out.println("hi");
-//
         } catch (Exception e) {
-            //  CompilationMessage cmsg = __cmsgs.errBpelParseErr().setSource(new SourceLocationImpl(bpelFile.toURI()));
             System.out.println("ERRROR in compilation");
             throw e;
-            //throw new CompilationException(cmsg, e);
         }
     }
 
@@ -151,7 +109,7 @@ public class BPELProvOneTest {
        */
         DirectedAcyclicGraph<Object, SequenceLink> dag = BPELProvOne.getDag();
         System.out.println("dag:" + dag);
-        constructRDF(dag);
+        constructRDF(dag,BpelProcessObject);
 
         // JGraphXAdapterDemo applet = new JGraphXAdapterDemo();
         JGraphXAdapter<Object, SequenceLink> jgxAdapter;
@@ -180,7 +138,7 @@ public class BPELProvOneTest {
 
     Map<Object, Resource> objectResourceMap = new HashMap<>();
 
-    private void constructRDF(DirectedAcyclicGraph<Object, SequenceLink> dag) {
+    private void constructRDF(DirectedAcyclicGraph<Object, SequenceLink> dag, OProcess bpelProcessObject) {
         RDFUtility rdfUtility = new RDFUtility();
         // recusive(dag.vertexSet(), rdfUtility, dag);
         final Set<Object> vertexSet = dag.vertexSet();
@@ -189,29 +147,37 @@ public class BPELProvOneTest {
                 DataLink dataLink = (DataLink) vertex;
                 if(objectResourceMap.get(dataLink)== null) {
                     String uuid = UUID.randomUUID().toString();
-                    Resource dataLinkResource = rdfUtility.createDataLink(uuid.substring(uuid.length() - 6));
+                    Resource dataLinkResource = rdfUtility.createDataLink(uuid);
                     objectResourceMap.put(dataLink, dataLinkResource);
                 }
             } else if (vertex instanceof InputPort) {
                 InputPort inputPort = (InputPort) vertex;
                 if(objectResourceMap.get(inputPort)== null) {
                     String uuid = UUID.randomUUID().toString();
-                    Resource inputPortResource = rdfUtility.createInputPort(uuid.substring(uuid.length() - 6), inputPort.getVariableQname().toString(), inputPort.getParticle().getParticleName());
+                    Resource inputPortResource = rdfUtility.createInputPort(uuid, inputPort.getVariableQname().toString(), inputPort.getParticle().getParticleName());
                     objectResourceMap.put(inputPort, inputPortResource);
                 }
             } else if (vertex instanceof OutputPort) {
                 OutputPort outputPort = (OutputPort) vertex;
                 if(objectResourceMap.get(outputPort)== null) {
                     String uuid = UUID.randomUUID().toString();
-                    Resource outputPortResouce = rdfUtility.createOutputPort(uuid.substring(uuid.length() - 6), outputPort.getVariableQname().toString(), outputPort.getParticle().getParticleName());
+                    Resource outputPortResouce = rdfUtility.createOutputPort(uuid, outputPort.getVariableQname().toString(), outputPort.getParticle().getParticleName());
                     objectResourceMap.put(outputPort, outputPortResouce);
                 }
             } else if (vertex instanceof ProvOneProcess) {
                 ProvOneProcess provOneProcess = (ProvOneProcess) vertex;
                 if(objectResourceMap.get(provOneProcess)== null) {
                     String uuid = UUID.randomUUID().toString();
-                    Resource process = rdfUtility.createProcess(uuid.substring(uuid.length() - 6), provOneProcess.getActivityName());
+                    Resource process = rdfUtility.createProcess(uuid, provOneProcess.getActivityName(),provOneProcess.getOperationName());
                     objectResourceMap.put(provOneProcess, process);
+                    if (provOneProcess.getActivityType()!= null && provOneProcess.getActivityType().equals("receive")){
+                        String uuid2 = UUID.randomUUID().toString();
+                        Resource workflowResource = rdfUtility.createProcess(uuid2, bpelProcessObject.getQName().toString(),null);
+                        String uuid3 = UUID.randomUUID().toString();
+                        Resource scl = rdfUtility.createSeqCtrlLink(workflowResource, process, uuid3);
+                        rdfUtility.CLtoDestP(process, scl);
+                        rdfUtility.sourcePToCL(workflowResource, scl);
+                    }
                 }
             }
             final Set<SequenceLink> incomingEdgesOf = dag.incomingEdgesOf(vertex);
@@ -234,7 +200,7 @@ public class BPELProvOneTest {
                         if (sourceResource==null){
                             DataLink dataLink = (DataLink) edgeSource;
                             String uuid = UUID.randomUUID().toString();
-                            Resource dataLinkResource=rdfUtility.createDataLink(uuid.substring(uuid.length() - 6));
+                            Resource dataLinkResource=rdfUtility.createDataLink(uuid);
                             objectResourceMap.put(dataLink,dataLinkResource);
                         }
                         sourceResource = objectResourceMap.get(edgeSource);
@@ -263,13 +229,13 @@ public class BPELProvOneTest {
                         Resource sourceProcess = objectResourceMap.get(edgeSource);
                         if(sourceProcess== null) {
                             String uuid = UUID.randomUUID().toString();
-                            Resource process = rdfUtility.createProcess(uuid.substring(uuid.length() - 6), provOneProcess.getActivityName());
+                            Resource process = rdfUtility.createProcess(uuid, provOneProcess.getActivityName(),provOneProcess.getOperationName());
                             objectResourceMap.put(provOneProcess, process);
                         }
                         sourceProcess = objectResourceMap.get(edgeSource);
                         final Resource destProcess = objectResourceMap.get(vertex);
                         String uuid2 = UUID.randomUUID().toString();
-                        Resource scl = rdfUtility.createSeqCtrlLink(sourceProcess, destProcess, uuid2.substring(uuid2.length() - 6));
+                        Resource scl = rdfUtility.createSeqCtrlLink(sourceProcess, destProcess, uuid2);
                         rdfUtility.CLtoDestP(destProcess, scl);
                         rdfUtility.sourcePToCL(sourceProcess, scl);
                     }

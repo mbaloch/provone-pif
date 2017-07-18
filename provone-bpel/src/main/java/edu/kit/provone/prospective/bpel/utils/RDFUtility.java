@@ -27,7 +27,7 @@ public class RDFUtility {
         model.setNsPrefix("wfms", wfms);
     }
 
-    public Resource createProcess(String processId, String processTitle) {
+    public Resource createProcess(String processId, String processTitle,String activityOperation) {
 
         Resource process = model.createResource(ns + "process_" + processId);
 
@@ -35,8 +35,13 @@ public class RDFUtility {
         process.addProperty(RDF.type, model.createResource(provone + "Process"));
         process.addProperty(DCTerms.identifier, processId);
         process.addProperty(DCTerms.title, processTitle);
-        Property property = model.createProperty(wfms + "package");
-      //  Property operationName=model.createProperty()
+        if(activityOperation!=null)
+        {
+            Property operationProperty = model.createProperty(wfms + "operation");
+            process.addProperty(operationProperty,activityOperation);
+        }
+
+        //  Property operationName=model.createProperty()
         // process.addProperty(property,"gov.llnl.uvcdat.cdms");
 
         //    model.write(System.out);
