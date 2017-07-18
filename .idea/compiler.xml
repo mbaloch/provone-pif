@@ -18,14 +18,14 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="apacheode-adapter" target="1.5" />
-      <module name="provenance-query-interface" target="1.5" />
-      <module name="provone-bpel" target="1.5" />
-      <module name="provone-pif" target="1.5" />
-      <module name="provone-provenance" target="1.5" />
-      <module name="provone-rdf-mapper" target="1.5" />
-      <module name="provone-scufl" target="1.5" />
-      <module name="taverna-adapter" target="1.5" />
+      <module name="apacheode-adapter" target="1.8" />
+      <module name="provenance-query-interface" target="1.8" />
+      <module name="provone-bpel" target="1.8" />
+      <module name="provone-pif" target="1.8" />
+      <module name="provone-provenance" target="1.8" />
+      <module name="provone-rdf-mapper" target="1.8" />
+      <module name="provone-scufl" target="1.8" />
+      <module name="taverna-adapter" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
