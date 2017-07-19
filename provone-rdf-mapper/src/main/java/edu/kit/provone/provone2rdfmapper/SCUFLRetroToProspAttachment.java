@@ -54,6 +54,18 @@ public class SCUFLRetroToProspAttachment  {
   //      insertResource(processExecResource);
     }
 
+    public void createDataOnLink(Resource dataResource, String title) {
+        String queryByTitle = queryDataLinkByTitle(title, graphUri);
+//        String queryById = queryById(processExec.getProcessInstanceId(), graphUri);
+        System.out.println("query by title:" + queryByTitle);
+//        System.out.println("query by id:" + queryById);
+        Resource dataOnLinkResource = getResource(queryByTitle, queryServiceURI);
+//        Resource workflowExecResource = getResource(queryById, queryServiceURI);
+        Resource processExecResource = createDataOnLink(dataResource, dataOnLinkResource);
+
+        //      insertResource(processExecResource);
+    }
+
     public void createWorkflowExecInstance(Resource processExec,String workflowId) {
         String queryString=queryById(workflowId, graphUri);
         System.out.println("query:" + queryString);
@@ -129,6 +141,23 @@ public class SCUFLRetroToProspAttachment  {
         return queryString;
     }
 
+    private String queryDataLinkByTitle(String title, String graphUri) {
+
+        String prolog = "PREFIX dc: <http://purl.org/dc/terms/> " + NL +
+                "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>";
+
+        String queryString = prolog + NL +
+                "SELECT ?subject ?predicate ?object" +
+                " WHERE {" +
+                "graph <" + graphUri + "> " +
+                "{"
+                + " ?subject  dc:title  \"" + title + "\"" + " .\n"
+                + " ?subject   rdf:type <" + provone + "DataLink>"
+                + "}" +
+                "}";
+        return queryString;
+    }
+
     private String queryById(String id, String graphUri) {
 
         String prolog = "PREFIX dc: <http://purl.org/dc/terms/>";
@@ -194,6 +223,16 @@ public class SCUFLRetroToProspAttachment  {
         Property wasAssociatedWith = rdfUtility.wasAssociatedWith(processExecResource, workflowResource);
 //        Property isPartOf = rdfUtility.isPartOf(processExecResource, workflowResource);
         return processExecResource;
+
+        //}
+
+    }
+
+    private Resource createDataOnLink(Resource dataResource, Resource dataOnLinkResource) {
+
+        Property dataOnLink = rdfUtility.dataOnLink(dataResource, dataOnLinkResource);
+//        Property isPartOf = rdfUtility.isPartOf(processExecResource, workflowResource);
+        return dataResource;
 
         //}
 

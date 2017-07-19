@@ -94,6 +94,8 @@ public class RDFUtility {
         dataResource.addProperty(RDFS.label, label);
         Property typeProperty = model.createProperty(wfms + "type");
         dataResource.addProperty(typeProperty, type);
+        Property valueProperty = model.createProperty(prov + "value");
+        dataResource.addProperty(valueProperty, value);
         return dataResource;
 
     }
@@ -110,6 +112,12 @@ public class RDFUtility {
         return hadMemberProperty;
     }
 
+    public Property dataOnLink(Resource dataResource, Resource dataLink) {
+
+        Property dataOnLinkProperty = model.createProperty(provone + "dataOnLink");
+        dataResource.addProperty(dataOnLinkProperty, dataLink);
+        return dataOnLinkProperty;
+    }
 
     public Property wasDerivedFromData(Resource from_data, Resource to_data) {
 

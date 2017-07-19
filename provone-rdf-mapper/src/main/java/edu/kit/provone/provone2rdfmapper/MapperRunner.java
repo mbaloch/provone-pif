@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class MapperRunner {
 
-    public static void main(String args[]){
+    public static void main(String args[]) {
         final String wfprov = "http://purl.org/wf4ever/wfprov#";
         final String provone = "http://purl.org/provone#";
         final String type = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type";
@@ -25,37 +25,45 @@ public class MapperRunner {
         String ttlFilePath = resource.getFile();
         TavernaRetrospective2ProvONE scuflRetros2ProvONE = new TavernaRetrospective2ProvONE();
         List<Resource> processExeList = new ArrayList<Resource>();
-        StmtIterator iter= null;
-        Resource processExecResource=null;
-        SCUFLRetroToProspAttachment prospAttachment=null;
+        List<Resource> dataList = new ArrayList<Resource>();
+        StmtIterator iter = null;
+        Resource processExecResource = null;
+        SCUFLRetroToProspAttachment prospAttachment = null;
         Model retrospectiveRDFModel = null;
         Resource workflowResource = null;
 
-        boolean found=false;
+        boolean found = false;
         try {
             retrospectiveRDFModel = scuflRetros2ProvONE.getRetrospectiveRDFModel(ttlFilePath);
-            prospAttachment=new SCUFLRetroToProspAttachment(retrospectiveRDFModel);
-            iter= retrospectiveRDFModel.listStatements();
-                while ( iter.hasNext() ) {
-                    Statement stmt = iter.next();
-                    Resource s = stmt.getSubject();
-                    Resource p = stmt.getPredicate();
-                    RDFNode o = stmt.getObject();
-                    Property typeProperty = retrospectiveRDFModel.createProperty(type);
-                    Property processExec = retrospectiveRDFModel.createProperty(provone + "ProcessExec");
-                    Statement typeStatement = s.getProperty(typeProperty);
-                    if(typeStatement !=null && processExec.toString().equals(o.toString()) ) {
-                        processExeList.add(s);
-                    }
-                }
+            prospAttachment = new SCUFLRetroToProspAttachment(retrospectiveRDFModel);
+            iter = retrospectiveRDFModel.listStatements();
+            while (iter.hasNext()) {
+                Statement stmt = iter.next();
+                Resource s = stmt.getSubject();
+                Resource p = stmt.getPredicate();
+                RDFNode o = stmt.getObject();
+                Property typeProperty = retrospectiveRDFModel.createProperty(type);
+                Property processExec = retrospectiveRDFModel.createProperty(provone + "ProcessExec");
 
-    } catch (Exception e) {
+                Property typePropertyData = retrospectiveRDFModel.createProperty(type);
+                Property propertyData = retrospectiveRDFModel.createProperty(provone + "Data");
+
+                Statement typeStatement = s.getProperty(typeProperty);
+                Statement typeStatementData = s.getProperty(typePropertyData);
+
+                if (typeStatement != null && processExec.toString().equals(o.toString())) {
+                    processExeList.add(s);
+                } else if (typeStatementData != null && propertyData.toString().equals(o.toString())) {
+                    dataList.add(s);
+                }
+            }
+
+        } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (iter != null) iter.close();
         }
-     finally {
-        if ( iter != null ) iter.close();
-    }
-        for (Resource processExeResource: processExeList) {
+        for (Resource processExeResource : processExeList) {
 
             Property describedByWorkflowProperty = retrospectiveRDFModel.createProperty(wfprov + "describedByWorkflow");
             Statement property = processExeResource.getProperty(describedByWorkflowProperty);
@@ -63,20 +71,33 @@ public class MapperRunner {
             Property titleProperty = retrospectiveRDFModel.getProperty(DCTerms.title.toString());
             Statement titleStatement = processExeResource.getProperty(titleProperty);
 
-            if(property != null){
+            if (property != null) {
                 String workflowId = property.getObject().toString();
                 String processTitle = titleStatement.getObject().toString();
-                System.out.println("workflowTitle:"+processTitle);
-                prospAttachment.createWorkflowExecInstance(processExeResource,workflowId);
+                System.out.println("workflowTitle:" + processTitle);
+                prospAttachment.createWorkflowExecInstance(processExeResource, workflowId);
                 workflowResource = processExeResource;
-            }else{
+            } else {
                 String processTitle = titleStatement.getObject().toString();
-                System.out.println("Title Nromal:"+processTitle);
+                System.out.println("Title Nromal:" + processTitle);
                 prospAttachment.createProcessExecInstance(processExeResource, processTitle);
 
             }
         }
-        
+
+        for (Resource dataResource : dataList) {
+            System.out.println("Resource:" + dataResource);
+
+            Property titleProperty = retrospectiveRDFModel.getProperty(DCTerms.title.toString());
+            Statement titleStatement = dataResource.getProperty(titleProperty);
+            if (titleStatement != null) {
+                String dataTitle = titleStatement.getObject().toString();
+                System.out.println("Title Nromal:" + dataTitle);
+                prospAttachment.createDataOnLink(dataResource, dataTitle);
+            }
+
+
+        }
         prospAttachment.updateJena(workflowResource);
 
     }
