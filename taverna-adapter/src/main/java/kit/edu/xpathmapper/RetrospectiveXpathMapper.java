@@ -46,8 +46,8 @@ public class RetrospectiveXpathMapper {
 		util = new Utilities(rdfUtil);
 	}
 
-	public Model xpathParser(String filePath) {
-		generate = new GenerateProcessExe(this);
+	public Model xpathParser(String filePath, RetrospectiveXpathMapper retroclassobj) {
+		generate = new GenerateProcessExe(retroclassobj);
 		String ttlToRdf = util.transformTTl2RdfModel(filePath);
 		// String ttlToRdf = util.parseRdfModel(filePath);
 		xpathUtil.setXmlString(ttlToRdf);

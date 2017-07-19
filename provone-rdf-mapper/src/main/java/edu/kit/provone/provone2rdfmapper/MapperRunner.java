@@ -1,14 +1,14 @@
 package edu.kit.provone.provone2rdfmapper;
 
-import edu.kit.provone.provone2rdfmapper.utility.RDFUtility;
-import edu.kit.scufl.core.RDF;
-import edu.kit.scufl.mainapp.SCUFLRetro2ProvONE;
+
+import kit.edu.mainapp.TavernaRetrospective2ProvONE;
+import kit.edu.xpathmapper.RetrospectiveXpathMapper;
 import org.apache.jena.rdf.model.*;
 import org.apache.jena.vocabulary.DCTerms;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by mukhtar on 12.07.17.
@@ -20,7 +20,10 @@ public class MapperRunner {
         final String provone = "http://purl.org/provone#";
         final String type = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type";
 
-        SCUFLRetro2ProvONE scuflRetro2ProvONE = new SCUFLRetro2ProvONE();
+        ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+        URL resource = classLoader.getResource("halfHello_abcd.ttl");
+        String ttlFilePath = resource.getFile();
+        TavernaRetrospective2ProvONE scuflRetros2ProvONE = new TavernaRetrospective2ProvONE();
         List<Resource> processExeList = new ArrayList<Resource>();
         StmtIterator iter= null;
         Resource processExecResource=null;
@@ -30,9 +33,7 @@ public class MapperRunner {
 
         boolean found=false;
         try {
-            retrospectiveRDFModel =
-                    scuflRetro2ProvONE.getRetrospectiveRDFModel
-                            ("/home/mukhtar/IdeaProjects/provone-pif/provone-provenance/src/main/resources/workflowrun.new.ttl");
+            retrospectiveRDFModel = scuflRetros2ProvONE.getRetrospectiveRDFModel(ttlFilePath);
             prospAttachment=new SCUFLRetroToProspAttachment(retrospectiveRDFModel);
             iter= retrospectiveRDFModel.listStatements();
                 while ( iter.hasNext() ) {
@@ -40,33 +41,19 @@ public class MapperRunner {
                     Resource s = stmt.getSubject();
                     Resource p = stmt.getPredicate();
                     RDFNode o = stmt.getObject();
-//                    Property describedByWorkflowProperty = retrospectiveRDFModel.createProperty(wfprov + "describedByWorkflow");
-//                    Statement property = s.getProperty(describedByWorkflowProperty);
-
                     Property typeProperty = retrospectiveRDFModel.createProperty(type);
                     Property processExec = retrospectiveRDFModel.createProperty(provone + "ProcessExec");
                     Statement typeStatement = s.getProperty(typeProperty);
-//                    System.out.println("TypeStatement:"+typeStatement+"  typeproperty:"+typeProperty);
                     if(typeStatement !=null && processExec.toString().equals(o.toString()) ) {
-//                         workflowId = property.getObject().toString();
-                        processExecResource=s;
-//                        System.out.println("subject:"+s);
-//                        System.out.println("prediate:"+p);
-//                        System.out.println("object:"+o);
-//                        System.out.println("found at"+workflowId);
                         processExeList.add(s);
-//                        found=true;
                     }
                 }
-
-
 
     } catch (Exception e) {
             e.printStackTrace();
         }
      finally {
         if ( iter != null ) iter.close();
-//         if(found)   prospAttachment.createWorkflowExecInstance(processExecResource,workflowId);
     }
         for (Resource processExeResource: processExeList) {
 
@@ -89,15 +76,7 @@ public class MapperRunner {
 
             }
         }
-//        System.out.println(processExeList.size());
-//        for (Resource processExeResource: processExeList) {
-//            Property titleProperty = retrospectiveRDFModel.getProperty(DCTerms.title.toString());
-//            Statement titleStatement = processExeResource.getProperty(titleProperty);
-//            String processTitle = titleStatement.getObject().toString();
-//            System.out.println("Titles:"+processTitle);
-//        }
-      //  retrospectiveRDFModel.write(System.out);
-
+        
         prospAttachment.updateJena(workflowResource);
 
     }

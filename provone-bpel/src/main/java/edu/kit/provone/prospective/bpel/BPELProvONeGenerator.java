@@ -62,6 +62,7 @@ public class BPELProvONeGenerator {
         ClassLoader classLoader = ClassLoader.getSystemClassLoader();
         URL resource = classLoader.getResource("bpelAdd.bpel");
         String bpelFilePath = resource.getFile();
+
         Process process;
         File _bpelFile = new File(bpelFilePath);
 

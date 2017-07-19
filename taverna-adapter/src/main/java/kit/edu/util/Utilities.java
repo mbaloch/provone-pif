@@ -1,9 +1,6 @@
 package kit.edu.util;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.StringWriter;
+import java.io.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -64,22 +61,22 @@ public class Utilities {
 		StringWriter rdfXmlWriter = new StringWriter();
 		model.write(rdfXmlWriter, "RDF/XML-ABBREV");
 		// File file = new File("C://Users/Vaibhav/Desktop/fullAbcd_rdf.xml");
-		 File file = new File("C://Users/Vaibhav/Desktop/halfAbcd2_rdf.xml");
-//		File file = new File("C://Users/Vaibhav/Desktop/dockerAbcd_rdf.xml");
-		FileOutputStream out = null;
-		try {
-			out = new FileOutputStream(file);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		model.write(out, "RDF/XML-ABBREV");
+//		 File file = new File("C://Users/Vaibhav/Desktop/halfAbcd2_rdf.xml");
+////		File file = new File("C://Users/Vaibhav/Desktop/dockerAbcd_rdf.xml");
+//		FileOutputStream out = null;
+//		try {
+//			out = new FileOutputStream(file);
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		}
+//		model.write(out, "RDF/XML-ABBREV");
 		return rdfXmlWriter.toString();
 	}
 
 	public RDF parseRdfModel(String ttlFilePath) throws JAXBException {
-		// Source source = new StreamSource(new
-		// StringReader(transformTTl2RdfModel(ttlFilePath)));
-		Source source = new StreamSource(new File("C://Users/Vaibhav/Desktop/halfAbcd_rdf.xml"));
+		Source source = new StreamSource(new
+				StringReader(transformTTl2RdfModel(ttlFilePath)));
+//		Source source = new StreamSource(new File("C://Users/Vaibhav/Desktop/halfAbcd_rdf.xml"));
 		JAXBContext jaxbContext = JAXBContext.newInstance(RDF.class);
 		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 		JAXBElement<RDF> root = jaxbUnmarshaller.unmarshal(source, RDF.class);
@@ -106,9 +103,24 @@ public class Utilities {
 
 		String workflowID = getID(workflowRun.getAbout());
 		String workFlowName = workflowRun.getLabel().replaceAll("Workflow run of ", "");
+		String describedByWorkflowID = "";
+
+		if (null != workflowRun.getDescribedByWorkflow()) {
+			if (null != workflowRun.getDescribedByWorkflow().getResource()) {
+				workFlowName = getPath(workflowRun.getDescribedByWorkflow().getResource());
+				describedByWorkflowID = getWorkFlowID(workflowRun.getDescribedByWorkflow().getResource());
+			} else if (null != workflowRun.getDescribedByWorkflow().getPlan()) {
+//				workFlowName = getPath(workflowRun.getDescribedByWorkflow().getPlan().getAbout());
+				describedByWorkflowID = getWorkFlowID(workflowRun.getDescribedByWorkflow().getPlan().getAbout());
+			}
+		} else if (null != workflowRun.getDescribedByProcess()) {
+			workFlowName = getPath(workflowRun.getDescribedByProcess().getResource());
+		}
+
+
 
 		Resource workFlowResource = rdfUtil.createProcessExec(workflowID, workFlowName, workflowID,
-				workflowRun.getStartedAtTime(), workflowRun.getEndedAtTime(), "completed", workFlowName);
+				workflowRun.getStartedAtTime(), workflowRun.getEndedAtTime(), "completed", describedByWorkflowID);
 		return workFlowResource;
 	}
 
@@ -123,7 +135,7 @@ public class Utilities {
 			describedByProcess = getPath(workflowRun.getDescribedByProcess().getPlan().getAbout());
 		}
 		Resource subworkFlowResource = rdfUtil.createProcessExec(workflowID, describedByProcess, workflowID,
-				workflowRun.getStartedAtTime(), workflowRun.getEndedAtTime(), "completed", describedByProcess);
+				workflowRun.getStartedAtTime(), workflowRun.getEndedAtTime(), "completed", null);
 		return subworkFlowResource;
 	}
 

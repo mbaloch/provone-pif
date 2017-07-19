@@ -27,7 +27,7 @@ public class SCUFLRetroToProspAttachment  {
     static final String NL = System.getProperty("line.separator");
     static final String updateModelURI = "http://localhost:3030/kit/";
     static final String queryServiceURI = "http://localhost:3030/kit/sparql";
-    static final String graphUri = "http://kit.edu/scufl/f5fddb99-9677-43cb-aac5-4d14e1ad1b46";
+    static final String graphUri = "http://kit.edu/scufl/be1dc23f-fd59-43ea-b265-f0c3cc93e0cc";
     static final String wfms = "http://www.wfms.org/registry.xsd#";
     static final String provone = "http://purl.org/provone#";
     static final String prov = "http://www.w3.org/ns/prov#";

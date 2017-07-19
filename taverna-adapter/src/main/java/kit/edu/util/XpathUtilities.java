@@ -20,10 +20,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
+import javax.xml.xpath.*;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -56,7 +53,9 @@ public class XpathUtilities {
 			Document doc = dBuilder.parse(new InputSource(new StringReader(xmlString)));
 			doc.getDocumentElement().normalize();
 
-			XPath xPath = XPathFactory.newInstance().newXPath();
+			XPath xPath = XPathFactory.newInstance(XPathFactory.DEFAULT_OBJECT_MODEL_URI,
+					"net.sf.saxon.xpath.XPathFactoryImpl",
+					ClassLoader.getSystemClassLoader()).newXPath();
 
 			NodeList nodeList = (NodeList) xPath.compile(expression).evaluate(doc, XPathConstants.NODESET);
 			System.out.println("Total Size :" + nodeList.getLength());
@@ -68,6 +67,8 @@ public class XpathUtilities {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (XPathExpressionException e) {
+			e.printStackTrace();
+		} catch (XPathFactoryConfigurationException e) {
 			e.printStackTrace();
 		}
 		return null;

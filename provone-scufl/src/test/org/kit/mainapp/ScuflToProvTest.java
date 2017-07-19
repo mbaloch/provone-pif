@@ -7,6 +7,8 @@ package org.kit.mainapp;
 //import org.jboss.shrinkwrap.api.spec.JavaArchive;
 //import org.junit.runner.RunWith;
 
+import java.net.URL;
+
 import static org.junit.Assert.*;
 
 /**
@@ -17,7 +19,11 @@ public class ScuflToProvTest {
     @org.junit.Test
     public void parseCreateGraph() throws Exception {
         ScuflToProv toProv = new ScuflToProv();
-        toProv.parseCreateGraph("/home/mukhtar/IdeaProjects/provone-pif/provone-provenance/src/main/resources/Hello_abcd-v1.t2flow");
+        ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+        URL resource = classLoader.getResource("Hello_abcd_half.t2flow");
+        String t2flowFilePath = resource.getFile();
+
+        toProv.parseCreateGraph(t2flowFilePath);
 //        toProv.parseCreateGraph("F://KIT/Complete Projects/ScuflToProv/files/Hello_abcd_half.t2flow");
     }
 

@@ -358,6 +358,11 @@ public class ScuflToProv {
 		}
 
 		pathName.append(processorName+"/");
+        String newPath = pathName.toString();
+        if (newPath.endsWith("/")) {
+            return newPath.substring(0, newPath.length() - 1);
+        }
+
 		return pathName.toString();
 	}
 
@@ -366,7 +371,11 @@ public class ScuflToProv {
 		for (String processorNames : processNamePathStack) {
 			pathName.append(processorNames+"/");
 		}
-		return pathName.toString();
+        String newPath = pathName.toString();
+        if (newPath.endsWith("/")) {
+            return newPath.substring(0, newPath.length() - 1);
+        }
+        return pathName.toString();
 	}
 	private void ATTACHPORTS(Dataflow dtflw, Resource processDoc, boolean nestedFlag, String processUUID) {
 
