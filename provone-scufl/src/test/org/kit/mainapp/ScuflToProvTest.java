@@ -18,6 +18,7 @@ public class ScuflToProvTest {
     public void parseCreateGraph() throws Exception {
         ScuflToProv toProv = new ScuflToProv();
         toProv.parseCreateGraph("/home/mukhtar/IdeaProjects/provone-pif/provone-provenance/src/main/resources/Hello_abcd-v1.t2flow");
+//        toProv.parseCreateGraph("F://KIT/Complete Projects/ScuflToProv/files/Hello_abcd_half.t2flow");
     }
 
 //    @Deployment

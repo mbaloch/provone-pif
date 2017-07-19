@@ -343,6 +343,10 @@ public class RDFUtility {
 //        model.add(from_process_workflow,property,to_process_workflow);
     }
 
+    public void addProperty(Resource dataLinkDoc, String dataTitle) {
+        // TODO Auto-generated method stub
+        dataLinkDoc.addProperty(DCTerms.title, dataTitle);
+    }
     public Model getModel() {
         return this.model;
     }

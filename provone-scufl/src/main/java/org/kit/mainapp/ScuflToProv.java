@@ -247,6 +247,7 @@ public class ScuflToProv {
 				} else if (processorInOutSourceObj.getOutportMap().containsKey(sourceObj.getPort())) {
 					// code for RDF
 					Resource outport = processorInOutSourceObj.getOutportMap().get(sourceObj.getPort());
+					rdfUtility.addProperty(dataLinkDoc,processNamePathStack.peek()+"/processor/"+sourceObj.getProcessor()+"/out/"+sourceObj.getPort());
 					rdfUtility.outPortToDL(outport, dataLinkDoc);
 
 					sourcePOP = true;
@@ -266,6 +267,7 @@ public class ScuflToProv {
 					} else if (processorInOutSourceObj.getOutportMap().containsKey(sourceObj.getPort())) {
 						// code for RDF
 						Resource outport = processorInOutSourceObj.getOutportMap().get(sourceObj.getPort());
+						rdfUtility.addProperty(dataLinkDoc,processNamePathStack.peek()+"/processor/"+sourceObj.getProcessor()+"/out/"+sourceObj.getPort());
 						rdfUtility.outPortToDL(outport, dataLinkDoc);
 
 						sourcePOP = true;
