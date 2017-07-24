@@ -261,6 +261,22 @@ public class RetrospectiveXpathMapper {
 					String processorId = util.getID(entity.getWasOutputFrom().get(0).getResource());
 					String hadmemberId = util.getID(hadMember.getResource());
 					rdfUtil.wasGeneratedBy(dataMap.get(hadmemberId), processExeMap.get(processorId));
+
+					if(null!=entity.getDescribedByParameter()){
+						for (DescribedByParameter descByParam : entity.getDescribedByParameter()) {
+							if(null != descByParam.getResource()){
+								if (util.getPath(descByParam.getResource()).contains("/out/"))
+									rdfUtil.addProperty(dataMap.get(hadmemberId), util.getPath(descByParam.getResource()));
+							}else if(null != descByParam.getRole()){
+								if(null != descByParam.getRole().getAbout()){
+									if (util.getPath(descByParam.getRole().getAbout()).contains("/out/"))
+										rdfUtil.addProperty(dataMap.get(hadmemberId), util.getPath(descByParam.getRole().getAbout()));
+								}
+
+							}
+
+						}
+					}
 				}
 			}
 		}
