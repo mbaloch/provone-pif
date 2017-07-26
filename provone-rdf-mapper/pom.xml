@@ -44,6 +44,11 @@
         <artifactId>provone-bpel</artifactId>
         <version>${project.version}</version>
     </dependency>
+    <dependency>
+        <groupId>edu.kit</groupId>
+        <artifactId>apacheode-adapter</artifactId>
+        <version>${project.version}</version>
+    </dependency>
 
 </dependencies>
 </project>

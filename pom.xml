@@ -8,6 +8,10 @@
     <artifactId>provone-pif</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <properties>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+    </properties>
     <modules>
         <module>provone-bpel</module>
         <module>provone-scufl</module>

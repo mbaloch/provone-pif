@@ -13,22 +13,20 @@ import org.apache.xmlbeans.XmlObject;
 import org.w3c.dom.Node;
 import org.apache.axiom.om.*;
 import org.apache.ode.bpel.pmapi.*;
-import javax.xml.namespace.QName;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
 
-import static org.apache.jena.enhanced.BuiltinPersonalities.model;
+import javax.xml.namespace.QName;
+import java.util.*;
 
 /**
  * Created by MUKHTAR on 6/8/2017.
  */
-public class App {
+public class Ode2ProvONE {
     private ServiceClientUtil client = new ServiceClientUtil();
 
-    List<Data> getCommunicationbyInstanceId(String iid) throws AxisFault, XmlException {
-        List<Data> dataList=new ArrayList<>();
+    public Map<String, List<Data>> getCommunicationbyInstanceId(String iid) throws AxisFault, XmlException {
+        Map<String, List<Data>> dataList = new HashMap<>();
+        List<Data> inDataList = new ArrayList<>();
+        List<Data> outDataList = new ArrayList<>();
         String argumentsTypes[] = {"getCommunication"};
 
         OMFactory _factory = OMAbstractFactory.getOMFactory();
@@ -45,34 +43,37 @@ public class App {
         communicationResultFirstElement.setNamespace(pmns);
         //  System.out.println(nextChildElement);
 
-            GetCommunicationResponse getCommunicationResponse =
-                    GetCommunicationResponse.Factory.parse(communicationResult.getXMLStreamReader());
+        GetCommunicationResponse getCommunicationResponse =
+                GetCommunicationResponse.Factory.parse(communicationResult.getXMLStreamReader());
 //            GetCommunicationResponseDocument getCommunicationResponseDocument=
 //                    GetCommunicationResponseDocument.Factory.parse(communicationResult.getXMLStreamReader());
-            GetCommunicationResponseDocument getCommunicationResponseDocument2 =
-                    GetCommunicationResponseDocument.Factory.parse(communicationResultFirstElement.getXMLStreamReader());
+        GetCommunicationResponseDocument getCommunicationResponseDocument2 =
+                GetCommunicationResponseDocument.Factory.parse(communicationResultFirstElement.getXMLStreamReader());
 
 
-            CommunicationType[] restoreInstanceArray = getCommunicationResponseDocument2.getGetCommunicationResponse().getRestoreInstanceArray();
-            int length = restoreInstanceArray.length;
-            CommunicationType communicationType = restoreInstanceArray[0];
-            CommunicationType.Exchange[] exchangeArray = communicationType.getExchangeArray();
-            for (int i = 0; i < exchangeArray.length; i++) {
-                CommunicationType.Exchange exchange = exchangeArray[i];
-                String operation = exchange.getOperation();
-                XmlObject exchangeIn = exchange.getIn();
-                XmlObject exchangeOut = exchange.getOut();
-                parseExchange(exchangeIn.getDomNode(),operation,dataList);
-                parseExchange(exchangeOut.getDomNode(), operation, dataList);
-            }
+        CommunicationType[] restoreInstanceArray = getCommunicationResponseDocument2.getGetCommunicationResponse().getRestoreInstanceArray();
+        int length = restoreInstanceArray.length;
+        CommunicationType communicationType = restoreInstanceArray[0];
+        CommunicationType.Exchange[] exchangeArray = communicationType.getExchangeArray();
+        for (int i = 0; i < exchangeArray.length; i++) {
+            CommunicationType.Exchange exchange = exchangeArray[i];
+            String operation = exchange.getOperation();
+            XmlObject exchangeIn = exchange.getIn();
+            XmlObject exchangeOut = exchange.getOut();
+            parseExchange(exchangeIn.getDomNode(), operation, inDataList);
+            parseExchange(exchangeOut.getDomNode(), operation, outDataList);
+        }
+
+        dataList.put("inDataList", inDataList);
+        dataList.put("outDataList", outDataList);
 
         return dataList;
     }
 
     private void parseExchange(Node exchange, String operation, List<Data> dataList) {
 
-        for (int exchangeNodeFor=0; exchangeNodeFor< exchange.getChildNodes().getLength();exchangeNodeFor++){
-            if(exchange.getChildNodes().item(exchangeNodeFor).getNodeName().toString().equalsIgnoreCase("message")){
+        for (int exchangeNodeFor = 0; exchangeNodeFor < exchange.getChildNodes().getLength(); exchangeNodeFor++) {
+            if (exchange.getChildNodes().item(exchangeNodeFor).getNodeName().toString().equalsIgnoreCase("message")) {
                 completeParseMessage(exchange.getChildNodes().item(exchangeNodeFor), operation, dataList);
             }
         }
@@ -80,38 +81,34 @@ public class App {
 
     private void completeParseMessage(Node messageNode, String operation, List<Data> dataList) {
 
-        if(messageNode.hasChildNodes()){
-            for (int childNodes=0; childNodes<messageNode.getChildNodes().getLength();childNodes++){
+        if (messageNode.hasChildNodes()) {
+            for (int childNodes = 0; childNodes < messageNode.getChildNodes().getLength(); childNodes++) {
                 completeParseMessage(messageNode.getChildNodes().item(childNodes), operation, dataList);
             }
-        }else{
-            if(! messageNode.getParentNode().hasAttributes() || messageNode.getParentNode().getNamespaceURI().equals("")){
-            Data data=new Data();
-            String namespace=messageNode.getParentNode().getNamespaceURI();
-            if (namespace.equals("")){
-                namespace=messageNode.getParentNode().getParentNode().getNamespaceURI();
+        } else {
+            if (!messageNode.getParentNode().hasAttributes() || messageNode.getParentNode().getNamespaceURI().equals("")) {
+                Data data = new Data();
+                String namespace = messageNode.getParentNode().getNamespaceURI();
+                if (namespace.equals("")) {
+                    namespace = messageNode.getParentNode().getParentNode().getNamespaceURI();
+                }
+                String localName = messageNode.getParentNode().getParentNode().getLocalName();
+                QName qName = new QName(namespace, localName);
+                data.setVariableName(qName);
+                data.setLabel(messageNode.getParentNode().getLocalName());
+                data.setValue(messageNode.getNodeValue());
+                data.setOperationName(operation);
+                dataList.add(data);
             }
-            String localName=messageNode.getParentNode().getParentNode().getLocalName();
-            QName qName=new QName(namespace,localName);
-            data.setVariableName(qName);
-            data.setLabel(messageNode.getParentNode().getLocalName());
-            data.setValue(messageNode.getNodeValue());
-            data.setOperationName(operation);
-            dataList.add(data);
-//            System.out.println("++++++++++++++++++++++++++");
-//            System.out.println(" Data:" +data);
-//            System.out.println("++++++++++++++++++++++++++");
-        }
         }
 
     }
 
-    List<TEventInfo> getEventsByInstanceId(String iid) throws AxisFault, XmlException {
+    public List<TEventInfo> getEventsByInstanceId(String iid) throws AxisFault, XmlException {
 
         String argumentsTypes[] = {"instanceFilter", "eventFilter", "maxCount"};
         String argumentValues[] = {"iid=" + iid, "type=Act*", "0"};
         OMElement activityMessageBuild = getBuildMessage("listEvents", argumentsTypes, argumentValues);
-    //    System.out.println("Message:" + activityMessageBuild);
         OMElement activityResult = client.send(activityMessageBuild, "http://balochsoft.com:8888/ode/processes/InstanceManagement");
         OMElement activityEventList = activityResult.getFirstElement();
 
@@ -139,20 +136,9 @@ public class App {
                 Object next = childElements.next();
                 OMElement omElement = (OMElement) next;
                 EventInfoDocument eventInfoDocument = null;
-              //  try {
-                    eventInfoDocument = EventInfoDocument.Factory.parse(omElement.getXMLStreamReader());
-                    TEventInfo eventInfo = eventInfoDocument.getEventInfo();
-                    eventInfoList.add(eventInfo);
-              //  } catch (XmlException e) {
-               //     e.printStackTrace();
-             //   }
-
-
-//                String name = eventInfo.getName();
-//                long activityId = eventInfo.getActivityId();
-//                String operation = eventInfo.getOperation();
-//                String activityType = eventInfo.getActivityType();
-
+                eventInfoDocument = EventInfoDocument.Factory.parse(omElement.getXMLStreamReader());
+                TEventInfo eventInfo = eventInfoDocument.getEventInfo();
+                eventInfoList.add(eventInfo);
             }
 
         }
@@ -213,7 +199,7 @@ public class App {
                 objectRDFMapper.createProcessExecResource(processExec, workflowExecResource);
             }
         });
-        objectRDFMapper.getRdfUtility().getModel().write(System.out);
+        // objectRDFMapper.getRdfUtility().getModel().write(System.out);
         return objectRDFMapper.getRdfUtility().getModel();
 
     }
@@ -296,13 +282,18 @@ public class App {
 
 
     public static void main(String[] args) {
-        App app = new App();
+        Ode2ProvONE app = new Ode2ProvONE();
         try {
-             List<TEventInfo> eventsByInstanceId = app.getEventsByInstanceId("400");
+            List<TEventInfo> eventsByInstanceId = app.getEventsByInstanceId("400");
             // eventsByInstanceId.forEach(System.out::println);
             Model retrospectiveRDFModel = app.generateRetrospective(eventsByInstanceId);
-            List<Data> dataList = app.getCommunicationbyInstanceId("400");
-            System.out.println("testing");
+            Map<String, List<Data>> dataList = app.getCommunicationbyInstanceId("400");
+            List<Data> inDataList = dataList.get("inDataList");
+            List<Data> outDataList = dataList.get("outDataList");
+            System.out.println("inDataList");
+            inDataList.forEach(System.out::println);
+            System.out.println("outDataList");
+            outDataList.forEach(System.out::println);
         } catch (AxisFault axisFault) {
             axisFault.printStackTrace();
         } catch (XmlException e) {
@@ -310,5 +301,6 @@ public class App {
         }
 
     }
+
 
 }

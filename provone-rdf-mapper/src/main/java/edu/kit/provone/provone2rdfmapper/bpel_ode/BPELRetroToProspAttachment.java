@@ -38,11 +38,13 @@ public class BPELRetroToProspAttachment {
     }
     RDFUtility rdfUtility;
 
-    BPELRetroToProspAttachment(Model rdfModel) {
+    BPELRetroToProspAttachment(Model rdfModel, String prospectiveGraphId) {
         rdfUtility=new RDFUtility(rdfModel);
+        this.graphUri += prospectiveGraphId;
     }
-    public void updateJena(Resource retrospectiveResource){
-        insertResource(retrospectiveResource);
+
+    public void updateJena(Model updatedRetrospectiveModel) {
+        insertResource(updatedRetrospectiveModel);
     }
 
     public void createProcessExecInstance(Resource processExec,String title) {
@@ -257,13 +259,13 @@ public List<String> getAllVariableNames(){
 
 }
 
-    private void insertResource(Resource processExecResource) {
+    private void insertResource(Model updatedRetroModel) {
 
         DatasetAccessor accessor = DatasetAccessorFactory
                 .createHTTP(updateModelURI);
         //accessor.add(rdfUtility.getModel());
         //processExecResource.addProperty(processExecResource.getModel())
-        accessor.add(graphUri, processExecResource.getModel());
+        accessor.add(graphUri, updatedRetroModel);
     }
 
     private static String shortUUID() {
