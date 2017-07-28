@@ -24,22 +24,24 @@ import java.util.UUID;
  * Created by mukhtar on 06.03.17.
  */
 public class BPELRetroToProspAttachment {
-     final String NL = System.getProperty("line.separator");
-     final String updateModelURI = "http://localhost:3030/kit/";
-     final String queryServiceURI = "http://localhost:3030/kit/sparql";
-     String graphUri = "http://kit.edu/bpel/";
+    final String NL = System.getProperty("line.separator");
+    final String updateModelURI = "http://localhost:3030/kit/";
+    final String queryServiceURI = "http://localhost:3030/kit/sparql";
+    String graphUri = "http://kit.edu/bpel/";
     final String wfms = "http://www.wfms.org/registry.xsd#";
     final String provone = "http://purl.org/provone#";
     final String prov = "http://www.w3.org/ns/prov#";
     final String rpns = "http://kit.edu/rp/";
     final String ppns = "http://kit.edu/pp/";
-    BPELRetroToProspAttachment(String graphUri){
-        this.graphUri+=graphUri;
+
+    BPELRetroToProspAttachment(String graphUri) {
+        this.graphUri += graphUri;
     }
+
     RDFUtility rdfUtility;
 
     BPELRetroToProspAttachment(Model rdfModel, String prospectiveGraphId) {
-        rdfUtility=new RDFUtility(rdfModel);
+        rdfUtility = new RDFUtility(rdfModel);
         this.graphUri += prospectiveGraphId;
     }
 
@@ -47,54 +49,45 @@ public class BPELRetroToProspAttachment {
         insertResource(updatedRetrospectiveModel);
     }
 
-    public void createProcessExecInstance(Resource processExec,String title) {
+    public void createProcessExecInstance(Resource processExec, String title) {
         String queryByTitle = queryByTitle(title, graphUri);
-//        String queryById = queryById(processExec.getProcessInstanceId(), graphUri);
         System.out.println("query by title:" + queryByTitle);
-//        System.out.println("query by id:" + queryById);
         Resource associatedWithProcessResource = getResource(queryByTitle, queryServiceURI);
-//        Resource workflowExecResource = getResource(queryById, queryServiceURI);
         Resource processExecResource = createProcessExecResource(processExec, associatedWithProcessResource);
 
-  //      insertResource(processExecResource);
+        //      insertResource(processExecResource);
     }
 
-    public void createWorkflowExecInstance(Resource processExec,String workflowId) {
-        String queryString=queryById(workflowId, graphUri);
+    public void createWorkflowExecInstance(Resource processExec, String workflowId) {
+        String queryString = queryById(workflowId, graphUri);
         System.out.println("query:" + queryString);
         Resource workflowResource = getResource(queryString, queryServiceURI);
-        Resource processExecResource=rdfUtility.wasAssociatedWith(processExec,workflowResource);
+        Resource processExecResource = rdfUtility.wasAssociatedWith(processExec, workflowResource);
 
         //  insertResource(processExecResource);
 
     }
 
-
-    public void createChildProcessInstance(String parentProcessUUID, String currentProcess, ProcessExec processInfo) {
-
-    }
-
-
     public void updateProcessStatus(ProcessExec processInfo) {
-        String querySubject ;
-        if (processInfo.getId().equals(processInfo.getProcessInstanceId())){
-            querySubject=queryById(processInfo.getId(), graphUri);
-        }else {
-            querySubject=queryActivityById(processInfo.getId(), graphUri);
+        String querySubject;
+        if (processInfo.getId().equals(processInfo.getProcessInstanceId())) {
+            querySubject = queryById(processInfo.getId(), graphUri);
+        } else {
+            querySubject = queryActivityById(processInfo.getId(), graphUri);
         }
 
         System.out.println("query ActivityById:" + querySubject);
         Resource activityResource = getResource(querySubject, queryServiceURI);
 
-        String delteQuery="PREFIX wfms: <"+wfms+">"+NL+
-                "Delete data {graph <"+graphUri+"> { <"+activityResource+ "> wfms:completed \"false\"}}";
+        String delteQuery = "PREFIX wfms: <" + wfms + ">" + NL +
+                "Delete data {graph <" + graphUri + "> { <" + activityResource + "> wfms:completed \"false\"}}";
 
-        String insertQuery="PREFIX wfms: <"+wfms+">"+NL+
-                "Insert data {graph <"+graphUri+"> { <"+activityResource+ "> wfms:completed \"true\"}}";
+        String insertQuery = "PREFIX wfms: <" + wfms + ">" + NL +
+                "Insert data {graph <" + graphUri + "> { <" + activityResource + "> wfms:completed \"true\"}}";
 
-        String insertEndTimeQuery="PREFIX wfms: <"+wfms+">"+NL+
-                "PREFIX prov: <"+prov+">"+NL+
-                "Insert data {graph <"+graphUri+"> { <"+activityResource+ "> prov:endTime \""+processInfo.getEndTime()+"\"}}";
+        String insertEndTimeQuery = "PREFIX wfms: <" + wfms + ">" + NL +
+                "PREFIX prov: <" + prov + ">" + NL +
+                "Insert data {graph <" + graphUri + "> { <" + activityResource + "> prov:endTime \"" + processInfo.getEndTime() + "\"}}";
 
         //System.out.println("insert query"+insertQuery);
         //System.out.println("delete query"+delteQuery);
@@ -103,7 +96,7 @@ public class BPELRetroToProspAttachment {
         request.add(insertQuery);
         request.add(insertEndTimeQuery);
 
-       // String ServiceURI="http://localhost:3030/tdb/";
+        // String ServiceURI="http://localhost:3030/tdb/";
 
         //   UpdateRequest create = UpdateFactory.create(queryStringInsert);
         UpdateProcessor createRemote = UpdateExecutionFactory.createRemote(request, updateModelURI);
@@ -111,12 +104,38 @@ public class BPELRetroToProspAttachment {
     }
 
 
-    public void processProducedData(String workflowId, String processId, Data data) {
+    public void processProducedData(Resource processResource, Resource dataResource) {
+        rdfUtility.wasGeneratedBy(dataResource, processResource);
+    }
 
+    public void createDataOnLink(Resource dataLinkResource, Resource dataResource) {
+        rdfUtility.dataOnLink(dataResource, dataLinkResource);
+    }
+
+    public Resource createData(String variableName, String particleName, String value) {
+        UUID uuid = UUID.randomUUID();
+        return rdfUtility.createData(uuid.toString(), variableName, particleName, value);
     }
 
 
-    public void processConsumedData(String workflowId, String processId, Data data) {
+    public void processConsumedData(Resource processResource, Resource dataResource) {
+        rdfUtility.used(processResource, dataResource);
+    }
+
+    private String queryGetDLByVariable(String variableName, String particleName) {
+        String prolog = "PREFIX dc: <http://purl.org/dc/terms/>";
+        String queryString = prolog + NL +
+                "SELECT ?subject ?predicate ?object" +
+                " WHERE {" +
+                "graph <" + graphUri + "> " +
+                "{ "
+                + " ?subject <http://www.wfms.org/registry.xsd#signature> \"" + particleName + "\" ." + NL
+                + " ?subject  dc:title  \"" + variableName + "\" ." + NL
+                + " ?object <http://purl.org/provone#DLToInPort> ?subject ." + NL
+                + " }" +
+                " }";
+
+        return queryString;
 
     }
 
@@ -188,20 +207,8 @@ public class BPELRetroToProspAttachment {
     }
 
     private Resource createProcessExecResource(Resource processExecResource, Resource workflowResource) {
-        //if (subject != null) {
-//        if (processExec.getCompleted() == null)
-//            processExec.setCompleted(false);
-//        RDFUtilityOld rdfUtility = new RDFUtilityOld();
-//        Resource processExecResource = rdfUtility.createProcessExec(
-//                shortUUID(), processExec.getTitle(), processExec.getId()
-//                , processExec.getStartTime(), processExec.getEndTime(),
-//                processExec.getCompleted().toString());
         Property wasAssociatedWith = rdfUtility.wasAssociatedWith(processExecResource, workflowResource);
-//        Property isPartOf = rdfUtility.isPartOf(processExecResource, workflowResource);
         return processExecResource;
-
-        //}
-
     }
 
     private Resource createWorkflowExecResource(Resource subject, ProcessExec processExec) {
@@ -219,45 +226,46 @@ public class BPELRetroToProspAttachment {
         //}
 
     }
-public List<String> getAllVariableNames(){
-    String prolog = "PREFIX wfms: <" + wfms + ">";
-    String queryString = prolog + NL +
-            "SELECT ?varNames" +
-            " WHERE {" +
-            "graph <" + graphUri + "> " +
-            "{"+
-    "{?subject <http://purl.org/provone#hasOutPort> ?object.} "+
-        "Union"+
-        " {?subject <http://purl.org/provone#hasInPort> ?object }. "+
-    " ?object <http://purl.org/dc/terms/title> ?varNames "+
-            "}" +
-            "}";
-    List<String> varResult=new ArrayList<>();
-    Query query = QueryFactory.create(queryString);
-    Resource result = null;
 
-    try (QueryExecution qexec = QueryExecutionFactory.sparqlService(queryServiceURI, query)) {
-        ((QueryEngineHTTP) qexec).addParam("timeout", "10000");
+    public List<String> getAllVariableNames() {
+        String prolog = "PREFIX wfms: <" + wfms + ">";
+        String queryString = prolog + NL +
+                "SELECT ?varNames" +
+                " WHERE {" +
+                "graph <" + graphUri + "> " +
+                "{" +
+                "{?subject <http://purl.org/provone#hasOutPort> ?object.} " +
+                "Union" +
+                " {?subject <http://purl.org/provone#hasInPort> ?object }. " +
+                " ?object <http://purl.org/dc/terms/title> ?varNames " +
+                "}" +
+                "}";
+        List<String> varResult = new ArrayList<>();
+        Query query = QueryFactory.create(queryString);
+        Resource result = null;
 
-        // Execute.
-        ResultSet rs = qexec.execSelect();
-        //  ResultSetFormatter.out(System.out, rs, query);
-        for (; rs.hasNext(); ) {
-            QuerySolution rb = rs.nextSolution();
+        try (QueryExecution qexec = QueryExecutionFactory.sparqlService(queryServiceURI, query)) {
+            ((QueryEngineHTTP) qexec).addParam("timeout", "10000");
 
-            // Get title - variable names do not include the '?' (or '$')
-            RDFNode x = rb.get("varNames");
-            if (x.isLiteral()) {
-               // return x.asResource();
-                varResult.add(x.asLiteral().toString());
+            // Execute.
+            ResultSet rs = qexec.execSelect();
+            //  ResultSetFormatter.out(System.out, rs, query);
+            for (; rs.hasNext(); ) {
+                QuerySolution rb = rs.nextSolution();
+
+                // Get title - variable names do not include the '?' (or '$')
+                RDFNode x = rb.get("varNames");
+                if (x.isLiteral()) {
+                    // return x.asResource();
+                    varResult.add(x.asLiteral().toString());
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-    return varResult;
+        return varResult;
 
-}
+    }
 
     private void insertResource(Model updatedRetroModel) {
 

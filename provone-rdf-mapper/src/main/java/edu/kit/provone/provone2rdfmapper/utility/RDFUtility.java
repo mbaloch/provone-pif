@@ -88,12 +88,23 @@ public class RDFUtility {
 //        return processExecResource;
 //    }
 
-    public Resource createData(String dataId, String label, String type, String value) {
+    //    public Resource createData(String dataId, String label, String type, String value) {
+//        Resource dataResource = model.createResource(nsr + "Data_" + dataId);
+//        dataResource.addProperty(RDF.type, model.createResource(provone + "Data"));
+//        dataResource.addProperty(RDFS.label, label);
+//        Property typeProperty = model.createProperty(wfms + "type");
+//        dataResource.addProperty(typeProperty, type);
+//        Property valueProperty = model.createProperty(prov + "value");
+//        dataResource.addProperty(valueProperty, value);
+//        return dataResource;
+//
+//    }
+    public Resource createData(String dataId, String variableName, String particleName, String value) {
         Resource dataResource = model.createResource(nsr + "Data_" + dataId);
         dataResource.addProperty(RDF.type, model.createResource(provone + "Data"));
-        dataResource.addProperty(RDFS.label, label);
+        dataResource.addProperty(RDFS.label, variableName);
         Property typeProperty = model.createProperty(wfms + "type");
-        dataResource.addProperty(typeProperty, type);
+        dataResource.addProperty(typeProperty, particleName);
         Property valueProperty = model.createProperty(prov + "value");
         dataResource.addProperty(valueProperty, value);
         return dataResource;

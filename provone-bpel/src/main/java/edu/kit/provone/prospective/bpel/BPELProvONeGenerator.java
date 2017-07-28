@@ -128,7 +128,7 @@ public class BPELProvONeGenerator {
                     objectResourceMap.put(provOneProcess, process);
                     if (provOneProcess.getActivityType() != null && provOneProcess.getActivityType().equals("receive")) {
                         String uuid2 = UUID.randomUUID().toString();
-                        Resource workflowResource = rdfUtility.createProcess(uuid2, bpelProcessObject.getQName().toString(), null);
+                        Resource workflowResource = rdfUtility.createWorkflow(uuid2, bpelProcessObject.getQName().toString());
                         String uuid3 = UUID.randomUUID().toString();
                         Resource scl = rdfUtility.createSeqCtrlLink(workflowResource, process, uuid3);
                         rdfUtility.CLtoDestP(process, scl);

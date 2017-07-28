@@ -41,14 +41,17 @@ public class RDFUtility {
             process.addProperty(operationProperty,activityOperation);
         }
 
-        //  Property operationName=model.createProperty()
-        // process.addProperty(property,"gov.llnl.uvcdat.cdms");
-
-        //    model.write(System.out);
-        // model.write(System.out,"Turtle");
-        //       Property subProcessProperty=model.createProperty(provone+"hasSubProcess");
-        //       model.add(workflow,subProcessProperty,process);
         return process;
+    }
+
+    public Resource createWorkflow(String workflowId, String workflowTitle) {
+
+        Resource workflow = model.createResource(ns + "workflow_" + workflowId);
+        workflow.addProperty(RDF.type, model.createResource(provone + "Workflow"));
+        workflow.addProperty(DCTerms.identifier, workflowId);
+        workflow.addProperty(DCTerms.title, workflowTitle);
+
+        return workflow;
     }
 
     public Resource createInputPort(String inputPortId, String variableName, String variableType) {
@@ -112,16 +115,7 @@ public class RDFUtility {
         return seqCtrlLink;
     }
 
-    public Resource createWorkflow(String workflowId, String workflowTitle) {
 
-        Resource workflow = model.createResource(ns + workflowId);
-        workflow.addProperty(RDF.type, model.createResource(provone + "Workflow"));
-        workflow.addProperty(DCTerms.identifier, workflowId);
-        workflow.addProperty(DCTerms.title, workflowTitle);
-        //   model.write(System.out);
-        //model.write(System.out,"Turtle");
-        return workflow;
-    }
 
     public Resource createUser() {
 

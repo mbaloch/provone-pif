@@ -27,6 +27,8 @@ public class Ode2ProvONE {
         Map<String, List<Data>> dataList = new HashMap<>();
         List<Data> inDataList = new ArrayList<>();
         List<Data> outDataList = new ArrayList<>();
+        List<Data> inDataListWorkflow = new ArrayList<>();
+        List<Data> outDataListWorkflow = new ArrayList<>();
         String argumentsTypes[] = {"getCommunication"};
 
         OMFactory _factory = OMAbstractFactory.getOMFactory();
@@ -55,17 +57,29 @@ public class Ode2ProvONE {
         int length = restoreInstanceArray.length;
         CommunicationType communicationType = restoreInstanceArray[0];
         CommunicationType.Exchange[] exchangeArray = communicationType.getExchangeArray();
+        System.out.println("exchange array:" + exchangeArray);
         for (int i = 0; i < exchangeArray.length; i++) {
             CommunicationType.Exchange exchange = exchangeArray[i];
-            String operation = exchange.getOperation();
-            XmlObject exchangeIn = exchange.getIn();
-            XmlObject exchangeOut = exchange.getOut();
-            parseExchange(exchangeIn.getDomNode(), operation, inDataList);
-            parseExchange(exchangeOut.getDomNode(), operation, outDataList);
+            ExchangeType.Enum exchangeType = exchange.getType();
+            if (exchangeType == ExchangeType.M) {
+                String operationWorkflow = exchange.getOperation();
+                XmlObject exchangeInWorkflow = exchange.getIn();
+                XmlObject exchangeOutWorkflow = exchange.getOut();
+                parseExchange(exchangeInWorkflow.getDomNode(), operationWorkflow, inDataListWorkflow);
+                parseExchange(exchangeOutWorkflow.getDomNode(), operationWorkflow, outDataListWorkflow);
+            } else if (exchangeType == ExchangeType.P) {
+                String operation = exchange.getOperation();
+                XmlObject exchangeIn = exchange.getIn();
+                XmlObject exchangeOut = exchange.getOut();
+                parseExchange(exchangeIn.getDomNode(), operation, inDataList);
+                parseExchange(exchangeOut.getDomNode(), operation, outDataList);
+            }
         }
 
         dataList.put("inDataList", inDataList);
         dataList.put("outDataList", outDataList);
+        dataList.put("inDataListWorkflow", inDataListWorkflow);
+        dataList.put("outDataListWorkflow", outDataListWorkflow);
 
         return dataList;
     }
