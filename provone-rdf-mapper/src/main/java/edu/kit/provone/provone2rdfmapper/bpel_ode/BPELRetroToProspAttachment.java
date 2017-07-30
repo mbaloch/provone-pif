@@ -50,7 +50,7 @@ public class BPELRetroToProspAttachment {
     }
 
     public void createProcessExecInstance(Resource processExec, String title) {
-        String queryByTitle = queryByTitle(title, graphUri);
+        String queryByTitle = queryProcessByTitle(title, graphUri);
         System.out.println("query by title:" + queryByTitle);
         Resource associatedWithProcessResource = getResource(queryByTitle, queryServiceURI);
         Resource processExecResource = createProcessExecResource(processExec, associatedWithProcessResource);
@@ -105,7 +105,19 @@ public class BPELRetroToProspAttachment {
 
 
     public void processProducedData(Resource processResource, Resource dataResource) {
-        rdfUtility.wasGeneratedBy(dataResource, processResource);
+        String query = queryProcessExecByProcessResource(processResource);
+        Resource processExecResource = getResource(query, queryServiceURI);
+        rdfUtility.wasGeneratedBy(dataResource, processExecResource);
+    }
+
+    public void processConsumedData(Resource processResource, Resource dataResource) {
+
+        String query = queryProcessExecByProcessResource(processResource);
+        System.out.println("query process exec via process resource:");
+        System.out.println(query);
+        Resource processExecResource = getResource(query, queryServiceURI);
+        Resource processExecModelResource = rdfUtility.getModel().getResource(processExecResource.toString());
+        rdfUtility.used(processExecModelResource, dataResource);
     }
 
     public void createDataOnLink(Resource dataLinkResource, Resource dataResource) {
@@ -118,8 +130,18 @@ public class BPELRetroToProspAttachment {
     }
 
 
-    public void processConsumedData(Resource processResource, Resource dataResource) {
-        rdfUtility.used(processResource, dataResource);
+    private String queryProcessExecByProcessResource(Resource process) {
+        String prolog = "PREFIX dc: <http://purl.org/dc/terms/>";
+        String queryString = prolog + NL +
+                "SELECT ?subject ?predicate ?object" +
+                " WHERE {" +
+                "graph <" + graphUri + "> " +
+                "{ "
+                + " ?subject <http://www.w3.org/ns/prov#wasAssociatedWith> <" + process + ">." + NL
+                + " }" +
+                " }";
+
+        return queryString;
     }
 
     private String queryGetDLByVariable(String variableName, String particleName) {
@@ -149,6 +171,23 @@ public class BPELRetroToProspAttachment {
                 "{"
                 + "?subject  dc:title  \"" + title + "\"" +
                 "}" +
+                "}";
+        return queryString;
+    }
+
+    private String queryProcessByTitle(String title, String graphUri) {
+
+        String prolog = "PREFIX dc: <http://purl.org/dc/terms/>";
+        String queryString = prolog + NL +
+                "SELECT ?subject ?predicate ?object" +
+                " WHERE {" +
+                "graph <" + graphUri + "> " +
+                "{"
+                + "   ?subject  dc:title  \"" + title + "\"."
+                + " { ?subject  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/provone#Process> .}"
+                + " UNION "
+                + " { ?subject  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/provone#Workflow> .}"
+                + "}" +
                 "}";
         return queryString;
     }

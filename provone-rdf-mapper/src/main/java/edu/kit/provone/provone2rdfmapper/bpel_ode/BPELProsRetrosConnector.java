@@ -40,8 +40,8 @@ public class BPELProsRetrosConnector {
             Map<String, List<Data>> dataList = ode2ProvONE.getCommunicationbyInstanceId("400");
             //dataList.stream().forEach(System.out::println);
 //            System.out.println("testing");
-            attachDataToModel(retrospectiveRDFModel, prospAttachment, dataList, prospectiveGraphID);
             attachProspectiveAndRetrospective(retrospectiveRDFModel, prospAttachment);
+            attachDataToModel(retrospectiveRDFModel, prospAttachment, dataList, prospectiveGraphID);
 
 
         } catch (AxisFault axisFault) {
@@ -167,12 +167,17 @@ public class BPELProsRetrosConnector {
             String variableParitcle = data.getLabel();
             String value = data.getValue();
             sourceProcessToDestProcesses.forEach(sourceProcessToDestP -> {
+                String sourceProcessOperationTitle = sourceProcessToDestP.getSourceProcessOperationTitle();
+                String inputPortVariableName = sourceProcessToDestP.getOutputPortVariableName();
+                String inputVariableParticleName = sourceProcessToDestP.getOutputVariableParticleName();
                 if (sourceProcessToDestP.getSourceProcessOperationTitle().equals(operationName) &&
-                        sourceProcessToDestP.getInputPortVariableName().equals(variableName) &&
-                        sourceProcessToDestP.getInputVariableParticleName().equals(variableParitcle)) {
+                        sourceProcessToDestP.outputPortVariableName.equals(variableName) &&
+                        sourceProcessToDestP.getOutputVariableParticleName().equals(variableParitcle)) {
 
                     Resource dataResouce = bpelRetroToProspAttachment.createData(variableName, variableParitcle, value);
                     bpelRetroToProspAttachment.createDataOnLink(sourceProcessToDestP.getDataLink(), dataResouce);
+                    bpelRetroToProspAttachment.processProducedData(sourceProcessToDestP.getSourceProcess(), dataResouce);
+                    bpelRetroToProspAttachment.processConsumedData(sourceProcessToDestP.getDestinationProcess(), dataResouce);
 
                 }
             });
@@ -183,12 +188,17 @@ public class BPELProsRetrosConnector {
             String variableParitcle = data.getLabel();
             String value = data.getValue();
             sourceProcessToDestProcesses.forEach(sourceProcessToDestP -> {
+                String sourceProcessOperationTitle = sourceProcessToDestP.getSourceProcessOperationTitle();
+                String inputPortVariableName = sourceProcessToDestP.getOutputPortVariableName();
+                String inputVariableParticleName = sourceProcessToDestP.getOutputVariableParticleName();
                 if (sourceProcessToDestP.getSourceProcessOperationTitle().equals(operationName) &&
-                        sourceProcessToDestP.getInputPortVariableName().equals(variableName) &&
-                        sourceProcessToDestP.getInputVariableParticleName().equals(variableParitcle)) {
+                        sourceProcessToDestP.getOutputPortVariableName().equals(variableName) &&
+                        sourceProcessToDestP.getOutputVariableParticleName().equals(variableParitcle)) {
 
                     Resource dataResouce = bpelRetroToProspAttachment.createData(variableName, variableParitcle, value);
                     bpelRetroToProspAttachment.createDataOnLink(sourceProcessToDestP.getDataLink(), dataResouce);
+                    bpelRetroToProspAttachment.processProducedData(sourceProcessToDestP.getSourceProcess(), dataResouce);
+                    bpelRetroToProspAttachment.processConsumedData(sourceProcessToDestP.getDestinationProcess(), dataResouce);
 
                 }
             });

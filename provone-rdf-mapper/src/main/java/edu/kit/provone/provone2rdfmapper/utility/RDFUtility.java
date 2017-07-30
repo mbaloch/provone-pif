@@ -19,7 +19,7 @@ public class RDFUtility {
     final String nsp = "http://kit.edu/pp/";
     final String wfms = "http://www.wfms.org/registry.xsd#";
     final String wfprov = "http://purl.org/wf4ever/wfprov#";
-     Model model = ModelFactory.createDefaultModel();
+    Model model;//= ModelFactory.createDefaultModel();
 
     public RDFUtility() {
         model.setNsPrefix("provone", provone);
@@ -167,12 +167,14 @@ public class RDFUtility {
 
         Property usedProperty = model.createProperty(prov + "used");
         processExec.addProperty(usedProperty, data);
+
         return usedProperty;
     }
     public Property wasGeneratedBy( Resource data,Resource processExec) {
 
         Property wasGeneratedByProperty = model.createProperty(prov + "wasGeneratedBy");
         data.addProperty(wasGeneratedByProperty, processExec);
+
         return wasGeneratedByProperty;
     }
 //Methods for prospective provenance
