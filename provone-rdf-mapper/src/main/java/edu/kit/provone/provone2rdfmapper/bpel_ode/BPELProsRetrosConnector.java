@@ -178,6 +178,7 @@ public class BPELProsRetrosConnector {
                     bpelRetroToProspAttachment.createDataOnLink(sourceProcessToDestP.getDataLink(), dataResouce);
                     bpelRetroToProspAttachment.processProducedData(sourceProcessToDestP.getSourceProcess(), dataResouce);
                     bpelRetroToProspAttachment.processConsumedData(sourceProcessToDestP.getDestinationProcess(), dataResouce);
+                    bpelRetroToProspAttachment.wasInfromedBy(sourceProcessToDestP.getDestinationProcess(), sourceProcessToDestP.getSourceProcess());
 
                 }
             });
@@ -199,6 +200,7 @@ public class BPELProsRetrosConnector {
                     bpelRetroToProspAttachment.createDataOnLink(sourceProcessToDestP.getDataLink(), dataResouce);
                     bpelRetroToProspAttachment.processProducedData(sourceProcessToDestP.getSourceProcess(), dataResouce);
                     bpelRetroToProspAttachment.processConsumedData(sourceProcessToDestP.getDestinationProcess(), dataResouce);
+                    bpelRetroToProspAttachment.wasInfromedBy(sourceProcessToDestP.getDestinationProcess(), sourceProcessToDestP.getSourceProcess());
 
                 }
             });

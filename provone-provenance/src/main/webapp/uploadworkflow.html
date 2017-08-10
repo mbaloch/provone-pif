@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> Workflow package Upload</title>
+</head>
+
+<center>
+    <b>Workflow package Upload</b>
+    <h4>Uploading workflow</h4>
+    <div style="width: 400px; border: 1px solid blue; padding: 20px; text-align: center;">
+        <form method="post" action="api/deploy/upload/zip" enctype="multipart/form-data">
+            <table align="center" border="1" bordercolor="black" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td>Select Workflow Zip Package :</td>
+                    <td><input type="file" name="workflowPackage" size="100"/></td>
+                </tr>
+                <tr>
+                    <td><input type="submit" value="Upload File"/></td>
+                    <td><input type="reset" value="Reset"/></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</center>
+</body>
+</html>

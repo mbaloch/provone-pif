@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArquillianContainersManager">
+    <container containerId="container.arquillian.remote.wildFly" name="WildFly Remote">
+      <maven-library groupId="org.wildfly.arquillian" artifactId="wildfly-arquillian-container-remote" version="RELEASE" />
+    </container>
+  </component>
+</project>

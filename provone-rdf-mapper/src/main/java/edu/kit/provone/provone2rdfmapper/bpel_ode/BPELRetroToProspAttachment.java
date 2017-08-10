@@ -321,4 +321,17 @@ public class BPELRetroToProspAttachment {
         return Long.toString(l, Character.MAX_RADIX);
     }
 
+    public void wasInfromedBy(Resource destinationProcess, Resource sourceProcess) {
+
+        String queryDest = queryProcessExecByProcessResource(destinationProcess);
+        String querySource = queryProcessExecByProcessResource(sourceProcess);
+
+        Resource destProcessExecResource = getResource(queryDest, queryServiceURI);
+        Resource sourceProcessExecResource = getResource(querySource, queryServiceURI);
+
+        Resource destProcessExecModelResource = rdfUtility.getModel().getResource(destProcessExecResource.toString());
+        Resource sourceProcessExecModelResource = rdfUtility.getModel().getResource(sourceProcessExecResource.toString());
+        rdfUtility.wasInformedBy(sourceProcessExecModelResource, destProcessExecModelResource);
+
+    }
 }

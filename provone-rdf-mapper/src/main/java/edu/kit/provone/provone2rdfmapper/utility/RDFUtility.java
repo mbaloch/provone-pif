@@ -137,10 +137,10 @@ public class RDFUtility {
         return wasDerivedFromDataProperty;
     }
 
-    public Property wasInformedBy(Resource processExec1, Resource processExec2) {
+    public Property wasInformedBy(Resource sourceProcessExec, Resource targetProcessExec) {
 
         Property wasInformedByProperty = model.createProperty(prov + "wasInformedBy");
-        processExec2.addProperty(wasInformedByProperty, processExec1);
+        targetProcessExec.addProperty(wasInformedByProperty, sourceProcessExec);
         return wasInformedByProperty;
     }
 
