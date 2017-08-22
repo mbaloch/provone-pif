@@ -15,6 +15,12 @@
         <groupId>org.apache.ode</groupId>
         <artifactId>ode-bpel-api</artifactId>
         <version>1.3.7</version>
+        <exclusions>
+            <exclusion>
+                <artifactId>axis2-transports</artifactId>
+                <groupId>org.apache.axis2</groupId>
+            </exclusion>
+        </exclusions>
     </dependency>
     <dependency>
         <groupId>org.apache.jena</groupId>

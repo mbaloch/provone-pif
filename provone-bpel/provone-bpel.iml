@@ -47,7 +47,6 @@
     <orderEntry type="library" name="Maven: org.apache.woden:woden-api:1.0M9" level="project" />
     <orderEntry type="library" name="Maven: org.apache.woden:woden-impl-dom:1.0M9" level="project" />
     <orderEntry type="library" name="Maven: org.apache.woden:woden-impl-commons:1.0M9" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.axis2:axis2-transports:1.0-i6" level="project" />
     <orderEntry type="library" name="Maven: org.apache.axis2:axis2-transport-http:1.5.6" level="project" />
     <orderEntry type="library" name="Maven: org.apache.axis2:axis2-transport-local:1.5.6" level="project" />
     <orderEntry type="library" name="Maven: org.apache.axis2:axis2-transport-tcp:1.0.0" level="project" />

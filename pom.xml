@@ -12,6 +12,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
     </properties>
+
     <modules>
         <module>provone-bpel</module>
         <module>provone-scufl</module>

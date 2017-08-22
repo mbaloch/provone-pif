@@ -1,6 +1,7 @@
 package edu.kit.provoneprovenance.repository;
 
 import edu.kit.provoneprovenance.model.BPELdeployment;
+import edu.kit.provoneprovenance.model.PackageType;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -28,7 +29,7 @@ public class BPELdeploymentRepositoryTest {
     public void create() throws Exception {
         assertEquals(Long.valueOf(0), bpeLdeploymentRepository.countAll());
         assertEquals(0, bpeLdeploymentRepository.findAll().size());
-        BPELdeployment bpeLdeployment = new BPELdeployment("bpelAdd", new Date(), "workflows/bpelAdd");
+        BPELdeployment bpeLdeployment = new BPELdeployment("bpelAdd", new Date(), "workflows/bpelAdd", PackageType.BPEL);
         bpeLdeployment = bpeLdeploymentRepository.create(bpeLdeployment);
         Long deploymentId = bpeLdeployment.getId();
         assertNotNull(deploymentId);
@@ -53,6 +54,7 @@ public class BPELdeploymentRepositoryTest {
         return ShrinkWrap.create(JavaArchive.class)
                 .addClass(BPELdeploymentRepository.class)
                 .addClass(BPELdeployment.class)
+                .addClass(PackageType.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                 //   .addAsManifestResource( "META-INF/test-persistence.xml,test-persistence.xml");
                 .addAsManifestResource("META-INF/persistence.xml", "persistence.xml");

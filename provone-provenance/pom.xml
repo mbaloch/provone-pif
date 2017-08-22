@@ -55,6 +55,18 @@
             <type>pom</type>
             <version>3.1.1</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>edu.kit</groupId>
+            <artifactId>provenance-query-interface</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
         <!-- TEST -->
         <dependency>
             <groupId>junit</groupId>
@@ -80,6 +92,7 @@
             <version>${version.arquillian.wildfly}</version>
             <scope>test</scope>
         </dependency>
+
 
     </dependencies>
 
