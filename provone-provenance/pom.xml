@@ -16,6 +16,7 @@
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <resteasy.version>3.0.8.Final</resteasy.version>
+        <version.swagger>1.5.13</version.swagger>
         <!-- Test -->
         <version.junit>4.12</version.junit>
         <version.arquillian>1.1.13.5</version.arquillian>
@@ -23,6 +24,7 @@
         <version.shrinkwrap>1.2.6</version.shrinkwrap>
         <!-- Plugins -->
         <version.surefire.plugin>2.20</version.surefire.plugin>
+        <version.swagger.plugin>3.1.4</version.swagger.plugin>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -42,6 +44,12 @@
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>${version.swagger}</version>
+        </dependency>
+
         <!-- Resteasy Multipart Provider -->
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
@@ -110,6 +118,92 @@
             <!--</configuration>-->
             <!--</plugin>-->
             <plugin>
+                <groupId>com.github.kongchen</groupId>
+                <artifactId>swagger-maven-plugin</artifactId>
+                <version>${version.swagger.plugin}</version>
+                <configuration>
+                    <apiSources>
+                        <apiSource>
+                            <springmvc>false</springmvc>
+                            <locations>edu.kit.provoneprovenance.rest</locations>
+                            <schemes>http,https</schemes>
+                            <host>localhost:8080</host>
+                            <basePath>/provone-provenance/api</basePath>
+                            <outputFormats>yaml,json</outputFormats>
+                            <info>
+                                <title>Provenance Interoperability Framework APIs</title>
+                                <version>1.0.0</version>
+                                <description>Provenance Interoperability Framework APIs</description>
+                                <contact>
+                                    <email>mhbalouch@gmail.com</email>
+                                    <name>Mukhtar Hussain</name>
+                                    <url>http://www.balochsoft.com</url>
+                                </contact>
+                            </info>
+                            <swaggerDirectory>${basedir}/src/main/webapp</swaggerDirectory>
+                            <attachSwaggerArtifact>true</attachSwaggerArtifact>
+                        </apiSource>
+                    </apiSources>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>io.swagger</groupId>
+                        <artifactId>swagger-hibernate-validations</artifactId>
+                        <version>1.5.12</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>com.googlecode.maven-download-plugin</groupId>
+                <artifactId>download-maven-plugin</artifactId>
+                <version>1.3.0</version>
+                <executions>
+                    <execution>
+                        <phase>site</phase>
+                        <id>swagger-ui</id>
+                        <goals>
+                            <goal>wget</goal>
+                        </goals>
+                        <configuration>
+                            <url>https://github.com/swagger-api/swagger-ui/archive/master.tar.gz</url>
+                            <unpack>true</unpack>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/src/main/webapp/swagger-ui</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}/swagger-ui-master/dist</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
@@ -165,6 +259,5 @@
             </plugin>
         </plugins>
     </build>
-
 
 </project>

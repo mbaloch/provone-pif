@@ -7,6 +7,7 @@
           <element id="module-output" name="provone-provenance" />
         </element>
         <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: io.swagger:swagger-annotations:1.5.13" />
           <element id="library" level="project" name="Maven: commons-io:commons-io:2.1" />
           <element id="library" level="project" name="Maven: org.apache.jena:jena-tdb:3.1.1" />
           <element id="library" level="project" name="Maven: org.apache.jena:jena-arq:3.1.1" />

@@ -21,7 +21,7 @@ public class SparqlQueryStrings {
         StringBuilder queryString=new StringBuilder();
         queryString.append("PREFIX prov: <http://www.w3.org/ns/prov#>").append(NL);
         queryString.append("PREFIX provone: <http://purl.org/provone#>").append(NL);
-        queryString.append("SELECT ?subject ?predicate ?object").append(NL);
+        queryString.append("CONSTRUCT {?subject ?predicate ?object}").append(NL);
         queryString.append("WHERE").append(NL);
         queryString.append("{").append(NL);
         queryString.append("GRAPH <"+graphUri+">").append(NL);
@@ -39,7 +39,7 @@ public class SparqlQueryStrings {
         String NL = System.getProperty("line.separator");
         StringBuilder queryString=new StringBuilder();
         queryString.append("PREFIX provone: <http://purl.org/provone#>").append(NL);
-        queryString.append("SELECT ?object ?predicate ?value").append(NL);
+        queryString.append("CONSTRUCT {?object ?predicate ?value}").append(NL);
         queryString.append("WHERE").append(NL);
         queryString.append("{").append(NL);
         queryString.append("GRAPH <"+graphUri+">").append(NL);
@@ -57,7 +57,7 @@ public class SparqlQueryStrings {
         queryString.append("PREFIX provone: <http://purl.org/provone#>").append(NL);
         queryString.append("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>").append(NL);
         queryString.append("PREFIX dc: <http://purl.org/dc/terms/>").append(NL);
-        queryString.append("SELECT ?object ?predicate ?value").append(NL);
+        queryString.append("CONSTRUCT {?object ?predicate ?value}").append(NL);
         queryString.append("WHERE").append(NL);
         queryString.append("{").append(NL);
         queryString.append("GRAPH <"+graphUri+">").append(NL);
@@ -101,13 +101,14 @@ public class SparqlQueryStrings {
         queryString.append("?data a provone:Data.").append(NL);
         queryString.append("?data prov:value ?value.").append(NL);
         queryString.append("?data provone:dataOnLink ?DL.").append(NL);
-        queryString.append("filter (?value > \""+value +"\" )").append(NL);
+        queryString.append("filter (?value  " + value + " )").append(NL);
         queryString.append("}").append(NL);
         queryString.append("}").append(NL);
         queryString.append("}}").append(NL);
         return queryString.toString();
     }
-    public static String getAllFailedRetrospectiveQueryString(String graphUri){
+
+    public static String getRetrospectiveByStatusQueryString(boolean status, String graphUri) {
         String NL = System.getProperty("line.separator");
         StringBuilder queryString=new StringBuilder();
         queryString.append("PREFIX provone: <http://purl.org/provone#>").append(NL);
@@ -116,17 +117,17 @@ public class SparqlQueryStrings {
         queryString.append("PREFIX prov: <http://www.w3.org/ns/prov#>").append(NL);
         queryString.append("PREFIX wfms:<http://www.wfms.org/registry.xsd#>").append(NL);
 
-        queryString.append("SELECT ?subject ?error").append(NL);
+        queryString.append("SELECT ?workflow ?error").append(NL);
         queryString.append("WHERE").append(NL);
         queryString.append("{").append(NL);
         queryString.append("GRAPH <"+graphUri+">").append(NL);
         queryString.append("{").append(NL);
-        queryString.append("?subject a provone:ProcessExec.").append(NL);
-        queryString.append("?subject prov:wasAssociatedWith ?object.").append(NL);
+        queryString.append("?workflow a provone:ProcessExec.").append(NL);
+        queryString.append("?workflow prov:wasAssociatedWith ?object.").append(NL);
         queryString.append("?object a provone:Workflow.").append(NL);
-        queryString.append("?subject wfms:completed ?completed.").append(NL);
-        queryString.append("?subject wfms:error ?error.").append(NL);
-        queryString.append("filter(?completed =\"false\")").append(NL);
+        queryString.append("?workflow wfms:completed ?completed.").append(NL);
+        // queryString.append("?subject wfms:error ?error.").append(NL);
+        queryString.append("filter(?completed =\"" + status + "\")").append(NL);
         queryString.append("}}").append(NL);
         return queryString.toString();
     }

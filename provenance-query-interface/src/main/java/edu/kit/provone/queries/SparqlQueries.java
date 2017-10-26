@@ -1,20 +1,17 @@
 package edu.kit.provone.queries;
 
-import org.apache.jena.query.Query;
-import org.apache.jena.query.QueryExecution;
-import org.apache.jena.query.QueryExecutionFactory;
-import org.apache.jena.query.QueryFactory;
+import org.apache.jena.query.*;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.sparql.engine.http.QueryEngineHTTP;
 
 public class SparqlQueries {
     public static Model getProspective(String graphUri, String endPointUrl) {
         String prospectiveQueryString = SparqlQueryStrings.getProspectiveQueryString(graphUri);
-        Model model = getResultSet(prospectiveQueryString, endPointUrl);
+        Model model = getResultSetAsGraph(prospectiveQueryString, endPointUrl);
         return model;
     }
 
-    private static Model getResultSet(String queryString, String endPointUrl) {
+    private static Model getResultSetAsGraph(String queryString, String endPointUrl) {
         Query query = QueryFactory.create(queryString);
         Model model = null;
         QueryExecution qexec = QueryExecutionFactory.sparqlService(endPointUrl, query);
@@ -24,34 +21,45 @@ public class SparqlQueries {
         return model;
     }
 
+    private static ResultSet getResultSetAsSelect(String queryString, String endPointUrl) {
+        Query query = QueryFactory.create(queryString);
+        ResultSet resultSet = null;
+        QueryExecution qexec = QueryExecutionFactory.sparqlService(endPointUrl, query);
+        ((QueryEngineHTTP) qexec).addParam("timeout", "10000");
+        resultSet = qexec.execSelect();
+
+
+        return resultSet;
+    }
+
     public static Model getRetrospective(String graphUri, String endPointUrl) {
         String prospectiveQueryString = SparqlQueryStrings.getRetrospectiveQueryString(graphUri);
-        Model model = getResultSet(prospectiveQueryString, endPointUrl);
+        Model model = getResultSetAsGraph(prospectiveQueryString, endPointUrl);
         return model;
 
     }
 
     public static Model getInputAndOutputPorts(String graphUri, String endPointUrl) {
         String prospectiveQueryString = SparqlQueryStrings.getInputAndOutputPortsQueryString(graphUri);
-        Model model = getResultSet(prospectiveQueryString, endPointUrl);
+        Model model = getResultSetAsGraph(prospectiveQueryString, endPointUrl);
         return model;
     }
 
     public static Model getInputAndOutputPortsOfGivenProcess(String processName, String graphUri, String endPointUrl) {
         String prospectiveQueryString = SparqlQueryStrings.getInputAndOutputPortsOfGivenProcessQueryString(processName, graphUri);
-        Model model = getResultSet(prospectiveQueryString, endPointUrl);
+        Model model = getResultSetAsGraph(prospectiveQueryString, endPointUrl);
         return model;
     }
 
-    public static Model getOutputPortsOfProcessHavingValue(String value, String graphUri, String endPointUrl) {
+    public static ResultSet getOutputPortsOfProcessHavingValue(String value, String graphUri, String endPointUrl) {
         String prospectiveQueryString = SparqlQueryStrings.getOutputPortsOfProcessHavingValueQueryString(value, graphUri);
-        Model model = getResultSet(prospectiveQueryString, endPointUrl);
-        return model;
+        ResultSet resultSet = getResultSetAsSelect(prospectiveQueryString, endPointUrl);
+        return resultSet;
     }
 
-    public static Model getAllFailedRetrospectiveQueryString(String graphUri, String endPointUrl) {
-        String prospectiveQueryString = SparqlQueryStrings.getAllFailedRetrospectiveQueryString(graphUri);
-        Model model = getResultSet(prospectiveQueryString, endPointUrl);
-        return model;
+    public static ResultSet getRetrospectiveByStatus(boolean status, String graphUri, String endPointUrl) {
+        String prospectiveQueryString = SparqlQueryStrings.getRetrospectiveByStatusQueryString(status, graphUri);
+        ResultSet resultSet = getResultSetAsSelect(prospectiveQueryString, endPointUrl);
+        return resultSet;
     }
 }

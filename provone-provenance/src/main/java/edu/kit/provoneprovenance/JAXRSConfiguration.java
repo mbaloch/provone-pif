@@ -28,7 +28,7 @@ public class JAXRSConfiguration extends Application {
     private void loadSetting(Map<String, Object> propertiesHashMap) throws IOException {
         // ClassLoader classLoader = ClassLoader.getSystemClassLoader();
 //        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-//        URL resource = classLoader.getResource("settings.properties");
+//        URL resource = classLoader.getResource("provenance.properties");
 //        String settingsFilePath = resource.getFile();
 //        File file = new File(settingsFilePath);
 //        FileInputStream fileInput = new FileInputStream(file);

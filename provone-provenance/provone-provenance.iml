@@ -36,6 +36,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax:javaee-web-api:7.0" level="project" />
+    <orderEntry type="library" name="Maven: io.swagger:swagger-annotations:1.5.13" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.resteasy:resteasy-multipart-provider:3.0.8.Final" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.resteasy:resteasy-jaxrs:3.0.8.Final" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.resteasy:jaxrs-api:3.0.8.Final" level="project" />
