@@ -1,6 +1,10 @@
 package edu.kit.provoneprovenance.rest;
 
 import edu.kit.provone.queries.SparqlQueries;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.ResultSetFormatter;
 import org.apache.jena.rdf.model.Model;
@@ -13,6 +17,7 @@ import javax.ws.rs.core.Response;
 import java.io.ByteArrayOutputStream;
 
 @Path("provenance")
+@Api("provenance")
 public class ProvenanceEndpoint {
     @Context
     private Configuration configuration;
@@ -22,6 +27,11 @@ public class ProvenanceEndpoint {
     @GET
     @Produces("application/xml")
     @Path("{id}/prospective")
+    @ApiOperation(value = "Returns the prospective provence given the workflow id")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "prospective provenance found for the given workflow"),
+            @ApiResponse(code = 404, message = "provenance for the given workflow id does not exists")
+    })
     public Response getProspectiveProvenance(@PathParam("id") String provenanceId) {
         final String SPARQL_DATASET_NAME = (String) configuration.getProperty("SPARQL_DATASET_NAME");
         final String SPARQL_ENDPOINTURL = (String) configuration.getProperty("SPARQL_ENDPOINTURL");

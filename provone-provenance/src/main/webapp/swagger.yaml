@@ -1,0 +1,37 @@
+---
+swagger: "2.0"
+info:
+  description: "Provenance Interoperability Framework APIs"
+  version: "1.0.0"
+  title: "Provenance Interoperability Framework APIs"
+  contact:
+    name: "Mukhtar Hussain"
+    url: "http://www.balochsoft.com"
+    email: "mhbalouch@gmail.com"
+host: "localhost:8080"
+basePath: "/provone-provenance/api"
+tags:
+- name: "provenance"
+schemes:
+- "http"
+- "https"
+paths:
+  /provenance/{id}/prospective:
+    get:
+      tags:
+      - "provenance"
+      summary: "Returns the prospective provence given the workflow id"
+      description: ""
+      operationId: "getProspectiveProvenance"
+      produces:
+      - "application/xml"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "prospective provenance found for the given workflow"
+        404:
+          description: "provenance for the given workflow id does not exists"
