@@ -20,6 +20,13 @@ import java.util.HashSet;
 import java.util.Stack;
 import java.util.UUID;
 
+/**
+ * 
+ * @author Vaibhav
+ *	
+ * This class is used to convert the SCUFL *.t2flow file into respective prov representations(Prospective Prov).
+ * 
+ */
 public class ScuflToProv {
 
 	private Stack<String> currentProceess = new Stack<String>();
@@ -33,8 +40,12 @@ public class ScuflToProv {
 
 	/**
 	 * 
-	 * @param filePath
-	 *            T@FLOW file path
+	 * @param filePath T2FLOW file path
+	 * 
+	 *  this function accepts the file path for SCUFL t2flow file.
+	 *  Parse and convert the xml file into corresponding java pojo object.
+	 *  Further this pojo classes are used to iterate on all the workflows, sub-workflows and processes.
+	 *  
 	 */
 	public void parseCreateGraph(String filePath) {
 
@@ -69,6 +80,13 @@ public class ScuflToProv {
 	final static String prov = "http://www.w3.org/ns/prov#";
 	final static String ns = "http://kit.edu/pp/";
 
+	/**
+	 * This method is used to store the generated Graph to RDF store in our case it is configure to Apache jena.
+	 * ServiceURL is path to dataset and workflowid is the path to graph.
+	 * 
+	 * @param rdfUtility
+	 * @throws Exception
+	 */
 	private void saveRDFtoJenaStore(RDFUtility rdfUtility) throws Exception {
 		String workflowID="http://kit.edu/scufl/"+scuflWorkflowID;
 		Model model = rdfUtility.getModel();
@@ -80,44 +98,11 @@ public class ScuflToProv {
 		{
 			throw new Exception("Prospective graph for the givern workflow id already exists in store");
 		}
-//		String workflowContainerIDScufl="http://kit.edu/scufl/"+scuflWorkflowID;
-//		Model model = rdfUtility.getModel();
-//		DatasetAccessor accessor = DatasetAccessorFactory.createHTTP(ServiceURI);
-//		if(!accessor.containsModel(workflowContainerIDScufl)){
-//
-//			Model workflowContainerModel = ModelFactory.createDefaultModel();
-//			//create wf container and add new record for the new wf
-//			String workflowVersion="1.0";
-//			String workflowID=workflowContainerIDScufl +"/"+workflowVersion;
-//			Resource workflow = workflowContainerModel.createResource(ns + "wf_" + scuflWorkflowID);
-//			workflow.addProperty(RDF.type, workflowContainerModel.createResource(provone + "Workflow"));
-//			workflow.addProperty(DCTerms.identifier, scuflWorkflowID);
-//			workflow.addProperty(DCTerms.title, workflowID);
-//			accessor.add(workflowContainerIDScufl,workflowContainerModel);
-//			//create a named graph for wf and add data to it
-//			accessor.putModel(workflowID,model);
-//			//Property wasAssociatedWithProperty = model.createProperty(prov + "wasAssociatedWith");
-//			//workflow.addProperty(wasAssociatedWithProperty, process);
-//
-//
-//		}
-//		else{
-//			Model workflowContainerModel=accessor.getModel(workflowContainerIDScufl);
-//
-//			String workflowVersion="3.0";
-//			String workflowID=workflowContainerIDScufl +"/"+workflowVersion;
-//			Resource workflow = workflowContainerModel.createResource(ns + "wf_" + scuflWorkflowID);
-//			workflow.addProperty(RDF.type, workflowContainerModel.createResource(provone + "Workflow"));
-//			workflow.addProperty(DCTerms.identifier, scuflWorkflowID);
-//			workflow.addProperty(DCTerms.title, workflowID);
-//			accessor.add(workflowContainerIDScufl,workflowContainerModel);
-//			//create a named graph for wf and add data to it
-//			accessor.putModel(workflowID,model);
-//
-//		}
 	}
 
 	/**
+	 * This function is the implementation of the Prov2ONE algorithm.
+	 * This function is called recursevily to generate the prospective graph.
 	 * 
 	 * @param dtflw
 	 *            main or Nested workflow called recursively
@@ -136,7 +121,7 @@ public class ScuflToProv {
 			processNamePathStack.push(dtflw.getName());
 			// RDF code
 			processDoc = rdfUtility.createWorkflow(dtflw.getId(), getPathNaMe(), dtflw.getRole().toString());
-
+//			below method is used to create the input and output ports of the workflow and process.
 			ATTACHPORTS(dtflw, processDoc, nestedFlag);
 		}
 
@@ -162,7 +147,7 @@ public class ScuflToProv {
 					ProcessorDoc processorPojo = new ProcessorDoc();
 					processorPojo.setGraphName("P:" + processor.getName());
 					processorPojo.setName(processor.getName());
-
+// below code is used to attache the input and output ports of process and workflow.
 					ATTACHPORTS(processor, processorDoc, nestedWrkFlw);
 					Stack<String> tempStack = new Stack<String>();
 					for (String processNames : processNamePathStack) {
@@ -351,6 +336,13 @@ public class ScuflToProv {
 		}
 
 	}
+	
+	/**
+	 * Below method is used to get the full path of the processor.
+	 * 
+	 * @param processorName
+	 * @return
+	 */
 	private String getPathNaMe(String processorName) {
 		StringWriter pathName = new StringWriter();
 		for (String processorNames : processNamePathStack) {
@@ -377,6 +369,14 @@ public class ScuflToProv {
         }
         return pathName.toString();
 	}
+	
+	/**
+	 * This method is used to connect input and output ports of processor and workflow.
+	 * @param dtflw
+	 * @param processDoc
+	 * @param nestedFlag
+	 * @param processUUID
+	 */
 	private void ATTACHPORTS(Dataflow dtflw, Resource processDoc, boolean nestedFlag, String processUUID) {
 
 		HashMap<String, Resource> inportMap = new HashMap<String, Resource>();
@@ -412,6 +412,12 @@ public class ScuflToProv {
 		// }
 	}
 
+	/**
+	 * This method is used to connect input and output ports of processor and workflow.
+	 * @param processor
+	 * @param processorDoc
+	 * @param processUUID
+	 */
 	private void ATTACHPORTS(Processor processor, Resource processorDoc, String processUUID) {
 
 		HashMap<String, Resource> inportMap = new HashMap<String, Resource>();
@@ -443,6 +449,13 @@ public class ScuflToProv {
 
 	}
 
+	/**
+	 * This method is used to connect input and output ports of processor and workflow.
+	 * 
+	 * @param dtflw
+	 * @param processDoc
+	 * @param nestedFlag
+	 */
 	private void ATTACHPORTS(Dataflow dtflw, Resource processDoc, boolean nestedFlag) {
 
 		HashMap<String, Resource> inportMap = new HashMap<String, Resource>();

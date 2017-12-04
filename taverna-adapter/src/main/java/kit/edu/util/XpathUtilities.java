@@ -35,12 +35,22 @@ import kit.edu.core.HadMember;
 import kit.edu.core.ProcessRun;
 import kit.edu.core.WorkflowRun;
 
+/**
+ * This class is used as utilities using xpath.
+ * 
+ * @author Vaibhav
+ *
+ */
 public class XpathUtilities {
 
-	// private String filePath = "C://Users/Vaibhav/Desktop/halfAbcd_rdf.xml";
-	// private String filePath = "C://Users/Vaibhav/Desktop/fullAbcd_rdf.xml";
 	private String xmlString;
 
+	/**
+	 * this method is used to process the xpath expression. and return the list of values.
+	 * 
+	 * @param expression
+	 * @return
+	 */
 	public NodeList getExperessionNodes(String expression) {
 		try {
 			// File inputFile = new File(filePath);
@@ -58,7 +68,6 @@ public class XpathUtilities {
 					ClassLoader.getSystemClassLoader()).newXPath();
 
 			NodeList nodeList = (NodeList) xPath.compile(expression).evaluate(doc, XPathConstants.NODESET);
-			System.out.println("Total Size :" + nodeList.getLength());
 			return nodeList;
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
@@ -74,6 +83,12 @@ public class XpathUtilities {
 		return null;
 	}
 
+	/**
+	 * This function is used transform the node to java pojo using the JAXB unmarshiling.
+	 * 
+	 * @param node
+	 * @return
+	 */
 	public WorkflowRun transformNodeToWrkFlw(Node node) {
 		Source source = new DOMSource(node);
 		JAXBContext jaxbContext;
@@ -89,6 +104,12 @@ public class XpathUtilities {
 		return null;
 	}
 
+	/**
+	 * This mehtod is used to convert the Node to string representation.
+	 * 
+	 * @param node
+	 * @return String
+	 */
 	private String nodeToString(Node node) {
 		try {
 			Source source = new DOMSource(node);
@@ -104,6 +125,12 @@ public class XpathUtilities {
 		return null;
 	}
 
+	/**
+	 *  This Function is used to transform the node to process run using JAXB.
+	 *  
+	 * @param node
+	 * @return
+	 */
 	public ProcessRun transformNodeToProcessRun(Node node) {
 		Source source = new DOMSource(node);
 		JAXBContext jaxbContext;
@@ -119,6 +146,12 @@ public class XpathUtilities {
 		return null;
 	}
 
+	/**
+	 *  This function is used to mapped all the taverna content to JAXB content.
+	 *  
+	 * @param node
+	 * @return
+	 */
 	public Content transformNodeTavernaContent(Node node) {
 		Source source = new DOMSource(node);
 		JAXBContext jaxbContext;
@@ -134,6 +167,12 @@ public class XpathUtilities {
 		return null;
 	}
 
+	/**
+	 * This function is used to Node to Entity representation. 
+	 * 
+	 * @param node
+	 * @return
+	 */
 	public Entity transformNodeParentEntity(Node node) {
 		Source source = new DOMSource(node);
 		JAXBContext jaxbContext;
@@ -149,6 +188,12 @@ public class XpathUtilities {
 		return null;
 	}
 
+	/**
+	 * This method is used to transform the node to HadMemeber java pojo.
+	 * 
+	 * @param node
+	 * @return
+	 */
 	public HadMember transformHadMemberList(Node node) {
 		Source source = new DOMSource(node);
 		JAXBContext jaxbContext;
@@ -168,6 +213,12 @@ public class XpathUtilities {
 		xmlString = ttlToRdf;
 	}
 
+	/**
+	 * This method is used to transform the Node to Artifact.
+	 * 
+	 * @param node
+	 * @return
+	 */
 	public Artifact transformArtifact(Node node) {
 		Source source = new DOMSource(node);
 		JAXBContext jaxbContext;

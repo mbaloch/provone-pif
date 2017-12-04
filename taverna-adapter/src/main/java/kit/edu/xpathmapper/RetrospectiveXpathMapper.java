@@ -26,6 +26,12 @@ import kit.edu.util.RDFUtility;
 import kit.edu.util.Utilities;
 import kit.edu.util.XpathUtilities;
 
+/**
+ * 
+ * @author Vaibhav
+ * This class is used to 
+ *
+ */
 public class RetrospectiveXpathMapper {
 
 	private XpathUtilities xpathUtil;
