@@ -27,7 +27,7 @@ public class ProvenanceEndpoint {
     @GET
     @Produces("application/xml")
     @Path("{id}/prospective")
-    @ApiOperation(value = "Returns the prospective provence given the workflow id")
+    @ApiOperation(value = "given a workflow id, returns the prospective provenance of the workflow")
     @ApiResponses({
             @ApiResponse(code = 200, message = "prospective provenance found for the given workflow"),
             @ApiResponse(code = 404, message = "provenance for the given workflow id does not exists")
@@ -46,6 +46,11 @@ public class ProvenanceEndpoint {
     @GET
     @Produces("application/xml")
     @Path("{id}/retrospective")
+    @ApiOperation(value = "given a workflow id, returns the retrospective provenance of the workflow")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "retrospective provenance found for the given workflow"),
+            @ApiResponse(code = 404, message = "retrospective provenance for the given workflow id does not exists")
+    })
     public Response getRetrospectiveProvenance(@PathParam("id") String provenanceId) {
         final String SPARQL_DATASET_NAME = (String) configuration.getProperty("SPARQL_DATASET_NAME");
         final String SPARQL_ENDPOINTURL = (String) configuration.getProperty("SPARQL_ENDPOINTURL");
@@ -60,6 +65,11 @@ public class ProvenanceEndpoint {
     @GET
     @Produces("application/xml")
     @Path("{id}/retrospective/filter")
+    @ApiOperation(value = "Returns the filtered list of retrospective provenance given a workflow id and filter criteria of either \"fail\" or \"succes\"")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "retrospective provenance found for the given workflow"),
+            @ApiResponse(code = 404, message = "retrospective provenance for the given workflow id does not exists")
+    })
     public Response getAllFailedRetrospectiveProvenance(
             @PathParam("id") String provenanceId,
             @QueryParam("status") String status) {
@@ -82,6 +92,11 @@ public class ProvenanceEndpoint {
     @GET
     @Produces("application/xml")
     @Path("{id}/allports")
+    @ApiOperation(value = "given a workflow id, Returns the list of all \"Input Ports\" and \"Output Ports\" ")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "provenance found for the given workflow id"),
+            @ApiResponse(code = 404, message = "provenance for the given workflow id does not exists")
+    })
     public Response getAllInputAndOutputPorts(@PathParam("id") String provenanceId) {
         final String SPARQL_DATASET_NAME = (String) configuration.getProperty("SPARQL_DATASET_NAME");
         final String SPARQL_ENDPOINTURL = (String) configuration.getProperty("SPARQL_ENDPOINTURL");
@@ -96,6 +111,11 @@ public class ProvenanceEndpoint {
     @GET
     @Produces("application/xml")
     @Path("{id}/{process}/allports")
+    @ApiOperation(value = "given a workflow id and a process name, Returns the list of all \"Input Ports\" and \"Output Ports\" of the given process")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "provenance found for the given workflow id"),
+            @ApiResponse(code = 404, message = "provenance for the given workflow id does not exists")
+    })
     public Response getAllInputAndOutputPortsOfGivenProcess(@PathParam("id") String provenanceId, @PathParam("process") String processName) {
         final String SPARQL_DATASET_NAME = (String) configuration.getProperty("SPARQL_DATASET_NAME");
         final String SPARQL_ENDPOINTURL = (String) configuration.getProperty("SPARQL_ENDPOINTURL");
@@ -110,6 +130,11 @@ public class ProvenanceEndpoint {
     @GET
     @Produces("application/xml")
     @Path("{id}/outputports")
+    @ApiOperation(value = "given a workflow id, a process name and a value, Returns the list of the  \"Output Ports\"  having the value")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "provenance found for the given workflow id"),
+            @ApiResponse(code = 404, message = "provenance for the given workflow id does not exists")
+    })
     public Response getOutputPortsOfProcessHavingValue(
             @PathParam("id") String provenanceId,
             @QueryParam("value") String value) {
