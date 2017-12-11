@@ -6,6 +6,12 @@ import org.apache.jena.rdf.model.Resource;
 import kit.edu.core.HasPart;
 import kit.edu.core.WorkflowRun;
 
+/**
+ * This class is used to create ProcessExec node for Retrospective Provenance. 
+ * 
+ * @author Vaibhav
+ *
+ */
 public class GenerateProcessExe {
 
 	private RetrospectiveXpathMapper mapper;
@@ -15,6 +21,12 @@ public class GenerateProcessExe {
 		mapper = retrospectiveXpathMapper;
 	}
 
+	/**
+	 * This function is used to create workflow ProcessExec Node in retorspective provenance.
+	 * 
+	 * @param workflowRun
+	 * @return
+	 */
 	public Resource workflowProcExec(WorkflowRun workflowRun) {
 		Resource workFlowResource = mapper.getUtil().createWorkResource(workflowRun);
 		activityIdProperty= mapper.getRdfUtil().getIdentifirePropety();
@@ -36,6 +48,12 @@ public class GenerateProcessExe {
 	}
 
 
+	/**
+	 * This function is used to create ProcessExec for sub-workflow.
+	 * 
+	 * @param workflowRun
+	 * @return
+	 */
 	public Resource createSubWorkFlow(WorkflowRun workflowRun) {
 		Resource subWorkFlowResource = mapper.getUtil().createSubWrkFlwProcessResource(workflowRun);
 		

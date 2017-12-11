@@ -17,6 +17,11 @@ import kit.edu.core.ProcessRun;
 import kit.edu.core.RDF;
 import kit.edu.core.WorkflowRun;
 
+/**
+ * This 
+ * @author Vaibhav
+ *
+ */
 public class Utilities {
 
 	RDFUtility rdfUtil;
@@ -29,6 +34,11 @@ public class Utilities {
 		rdfUtil = rdfUtil2;
 	}
 
+	/**
+	 * this function is used to get the about information from the string.
+	 * @param rdfabout
+	 * @return
+	 */
 	public String getID(String rdfabout) {
 		about = rdfabout;
 		String[] about = rdfabout.split("/");
@@ -36,6 +46,12 @@ public class Utilities {
 		return id;
 	}
 
+	/**
+	 * This function is used to calculate the actual path from the string.
+	 * 
+	 * @param resource
+	 * @return
+	 */
 	public String getPath(String resource) {
 		String workflowid = getWorkFlowID(resource);
 		String[] splitString = resource.split(workflowid);
@@ -46,6 +62,11 @@ public class Utilities {
 		return finalPath;
 	}
 
+	/**
+	 * this function is used to calculate the ID from the String
+	 * @param describedByWorkflowID
+	 * @return
+	 */
 	public String getWorkFlowID(String describedByWorkflowID) {
 		String[] about = describedByWorkflowID.split("/");
 		for (String part : about) {
@@ -56,23 +77,25 @@ public class Utilities {
 		return null;
 	}
 
+	/**
+	 * This function is used to convert the TTL file to RDF/XML representations
+	 * @param ttlFilePath
+	 * @return
+	 */
 	public String transformTTl2RdfModel(String ttlFilePath) {
 		Model model = RDFDataMgr.loadModel(ttlFilePath);
 		StringWriter rdfXmlWriter = new StringWriter();
 		model.write(rdfXmlWriter, "RDF/XML-ABBREV");
-		// File file = new File("C://Users/Vaibhav/Desktop/fullAbcd_rdf.xml");
-//		 File file = new File("C://Users/Vaibhav/Desktop/halfAbcd2_rdf.xml");
-////		File file = new File("C://Users/Vaibhav/Desktop/dockerAbcd_rdf.xml");
-//		FileOutputStream out = null;
-//		try {
-//			out = new FileOutputStream(file);
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		}
-//		model.write(out, "RDF/XML-ABBREV");
 		return rdfXmlWriter.toString();
 	}
 
+	/**
+	 * this method is used to transform the XML to java pojo objects.
+	 * 
+	 * @param ttlFilePath
+	 * @return
+	 * @throws JAXBException
+	 */
 	public RDF parseRdfModel(String ttlFilePath) throws JAXBException {
 		Source source = new StreamSource(new
 				StringReader(transformTTl2RdfModel(ttlFilePath)));
@@ -84,6 +107,12 @@ public class Utilities {
 		return rdfObj;
 	}
 
+	/**
+	 * This method is used to create the Process resource.
+	 * 
+	 * @param processRun
+	 * @return
+	 */
 	public Resource createProcessResource(ProcessRun processRun) {
 		String proceesorID = getID(processRun.getAbout());
 		String processName;
@@ -116,8 +145,6 @@ public class Utilities {
 		} else if (null != workflowRun.getDescribedByProcess()) {
 			workFlowName = getPath(workflowRun.getDescribedByProcess().getResource());
 		}
-
-
 
 		Resource workFlowResource = rdfUtil.createProcessExec(workflowID, workFlowName, workflowID,
 				workflowRun.getStartedAtTime(), workflowRun.getEndedAtTime(), "completed", describedByWorkflowID);
